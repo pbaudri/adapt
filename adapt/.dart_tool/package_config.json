@@ -1080,6 +1080,12 @@
       "rootUri": "../adapt_flutter",
       "packageUri": "lib/",
       "languageVersion": "3.8"
+    },
+    {
+      "name": "adapt_theme",
+      "rootUri": "../adapt_theme",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
     }
   ],
   "generator": "pub",

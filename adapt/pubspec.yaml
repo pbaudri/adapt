@@ -15,6 +15,7 @@ workspace:
   - adapt_client
   - adapt_server
   - adapt_flutter
+  - adapt_theme
 dependency_overrides:
   flutter_secure_storage: ^10.0.0
 dev_dependencies:

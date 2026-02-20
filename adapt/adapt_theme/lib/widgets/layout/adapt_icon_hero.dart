@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
-import '../../theme/app_dimensions.dart';
 
 /// A circular icon container used to showcase a primary visual on a screen.
 ///
