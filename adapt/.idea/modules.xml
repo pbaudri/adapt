@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+<module fileurl="file://$PROJECT_DIR$/adapt_client/melos_adapt_client.iml" filepath="$PROJECT_DIR$/adapt_client/melos_adapt_client.iml"/>
+<module fileurl="file://$PROJECT_DIR$/adapt_flutter/melos_adapt_flutter.iml" filepath="$PROJECT_DIR$/adapt_flutter/melos_adapt_flutter.iml"/>
+<module fileurl="file://$PROJECT_DIR$/adapt_server/melos_adapt_server.iml" filepath="$PROJECT_DIR$/adapt_server/melos_adapt_server.iml"/>
+<module fileurl="file://$PROJECT_DIR$/melos_adapt.iml" filepath="$PROJECT_DIR$/melos_adapt.iml"/>
+    </modules>
+  </component>
+</project>

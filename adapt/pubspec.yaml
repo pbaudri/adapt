@@ -1,6 +1,13 @@
-name: _
+name: adapt
 publish_to: none
+repository: https://github.com/pbaudri/adapt.git
 
+packages:
+  - adapt/adapt_server
+  - adapt/adapt_client
+  - adapt/adapt_theme
+  - adapt/adapt_flutter
+  
 environment:
   sdk: '^3.8.0'
 
@@ -10,4 +17,6 @@ workspace:
   - adapt_flutter
 dependency_overrides:
   flutter_secure_storage: ^10.0.0
+dev_dependencies:
+  melos: ^7.4.0
 
