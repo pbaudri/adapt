@@ -4,9 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
 
-/// Account section with sign-in sync link and data deletion on the profile screen.
+/// Account section on the profile screen.
+///
+/// - Guest: shows a prompt to sign in for cross-device sync.
+/// - Signed in: shows a Sign out button that clears the session and
+///   lets the router redirect to [AppRoutes.signIn].
 class ProfileAccountSection extends ConsumerWidget {
   const ProfileAccountSection({super.key});
 
@@ -14,6 +19,10 @@ class ProfileAccountSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profileAsync = ref.watch(profileNotifierProvider);
     final isGuest = profileAsync.whenOrNull(data: (p) => p.isGuest) ?? true;
+
+    final authState = ref.watch(authNotifierProvider);
+    final isSigningOut =
+        authState.maybeWhen(loading: () => true, orElse: () => false);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,25 +52,18 @@ class ProfileAccountSection extends ConsumerWidget {
             ),
           )
         else
-          AdaptInfoCard(
-            child: Padding(
-              padding: AppDimensions.cardPadding,
-              child: profileAsync.whenOrNull(
-                    data: (p) => Text(
-                      p.name ?? 'Account',
-                      style: AppTextStyles.bodyLarge,
-                    ),
-                  ) ??
-                  const SizedBox.shrink(),
-            ),
+          AdaptSecondaryButton(
+            label: 'Sign out',
+            onTap: () =>
+                ref.read(authNotifierProvider.notifier).signOut(),
+            isDisabled: isSigningOut,
           ),
         const SizedBox(height: AppDimensions.spacing24),
         Center(
           child: AdaptTextLink(
             label: 'Delete all my data',
-            onTap: () async {
-              await ref.read(profileNotifierProvider.notifier).deleteAllData();
-            },
+            onTap: () =>
+                ref.read(profileNotifierProvider.notifier).deleteAllData(),
             textStyle: AppTextStyles.textLinkDestructive,
           ),
         ),
