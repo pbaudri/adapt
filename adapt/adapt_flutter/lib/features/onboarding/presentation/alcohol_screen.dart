@@ -1,36 +1,58 @@
+import 'package:adapt_client/src/protocol/enums/alcohol_habit.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
+import 'providers/onboarding_provider.dart';
 import 'widgets/onboarding_scaffold.dart';
 
-class AlcoholScreen extends StatefulWidget {
+class AlcoholScreen extends ConsumerStatefulWidget {
   const AlcoholScreen({super.key});
 
   @override
-  State<AlcoholScreen> createState() => _AlcoholScreenState();
+  ConsumerState<AlcoholScreen> createState() => _AlcoholScreenState();
 }
 
-class _AlcoholScreenState extends State<AlcoholScreen> {
-  String? _selected;
+class _AlcoholScreenState extends ConsumerState<AlcoholScreen> {
+  AlcoholHabit? _selected;
   bool _trackAlcohol = true;
 
   static const _options = [
-    (value: 'rarely', title: 'Rarely', subtitle: 'A few times a month or less.'),
-    (value: 'sometimes', title: 'Sometimes', subtitle: 'A couple of times a week.'),
-    (value: 'often', title: 'Often', subtitle: 'Most days.'),
+    (
+      value: AlcoholHabit.rarely,
+      title: 'Rarely',
+      subtitle: 'A few times a month or less.',
+    ),
+    (
+      value: AlcoholHabit.sometimes,
+      title: 'Sometimes',
+      subtitle: 'A couple of times a week.',
+    ),
+    (value: AlcoholHabit.often, title: 'Often', subtitle: 'Most days.'),
   ];
+
+  Future<void> _onNext() async {
+    if (_selected == null) return;
+    final ok = await ref
+        .read(onboardingNotifierProvider.notifier)
+        .saveAlcoholHabit(_selected!);
+    if (ok && mounted) context.push(AppRoutes.onboardingPersonalInfo);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(onboardingNotifierProvider);
+    final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
+
     return OnboardingScaffold(
       totalSteps: 5,
       currentStep: 4,
       title: 'Do you drink alcohol?',
       subtitle: 'No judgment — this helps us give better estimates.',
-      isNextEnabled: _selected != null,
-      onNext: () => context.push(AppRoutes.onboardingPersonalInfo),
+      isNextEnabled: _selected != null && !isLoading,
+      onNext: _onNext,
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

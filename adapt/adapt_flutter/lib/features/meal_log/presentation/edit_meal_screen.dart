@@ -1,19 +1,35 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class EditMealScreen extends StatefulWidget {
+import 'providers/meal_provider.dart';
+
+class EditMealScreen extends ConsumerStatefulWidget {
   const EditMealScreen({super.key});
 
   @override
-  State<EditMealScreen> createState() => _EditMealScreenState();
+  ConsumerState<EditMealScreen> createState() => _EditMealScreenState();
 }
 
-class _EditMealScreenState extends State<EditMealScreen> {
-  final _nameController = TextEditingController(text: 'Big Mac Menu');
-  final _proteinController = TextEditingController(text: '42');
-  final _carbsController = TextEditingController(text: '103');
-  final _fatController = TextEditingController(text: '47');
+class _EditMealScreenState extends ConsumerState<EditMealScreen> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _proteinController;
+  late final TextEditingController _carbsController;
+  late final TextEditingController _fatController;
+
+  @override
+  void initState() {
+    super.initState();
+    final result = ref.read(pendingMealResultProvider);
+    _nameController = TextEditingController(text: result?.name ?? '');
+    _proteinController =
+        TextEditingController(text: result?.proteinG.toStringAsFixed(0) ?? '');
+    _carbsController =
+        TextEditingController(text: result?.carbsG.toStringAsFixed(0) ?? '');
+    _fatController =
+        TextEditingController(text: result?.fatG.toStringAsFixed(0) ?? '');
+  }
 
   @override
   void dispose() {
@@ -24,8 +40,27 @@ class _EditMealScreenState extends State<EditMealScreen> {
     super.dispose();
   }
 
+  Future<void> _onSave() async {
+    final result = ref.read(pendingMealResultProvider);
+    if (result == null) return;
+
+    await ref.read(mealNotifierProvider.notifier).correctAndConfirm(
+      mealLogId: result.mealLogId,
+      name: _nameController.text.trim().isEmpty
+          ? null
+          : _nameController.text.trim(),
+      proteinG: double.tryParse(_proteinController.text),
+      carbsG: double.tryParse(_carbsController.text),
+      fatG: double.tryParse(_fatController.text),
+    );
+    if (mounted) context.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final mealState = ref.watch(mealNotifierProvider);
+    final isLoading = mealState.maybeWhen(loading: () => true, orElse: () => false);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -100,7 +135,8 @@ class _EditMealScreenState extends State<EditMealScreen> {
               ),
               child: AdaptPrimaryButton(
                 label: 'Save changes',
-                onTap: () => context.pop(),
+                onTap: _onSave,
+                isLoading: isLoading,
               ),
             ),
           ],

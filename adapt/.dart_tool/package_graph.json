@@ -42,6 +42,7 @@
       "name": "adapt_flutter",
       "version": "1.0.0+1",
       "dependencies": [
+        "adapt_client",
         "adapt_theme",
         "cached_network_image",
         "flutter",
@@ -54,6 +55,7 @@
         "intl",
         "permission_handler",
         "riverpod_annotation",
+        "serverpod_auth_core_flutter",
         "sqflite"
       ],
       "devDependencies": [
@@ -289,6 +291,17 @@
         "riverpod_analyzer_utils",
         "riverpod_annotation",
         "source_gen"
+      ]
+    },
+    {
+      "name": "serverpod_auth_core_flutter",
+      "version": "3.3.1",
+      "dependencies": [
+        "clock",
+        "flutter",
+        "flutter_secure_storage",
+        "meta",
+        "serverpod_auth_core_client"
       ]
     },
     {
@@ -1130,6 +1143,14 @@
       ]
     },
     {
+      "name": "serverpod_auth_core_client",
+      "version": "3.3.1",
+      "dependencies": [
+        "clock",
+        "serverpod_client"
+      ]
+    },
+    {
       "name": "timezone",
       "version": "0.10.1",
       "dependencies": [
@@ -1647,14 +1668,6 @@
         "pool",
         "stack_trace",
         "stream_channel"
-      ]
-    },
-    {
-      "name": "serverpod_auth_core_client",
-      "version": "3.3.1",
-      "dependencies": [
-        "clock",
-        "serverpod_client"
       ]
     },
     {

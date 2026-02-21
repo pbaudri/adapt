@@ -1,18 +1,20 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../providers/auth_provider.dart';
 
 /// The scrollable content of the sign-up screen.
-class SignUpBody extends StatefulWidget {
+class SignUpBody extends ConsumerStatefulWidget {
   const SignUpBody({super.key});
 
   @override
-  State<SignUpBody> createState() => _SignUpBodyState();
+  ConsumerState<SignUpBody> createState() => _SignUpBodyState();
 }
 
-class _SignUpBodyState extends State<SignUpBody> {
+class _SignUpBodyState extends ConsumerState<SignUpBody> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
@@ -42,8 +44,45 @@ class _SignUpBodyState extends State<SignUpBody> {
     super.dispose();
   }
 
+  Future<void> _onCreateAccount() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final confirm = _confirmController.text;
+    if (email.isEmpty || password.isEmpty) return;
+    if (password != confirm) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
+      return;
+    }
+    // Step 1: send a verification email. The user must click the link to get
+    // a registrationToken, which is used to finishRegistration (not yet
+    // implemented in the UI — a verification screen would be the next step).
+    await ref.read(authNotifierProvider.notifier).startSignUp(email);
+    if (!mounted) return;
+    final errorMessage = ref.read(authNotifierProvider).maybeWhen(
+      error: (m) => m,
+      orElse: () => null,
+    );
+    if (errorMessage != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Check your email to complete registration.'),
+      ),
+    );
+    context.go(AppRoutes.signIn);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+    final isLoading = authState.maybeWhen(loading: () => true, orElse: () => false);
+
     return SingleChildScrollView(
       padding: AppDimensions.screenPadding.copyWith(top: 48, bottom: 48),
       child: Column(
@@ -107,19 +146,22 @@ class _SignUpBodyState extends State<SignUpBody> {
           const SizedBox(height: AppDimensions.spacing24),
           AdaptPrimaryButton(
             label: 'Create account',
-            onTap: () => context.go(AppRoutes.onboardingName),
+            onTap: _onCreateAccount,
+            isLoading: isLoading,
           ),
           const SizedBox(height: AppDimensions.spacing24),
           const AdaptDividerWithText(label: 'or'),
           const SizedBox(height: AppDimensions.spacing24),
           AdaptSocialAuthButton(
             type: SocialAuthType.apple,
-            onTap: () => context.go(AppRoutes.onboardingName),
+            onTap: _onCreateAccount,
+            isDisabled: isLoading,
           ),
           const SizedBox(height: AppDimensions.spacing12),
           AdaptSocialAuthButton(
             type: SocialAuthType.google,
-            onTap: () => context.go(AppRoutes.onboardingName),
+            onTap: _onCreateAccount,
+            isDisabled: isLoading,
           ),
           const SizedBox(height: AppDimensions.spacing32),
           Center(

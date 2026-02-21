@@ -1,24 +1,41 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
+import '../../../core/utils/date_formatter.dart';
+import 'providers/history_provider.dart';
 import 'widgets/history_chart_section.dart';
 import 'widgets/history_day_section.dart';
 
-class HistoryScreen extends StatefulWidget {
+class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  ConsumerState<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
-  int _selectedBarIndex = 6; // Sunday selected by default
-  DateTime _weekStart = DateTime(2026, 2, 16);
+class _HistoryScreenState extends ConsumerState<HistoryScreen> {
+  int _selectedBarIndex = 6;
+  late DateTime _weekStart;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    // Monday of the current week.
+    _weekStart = now.subtract(Duration(days: now.weekday - 1));
+  }
+
+  DateTime get _selectedDate =>
+      _weekStart.add(Duration(days: _selectedBarIndex));
 
   @override
   Widget build(BuildContext context) {
+    final weekAsync = ref.watch(weekSummaryProvider(_weekStart));
+    final weekLabel = DateFormatter.weekRange(_weekStart);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -39,16 +56,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 bottom: 0,
               ),
               sliver: SliverToBoxAdapter(
-                child: HistoryChartSection(
-                  weekLabel: '16 Feb – 22 Feb',
-                  selectedIndex: _selectedBarIndex,
-                  onPrevious: () => setState(
-                    () => _weekStart = _weekStart.subtract(const Duration(days: 7)),
+                child: weekAsync.when(
+                  loading: () => const SizedBox(
+                    height: 200,
+                    child: Center(child: CircularProgressIndicator()),
                   ),
-                  onNext: () => setState(
-                    () => _weekStart = _weekStart.add(const Duration(days: 7)),
+                  error: (e, _) => Text(
+                    'Could not load history.',
+                    style: AppTextStyles.bodyMedium
+                        .copyWith(color: AppColors.error),
                   ),
-                  onBarTap: (i) => setState(() => _selectedBarIndex = i),
+                  data: (summaries) => HistoryChartSection(
+                    weekLabel: weekLabel,
+                    selectedIndex: _selectedBarIndex,
+                    summaries: summaries,
+                    onPrevious: () => setState(
+                      () => _weekStart =
+                          _weekStart.subtract(const Duration(days: 7)),
+                    ),
+                    onNext: () => setState(
+                      () => _weekStart =
+                          _weekStart.add(const Duration(days: 7)),
+                    ),
+                    onBarTap: (i) => setState(() => _selectedBarIndex = i),
+                  ),
                 ),
               ),
             ),
@@ -57,8 +88,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 top: AppDimensions.spacing24,
                 bottom: AppDimensions.spacing24,
               ),
-              sliver: const SliverToBoxAdapter(
-                child: HistoryDaySection(dayLabel: 'Sunday, 22 Feb'),
+              sliver: SliverToBoxAdapter(
+                child: HistoryDaySection(
+                  dayLabel: DateFormatter.dayFull(_selectedDate),
+                  date: _selectedDate,
+                ),
               ),
             ),
           ],

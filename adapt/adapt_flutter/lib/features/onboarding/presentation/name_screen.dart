@@ -1,18 +1,20 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
+import 'providers/onboarding_provider.dart';
 import 'widgets/onboarding_scaffold.dart';
 
-class NameScreen extends StatefulWidget {
+class NameScreen extends ConsumerStatefulWidget {
   const NameScreen({super.key});
 
   @override
-  State<NameScreen> createState() => _NameScreenState();
+  ConsumerState<NameScreen> createState() => _NameScreenState();
 }
 
-class _NameScreenState extends State<NameScreen> {
+class _NameScreenState extends ConsumerState<NameScreen> {
   final _controller = TextEditingController();
 
   @override
@@ -21,8 +23,20 @@ class _NameScreenState extends State<NameScreen> {
     super.dispose();
   }
 
+  Future<void> _onNext() async {
+    final name = _controller.text.trim();
+    if (name.isEmpty) return;
+    final ok = await ref
+        .read(onboardingNotifierProvider.notifier)
+        .saveName(name);
+    if (ok && mounted) context.push(AppRoutes.onboardingEatingStyle);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(onboardingNotifierProvider);
+    final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
+
     return ListenableBuilder(
       listenable: _controller,
       builder: (context, _) {
@@ -32,8 +46,8 @@ class _NameScreenState extends State<NameScreen> {
           title: "What's your name?",
           subtitle: 'So we can make it personal.',
           showBack: false,
-          isNextEnabled: _controller.text.trim().isNotEmpty,
-          onNext: () => context.push(AppRoutes.onboardingEatingStyle),
+          isNextEnabled: _controller.text.trim().isNotEmpty && !isLoading,
+          onNext: _onNext,
           content: AdaptTextField(
             hint: 'Your first name',
             controller: _controller,

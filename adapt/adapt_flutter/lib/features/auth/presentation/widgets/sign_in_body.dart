@@ -1,18 +1,20 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../providers/auth_provider.dart';
 
 /// The scrollable content of the sign-in screen.
-class SignInBody extends StatefulWidget {
+class SignInBody extends ConsumerStatefulWidget {
   const SignInBody({super.key});
 
   @override
-  State<SignInBody> createState() => _SignInBodyState();
+  ConsumerState<SignInBody> createState() => _SignInBodyState();
 }
 
-class _SignInBodyState extends State<SignInBody> {
+class _SignInBodyState extends ConsumerState<SignInBody> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
@@ -24,8 +26,35 @@ class _SignInBodyState extends State<SignInBody> {
     super.dispose();
   }
 
+  Future<void> _onSignIn() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    if (email.isEmpty || password.isEmpty) return;
+    await ref.read(authNotifierProvider.notifier).signIn(email, password);
+    if (!mounted) return;
+    ref.read(authNotifierProvider).maybeWhen(
+      authenticated: (_) => context.go(AppRoutes.home),
+      error: (message) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      ),
+      orElse: () {},
+    );
+  }
+
+  Future<void> _onContinueAsGuest() async {
+    await ref.read(authNotifierProvider.notifier).continueAsGuest();
+    if (!mounted) return;
+    ref.read(authNotifierProvider).maybeWhen(
+      authenticated: (_) => context.go(AppRoutes.onboardingName),
+      orElse: () {},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+    final isLoading = authState.maybeWhen(loading: () => true, orElse: () => false);
+
     return SingleChildScrollView(
       padding: AppDimensions.screenPadding.copyWith(top: 48, bottom: 48),
       child: Column(
@@ -70,19 +99,20 @@ class _SignInBodyState extends State<SignInBody> {
           const SizedBox(height: AppDimensions.spacing24),
           AdaptPrimaryButton(
             label: 'Sign in',
-            onTap: () => context.go(AppRoutes.home),
+            onTap: _onSignIn,
+            isLoading: isLoading,
           ),
           const SizedBox(height: AppDimensions.spacing24),
           const AdaptDividerWithText(label: 'or'),
           const SizedBox(height: AppDimensions.spacing24),
           AdaptSocialAuthButton(
             type: SocialAuthType.apple,
-            onTap: () => context.go(AppRoutes.home),
+            onTap: _onSignIn,
           ),
           const SizedBox(height: AppDimensions.spacing12),
           AdaptSocialAuthButton(
             type: SocialAuthType.google,
-            onTap: () => context.go(AppRoutes.home),
+            onTap: _onSignIn,
           ),
           const SizedBox(height: AppDimensions.spacing32),
           Center(
@@ -95,7 +125,7 @@ class _SignInBodyState extends State<SignInBody> {
           Center(
             child: AdaptTextLink(
               label: 'Continue as guest',
-              onTap: () => context.go(AppRoutes.onboardingName),
+              onTap: _onContinueAsGuest,
               textStyle: AppTextStyles.textLinkMuted,
             ),
           ),

@@ -12,6 +12,8 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+  adapt_client:
+    path: ../adapt_client
   adapt_theme:
     path: ../adapt_theme
   go_router: ^14.6.1
@@ -25,6 +27,7 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   intl: ^0.20.2
   flutter_dotenv: ^5.2.1
+  serverpod_auth_core_flutter: ^3.3.1
 
 dev_dependencies:
   flutter_lints: '>=3.0.0 <7.0.0'

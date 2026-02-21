@@ -1,52 +1,66 @@
+import 'package:adapt_client/src/protocol/enums/eating_style.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
+import 'providers/onboarding_provider.dart';
 import 'widgets/onboarding_scaffold.dart';
 
-class EatingStyleScreen extends StatefulWidget {
+class EatingStyleScreen extends ConsumerStatefulWidget {
   const EatingStyleScreen({super.key});
 
   @override
-  State<EatingStyleScreen> createState() => _EatingStyleScreenState();
+  ConsumerState<EatingStyleScreen> createState() => _EatingStyleScreenState();
 }
 
-class _EatingStyleScreenState extends State<EatingStyleScreen> {
-  String? _selected;
+class _EatingStyleScreenState extends ConsumerState<EatingStyleScreen> {
+  EatingStyle? _selected;
 
   static const _options = [
     (
-      value: 'home_cooked',
+      value: EatingStyle.homeCooked,
       title: 'Home cooked',
       description: 'I cook most of my meals myself.',
     ),
     (
-      value: 'takeaway',
+      value: EatingStyle.takeaway,
       title: 'Takeaway',
       description: 'I order in or grab food on the go.',
     ),
     (
-      value: 'restaurants',
+      value: EatingStyle.restaurants,
       title: 'Restaurants',
       description: 'I eat out regularly.',
     ),
     (
-      value: 'mixed',
+      value: EatingStyle.mixed,
       title: 'A bit of everything',
       description: 'It really depends on the day.',
     ),
   ];
 
+  Future<void> _onNext() async {
+    if (_selected == null) return;
+    final ok = await ref
+        .read(onboardingNotifierProvider.notifier)
+        .saveEatingStyle(_selected!);
+    if (ok && mounted) context.push(AppRoutes.onboardingGoal);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(onboardingNotifierProvider);
+    final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
+
     return OnboardingScaffold(
       totalSteps: 5,
       currentStep: 2,
       title: 'How do you mostly eat?',
       subtitle: 'This helps us suggest realistic meals.',
-      isNextEnabled: _selected != null,
-      onNext: () => context.push(AppRoutes.onboardingGoal),
+      isNextEnabled: _selected != null && !isLoading,
+      onNext: _onNext,
       content: Column(
         children: _options
             .map(

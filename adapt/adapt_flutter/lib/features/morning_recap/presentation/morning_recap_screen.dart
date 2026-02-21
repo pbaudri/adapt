@@ -1,15 +1,19 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
+import 'providers/morning_recap_provider.dart';
 import 'widgets/recap_tips_section.dart';
 
-class MorningRecapScreen extends StatelessWidget {
+class MorningRecapScreen extends ConsumerWidget {
   const MorningRecapScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final recapAsync = ref.watch(morningRecapNotifierProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -36,26 +40,53 @@ class MorningRecapScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                padding: AppDimensions.screenPadding.copyWith(
-                  top: AppDimensions.spacing32,
-                  bottom: AppDimensions.spacing24,
+              child: recapAsync.when(
+                loading: () =>
+                    const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Center(
+                  child: Text(
+                    'Could not load your recap.',
+                    style: AppTextStyles.bodyMedium,
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const AdaptSectionTitle(label: 'Adapt noticed'),
-                    const SizedBox(height: AppDimensions.spacing16),
-                    Text('Morning, Pierre.', style: AppTextStyles.displayLarge),
-                    const SizedBox(height: AppDimensions.spacing8),
-                    Text(
-                      'Yesterday was a solid day. Here are a few things to keep in mind.',
-                      style: AppTextStyles.bodyMedium,
+                data: (recap) {
+                  if (recap == null) {
+                    return Center(
+                      child: Padding(
+                        padding: AppDimensions.screenPadding,
+                        child: Text(
+                          'No recap yet. Come back tomorrow morning.',
+                          style: AppTextStyles.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  }
+                  return SingleChildScrollView(
+                    padding: AppDimensions.screenPadding.copyWith(
+                      top: AppDimensions.spacing32,
+                      bottom: AppDimensions.spacing24,
                     ),
-                    const SizedBox(height: AppDimensions.spacing32),
-                    const RecapTipsSection(),
-                  ],
-                ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AdaptSectionTitle(label: 'Adapt noticed'),
+                        const SizedBox(height: AppDimensions.spacing16),
+                        Text(
+                          recap.headline,
+                          style: AppTextStyles.displayLarge,
+                        ),
+                        const SizedBox(height: AppDimensions.spacing8),
+                        Text(
+                          recap.subMessage,
+                          style: AppTextStyles.bodyMedium,
+                        ),
+                        const SizedBox(height: AppDimensions.spacing32),
+                        RecapTipsSection(tipsJson: recap.tips),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
             Padding(
@@ -64,8 +95,16 @@ class MorningRecapScreen extends StatelessWidget {
                 bottom: AppDimensions.spacing32,
               ),
               child: AdaptPrimaryButton(
-                label: "Start my day",
-                onTap: () => context.go(AppRoutes.home),
+                label: 'Start my day',
+                onTap: () async {
+                  final recap = recapAsync.valueOrNull;
+                  if (recap?.id != null) {
+                    await ref
+                        .read(morningRecapNotifierProvider.notifier)
+                        .markSeen(recap!.id!);
+                  }
+                  if (context.mounted) context.go(AppRoutes.home);
+                },
               ),
             ),
           ],

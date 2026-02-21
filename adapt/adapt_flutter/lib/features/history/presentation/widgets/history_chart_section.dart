@@ -1,5 +1,8 @@
+import 'package:adapt_client/src/protocol/daily_summary.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/utils/date_formatter.dart';
 
 /// Week bar chart with navigation for the history screen.
 class HistoryChartSection extends StatelessWidget {
@@ -7,6 +10,7 @@ class HistoryChartSection extends StatelessWidget {
     super.key,
     required this.weekLabel,
     required this.selectedIndex,
+    required this.summaries,
     required this.onPrevious,
     required this.onNext,
     required this.onBarTap,
@@ -14,22 +18,29 @@ class HistoryChartSection extends StatelessWidget {
 
   final String weekLabel;
   final int selectedIndex;
+  final List<DailySummary> summaries;
   final VoidCallback onPrevious;
   final VoidCallback onNext;
   final ValueChanged<int> onBarTap;
 
-  static final _demoData = [
-    const DayBarData(label: 'Mon', value: 1820),
-    const DayBarData(label: 'Tue', value: 2100),
-    const DayBarData(label: 'Wed', value: 1650),
-    const DayBarData(label: 'Thu', value: 2340),
-    const DayBarData(label: 'Fri', value: 1980),
-    const DayBarData(label: 'Sat', value: 2600),
-    const DayBarData(label: 'Sun', value: 1847),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // Build bar data from real summaries (7 days Mon–Sun).
+    // Fill missing days with 0 kcal.
+    final barData = List.generate(7, (i) {
+      if (i < summaries.length) {
+        final s = summaries[i];
+        return DayBarData(
+          label: DateFormatter.dayShort(s.date),
+          value: s.totalKcal.toDouble(),
+        );
+      }
+      return DayBarData(
+        label: _weekdayLabel(i),
+        value: 0,
+      );
+    });
+
     return AdaptInfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,16 +52,19 @@ class HistoryChartSection extends StatelessWidget {
           ),
           const SizedBox(height: AppDimensions.spacing16),
           GestureDetector(
-            onTapDown: (details) {
-              // Delegate bar tap to parent (simplified for static UI)
-            },
+            onTapDown: (details) {},
             child: AdaptBarChart(
-              data: _demoData,
+              data: barData,
               selectedIndex: selectedIndex,
             ),
           ),
         ],
       ),
     );
+  }
+
+  static String _weekdayLabel(int index) {
+    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return labels[index % 7];
   }
 }

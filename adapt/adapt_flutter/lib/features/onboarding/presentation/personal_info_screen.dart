@@ -1,18 +1,22 @@
+import 'package:adapt_client/src/protocol/enums/biological_sex.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
+import '../../../core/utils/unit_converter.dart';
+import 'providers/onboarding_provider.dart';
 import 'widgets/onboarding_scaffold.dart';
 
-class PersonalInfoScreen extends StatefulWidget {
+class PersonalInfoScreen extends ConsumerStatefulWidget {
   const PersonalInfoScreen({super.key});
 
   @override
-  State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
+  ConsumerState<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
 }
 
-class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
   final _ageController = TextEditingController();
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
@@ -29,15 +33,46 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     super.dispose();
   }
 
+  Future<void> _onNext() async {
+    final ageText = _ageController.text.trim();
+    final weightText = _weightController.text.trim();
+    final heightText = _heightController.text.trim();
+    if (ageText.isEmpty || weightText.isEmpty || heightText.isEmpty) return;
+
+    final age = int.tryParse(ageText);
+    if (age == null) return;
+
+    // Convert to SI — unit_converter.dart is the only place for conversion.
+    final weightKg = UnitConverter.parseWeightToKg(weightText, _weightUnit);
+    final heightCm = UnitConverter.parseHeightToCm(heightText, _heightUnit);
+    if (weightKg == null || heightCm == null) return;
+
+    final sex = _sex == 'Male' ? BiologicalSex.male : BiologicalSex.female;
+
+    final ok = await ref
+        .read(onboardingNotifierProvider.notifier)
+        .savePersonalInfo(
+          age: age,
+          biologicalSex: sex,
+          weightKg: weightKg,
+          heightCm: heightCm,
+        );
+    if (ok && mounted) context.go(AppRoutes.home);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(onboardingNotifierProvider);
+    final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
+
     return OnboardingScaffold(
       totalSteps: 5,
       currentStep: 5,
       title: 'A bit about you',
       subtitle: 'Helps us calculate your daily needs.',
       nextLabel: "Let's go",
-      onNext: () => context.go(AppRoutes.home),
+      isNextEnabled: !isLoading,
+      onNext: _onNext,
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -61,7 +96,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 child: AdaptTextField(
                   hint: 'Weight',
                   controller: _weightController,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 ),
               ),
               const SizedBox(width: AppDimensions.spacing12),
@@ -82,7 +118,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 child: AdaptTextField(
                   hint: 'Height',
                   controller: _heightController,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                 ),
               ),
               const SizedBox(width: AppDimensions.spacing12),

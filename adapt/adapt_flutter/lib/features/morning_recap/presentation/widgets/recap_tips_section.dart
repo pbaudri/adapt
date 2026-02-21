@@ -1,47 +1,56 @@
+import 'dart:convert';
+
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
 
-/// List of morning recap tips with coloured icon containers.
+/// List of morning recap tips parsed from [tipsJson].
+/// JSON format: `[{"icon": "eco", "title": "...", "subtitle": "..."}]`
 class RecapTipsSection extends StatelessWidget {
-  const RecapTipsSection({super.key});
+  const RecapTipsSection({super.key, required this.tipsJson});
+
+  final String tipsJson;
 
   @override
   Widget build(BuildContext context) {
+    final List<dynamic> tips;
+    try {
+      tips = jsonDecode(tipsJson) as List<dynamic>;
+    } catch (_) {
+      return const SizedBox.shrink();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AdaptRecapTipItem(
-          leading: const Icon(
-            Icons.eco_rounded,
-            color: AppColors.textPrimary,
-            size: 20,
-          ),
-          backgroundColor: AppColors.carbs,
-          title: 'Add some greens at lunch',
-          subtitle:
-              'Yesterday was light on vegetables. A side salad goes a long way.',
-        ),
-        AdaptRecapTipItem(
-          leading: const Icon(
-            Icons.fitness_center_rounded,
-            color: AppColors.textPrimary,
-            size: 20,
-          ),
-          backgroundColor: AppColors.protein,
-          title: 'Good protein day',
-          subtitle: 'You hit 82 g. That is above your average — keep it up.',
-        ),
-        AdaptRecapTipItem(
-          leading: const Icon(
-            Icons.water_drop_rounded,
+      children: tips.map<Widget>((t) {
+        final icon = t['icon'] as String? ?? 'star';
+        final title = t['title'] as String? ?? '';
+        final subtitle = t['subtitle'] as String? ?? '';
+        return AdaptRecapTipItem(
+          leading: Icon(
+            _iconFromName(icon),
             color: AppColors.textPrimary,
             size: 20,
           ),
           backgroundColor: AppColors.primary,
-          title: 'Stay hydrated',
-          subtitle: 'Alcohol dehydrates. Start the day with a big glass of water.',
-        ),
-      ],
+          title: title,
+          subtitle: subtitle,
+        );
+      }).toList(),
     );
+  }
+
+  static IconData _iconFromName(String name) {
+    switch (name) {
+      case 'eco':
+        return Icons.eco_rounded;
+      case 'fitness':
+        return Icons.fitness_center_rounded;
+      case 'water':
+        return Icons.water_drop_rounded;
+      case 'local_bar':
+        return Icons.local_bar_rounded;
+      default:
+        return Icons.star_rounded;
+    }
   }
 }

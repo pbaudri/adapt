@@ -1,11 +1,12 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/router/app_router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const AdaptApp());
+  runApp(const ProviderScope(child: AdaptApp()));
 }
 
 class AdaptApp extends StatelessWidget {

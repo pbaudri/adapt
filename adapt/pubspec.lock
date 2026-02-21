@@ -1192,6 +1192,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
+  serverpod_auth_core_flutter:
+    dependency: transitive
+    description:
+      name: serverpod_auth_core_flutter
+      sha256: "052c9bee53f626dcde7dd34c3e9525755b68c584680d32f01ac73609b622c938"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.1"
   serverpod_auth_core_server:
     dependency: transitive
     description:
