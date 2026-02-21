@@ -63,20 +63,22 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   ),
                   error: (e, _) => Text(
                     'Could not load history.',
-                    style: AppTextStyles.bodyMedium
-                        .copyWith(color: AppColors.error),
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.error,
+                    ),
                   ),
                   data: (summaries) => HistoryChartSection(
                     weekLabel: weekLabel,
                     selectedIndex: _selectedBarIndex,
                     summaries: summaries,
                     onPrevious: () => setState(
-                      () => _weekStart =
-                          _weekStart.subtract(const Duration(days: 7)),
+                      () => _weekStart = _weekStart.subtract(
+                        const Duration(days: 7),
+                      ),
                     ),
                     onNext: () => setState(
-                      () => _weekStart =
-                          _weekStart.add(const Duration(days: 7)),
+                      () =>
+                          _weekStart = _weekStart.add(const Duration(days: 7)),
                     ),
                     onBarTap: (i) => setState(() => _selectedBarIndex = i),
                   ),
@@ -99,7 +101,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
         ),
       ),
       bottomNavigationBar: AdaptBottomNavBar(
-        currentIndex: 2,
+        currentIndex: 1,
         onTap: (index) => _onNavTap(context, index),
       ),
     );
@@ -110,10 +112,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       case 0:
         context.go(AppRoutes.home);
       case 1:
-        context.push(AppRoutes.mealDescribe);
-      case 2:
         context.go(AppRoutes.history);
-      case 3:
+      case 2:
         context.go(AppRoutes.profile);
     }
   }

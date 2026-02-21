@@ -76,10 +76,8 @@ class HomeScreen extends StatelessWidget {
       case 0:
         context.go(AppRoutes.home);
       case 1:
-        context.push(AppRoutes.mealDescribe);
-      case 2:
         context.go(AppRoutes.history);
-      case 3:
+      case 2:
         context.go(AppRoutes.profile);
     }
   }

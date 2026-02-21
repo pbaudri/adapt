@@ -53,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: AdaptBottomNavBar(
-        currentIndex: 3,
+        currentIndex: 2,
         onTap: (index) => _onNavTap(context, index),
       ),
     );
@@ -64,10 +64,8 @@ class ProfileScreen extends StatelessWidget {
       case 0:
         context.go(AppRoutes.home);
       case 1:
-        context.push(AppRoutes.mealDescribe);
-      case 2:
         context.go(AppRoutes.history);
-      case 3:
+      case 2:
         context.go(AppRoutes.profile);
     }
   }
