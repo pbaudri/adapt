@@ -9,16 +9,17 @@ void main() {
   runApp(const ProviderScope(child: AdaptApp()));
 }
 
-class AdaptApp extends StatelessWidget {
+class AdaptApp extends ConsumerWidget {
   const AdaptApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
     return MaterialApp.router(
       title: 'Adapt',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
-      routerConfig: appRouter,
+      routerConfig: router,
     );
   }
 }

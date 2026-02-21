@@ -1,25 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_provider.dart';
+part of 'app_router.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authNotifierHash() => r'9dc3c4f7dc7a710141e8d5432dd238c991b28604';
+String _$appRouterHash() => r'bccf0d9e28f8c5cdff96a189f8ba5289ecb6f1ab';
 
-/// See also [AuthNotifier].
-@ProviderFor(AuthNotifier)
-final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>.internal(
-  AuthNotifier.new,
-  name: r'authNotifierProvider',
+/// See also [appRouter].
+@ProviderFor(appRouter)
+final appRouterProvider = Provider<GoRouter>.internal(
+  appRouter,
+  name: r'appRouterProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$authNotifierHash,
+      : _$appRouterHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AuthNotifier = Notifier<AuthState>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AppRouterRef = ProviderRef<GoRouter>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -1,4 +1,5 @@
 import 'package:adapt_client/src/protocol/auth_token.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/auth_repository.dart';
@@ -19,6 +20,17 @@ class AuthNotifier extends _$AuthNotifier {
           .signInWithEmail(email, password);
       state = AuthState.authenticated(token);
     } catch (e) {
+      // TODO(PROD-BLOCKER): Remove this bypass before production.
+      // Development only: if sign-in fails (e.g. email not yet verified),
+      // proceed as a guest so onboarding and home can be tested without
+      // completing the email verification flow. isGuest:true skips all
+      // server calls in providers, giving a fully functional UI preview.
+      if (kDebugMode) {
+        state = AuthState.authenticated(
+          AuthToken(key: '', userId: email, isGuest: true),
+        );
+        return;
+      }
       state = AuthState.error(e.toString());
     }
   }

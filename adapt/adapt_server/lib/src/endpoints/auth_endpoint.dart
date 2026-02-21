@@ -9,9 +9,30 @@ import '../generated/protocol.dart';
 /// provides guest-mode access.
 class AuthEndpoint extends Endpoint {
   /// Creates a guest-mode user profile and returns a placeholder token.
+  ///
+  /// A UserProfile row is inserted into the DB with [isGuest] = true so that
+  /// server-side history and profile queries can reference the guest.
+  /// The guest session key is not a real Serverpod auth token; authenticated
+  /// endpoints remain inaccessible from the client — all guest data operations
+  /// are handled client-side.
   Future<AuthToken> continueAsGuest(Session session) async {
-    final guestKey = 'guest_${DateTime.now().millisecondsSinceEpoch}';
-    return AuthToken(key: guestKey, userId: 'guest', isGuest: true);
+    final guestId = 'guest_${DateTime.now().millisecondsSinceEpoch}';
+
+    final profile = UserProfile(
+      userId: guestId,
+      isGuest: true,
+      weightUnit: WeightUnit.kg,
+      heightUnit: HeightUnit.cm,
+      goal: UserGoal.stayAware,
+      eatingStyle: EatingStyle.mixed,
+      alcoholHabit: AlcoholHabit.rarely,
+      alcoholTracking: true,
+      morningRecap: true,
+      updatedAt: DateTime.now(),
+    );
+    await UserProfile.db.insertRow(session, profile);
+
+    return AuthToken(key: guestId, userId: guestId, isGuest: true);
   }
 
   /// Ensures a UserProfile exists for the authenticated user.
