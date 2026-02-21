@@ -204,9 +204,10 @@ class _RouterNotifier extends ChangeNotifier {
         if (isOnAuthPage) return AppRoutes.home;
         // On home and complete → no redirect needed.
       } catch (_) {
-        // If profile fetch fails (e.g. network error), fall back to onboarding
-        // name as the safest entry point.
-        if (isOnAuthPage) return AppRoutes.onboardingName;
+        // Profile fetch failed (e.g. not yet loaded, network error).
+        // Return null and wait for the next redirect trigger — profileNotifier
+        // will rebuild once auth resolves and call notifyListeners again.
+        return null;
       }
     }
 

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/utils/unit_converter.dart';
+import '../../profile/presentation/providers/profile_provider.dart';
 import 'providers/onboarding_provider.dart';
 import 'widgets/onboarding_scaffold.dart';
 
@@ -57,7 +58,12 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
           weightKg: weightKg,
           heightCm: heightCm,
         );
-    if (ok && mounted) context.go(AppRoutes.home);
+    if (ok && mounted) {
+      // Invalidate the cached profile so the router reads the updated data
+      // (name + age now set) instead of the stale snapshot from sign-in.
+      ref.invalidate(profileNotifierProvider);
+      context.go(AppRoutes.home);
+    }
   }
 
   @override

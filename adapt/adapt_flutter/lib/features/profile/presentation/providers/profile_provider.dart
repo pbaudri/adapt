@@ -25,12 +25,16 @@ UserProfile _guestProfile() => UserProfile(
 /// Loads and caches the user profile.
 @riverpod
 Future<UserProfile> userProfile(Ref ref) {
-  final isGuest = ref
-      .watch(authNotifierProvider)
-      .maybeWhen(
-        authenticated: (token) => token.isGuest,
-        orElse: () => false,
-      );
+  final authState = ref.watch(authNotifierProvider);
+  final isAuthenticated = authState.maybeWhen(
+    authenticated: (_) => true,
+    orElse: () => false,
+  );
+  if (!isAuthenticated) return Future.error('Not authenticated');
+  final isGuest = authState.maybeWhen(
+    authenticated: (token) => token.isGuest,
+    orElse: () => false,
+  );
   if (isGuest) return Future.value(_guestProfile());
   return ref.watch(profileRepositoryProvider).getProfile();
 }
@@ -39,12 +43,18 @@ Future<UserProfile> userProfile(Ref ref) {
 class ProfileNotifier extends _$ProfileNotifier {
   @override
   Future<UserProfile> build() {
-    final isGuest = ref
-        .watch(authNotifierProvider)
-        .maybeWhen(
-          authenticated: (token) => token.isGuest,
-          orElse: () => false,
-        );
+    final authState = ref.watch(authNotifierProvider);
+    final isAuthenticated = authState.maybeWhen(
+      authenticated: (_) => true,
+      orElse: () => false,
+    );
+    // Not authenticated yet — skip the server call. The provider rebuilds
+    // automatically when auth state changes to authenticated.
+    if (!isAuthenticated) return Future.error('Not authenticated');
+    final isGuest = authState.maybeWhen(
+      authenticated: (token) => token.isGuest,
+      orElse: () => false,
+    );
     if (isGuest) return Future.value(_guestProfile());
     return ref.watch(profileRepositoryProvider).getProfile();
   }

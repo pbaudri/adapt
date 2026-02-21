@@ -27,7 +27,6 @@ class NutrientChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: AppDimensions.spacing12,
         vertical: AppDimensions.spacing8,
       ),
       decoration: BoxDecoration(
@@ -36,6 +35,7 @@ class NutrientChip extends StatelessWidget {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             width: 8,
