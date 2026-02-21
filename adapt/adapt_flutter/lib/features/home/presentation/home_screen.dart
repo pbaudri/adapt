@@ -59,10 +59,27 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(AppRoutes.mealDescribe),
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add_rounded, color: AppColors.textPrimary),
+      floatingActionButton: AdaptFabMenu(
+        items: [
+          AdaptFabMenuItem(
+            leading: const Icon(
+              Icons.restaurant_rounded,
+              color: AppColors.textPrimary,
+              size: 20,
+            ),
+            label: 'Log a meal',
+            onTap: () => context.push(AppRoutes.mealDescribe),
+          ),
+          AdaptFabMenuItem(
+            leading: const Icon(
+              Icons.local_bar_rounded,
+              color: AppColors.textPrimary,
+              size: 20,
+            ),
+            label: 'Log a drink',
+            onTap: () => context.push(AppRoutes.drinks),
+          ),
+        ],
       ),
       bottomNavigationBar: AdaptBottomNavBar(
         currentIndex: 0,

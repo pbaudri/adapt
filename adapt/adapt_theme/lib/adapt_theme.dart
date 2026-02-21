@@ -47,6 +47,8 @@ export 'widgets/sheets/adapt_bottom_sheet.dart';
 // ── Navigation ────────────────────────────────────────────────────────────────
 export 'widgets/navigation/adapt_back_button.dart';
 export 'widgets/navigation/adapt_bottom_nav_bar.dart';
+export 'widgets/navigation/adapt_fab_menu.dart';
+export 'widgets/navigation/adapt_fab_menu_item.dart';
 
 // ── Indicators ────────────────────────────────────────────────────────────────
 export 'widgets/indicators/adapt_large_value_display.dart';

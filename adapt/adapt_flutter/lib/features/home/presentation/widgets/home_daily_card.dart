@@ -55,16 +55,6 @@ class HomeDailyCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppDimensions.spacing12),
-          AdaptQuickAddChip(
-            leading: const Icon(
-              Icons.local_bar_rounded,
-              color: AppColors.primary,
-              size: 16,
-            ),
-            label: 'Log drinks',
-            onTap: () => context.push(AppRoutes.drinks),
-          ),
         ],
       ),
     );
