@@ -42,6 +42,7 @@ profile:
   - updateGoal:
   - updateWeightUnit:
   - updateHeightUnit:
+  - updateBiologicalSex:
   - updatePreferences:
   - deleteAllData:
 recap:

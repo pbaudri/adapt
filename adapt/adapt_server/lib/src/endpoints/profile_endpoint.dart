@@ -47,6 +47,13 @@ class ProfileEndpoint extends Endpoint {
     return _update(session, (p) => p.copyWith(heightUnit: unit));
   }
 
+  Future<UserProfile> updateBiologicalSex(
+    Session session,
+    BiologicalSex biologicalSex,
+  ) async {
+    return _update(session, (p) => p.copyWith(biologicalSex: biologicalSex));
+  }
+
   Future<UserProfile> updatePreferences(
     Session session,
     bool alcoholTracking,

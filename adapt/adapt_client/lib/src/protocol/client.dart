@@ -568,6 +568,14 @@ class EndpointProfile extends _i2.EndpointRef {
         {'unit': unit},
       );
 
+  _i3.Future<_i20.UserProfile> updateBiologicalSex(
+    _i19.BiologicalSex biologicalSex,
+  ) => caller.callServerEndpoint<_i20.UserProfile>(
+    'profile',
+    'updateBiologicalSex',
+    {'biologicalSex': biologicalSex},
+  );
+
   _i3.Future<_i20.UserProfile> updatePreferences(
     bool alcoholTracking,
     bool morningRecap,

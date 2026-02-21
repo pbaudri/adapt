@@ -815,6 +815,25 @@ class Endpoints extends _i1.EndpointDispatch {
                     params['unit'],
                   ),
         ),
+        'updateBiologicalSex': _i1.MethodConnector(
+          name: 'updateBiologicalSex',
+          params: {
+            'biologicalSex': _i1.ParameterDescription(
+              name: 'biologicalSex',
+              type: _i1.getType<_i19.BiologicalSex>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['profile'] as _i10.ProfileEndpoint)
+                  .updateBiologicalSex(
+                    session,
+                    params['biologicalSex'],
+                  ),
+        ),
         'updatePreferences': _i1.MethodConnector(
           name: 'updatePreferences',
           params: {

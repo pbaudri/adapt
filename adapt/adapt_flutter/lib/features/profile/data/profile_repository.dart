@@ -34,6 +34,10 @@ class ProfileRepository {
     return _client.profile.updateAge(age);
   }
 
+  Future<UserProfile> updateBiologicalSex(BiologicalSex biologicalSex) {
+    return _client.profile.updateBiologicalSex(biologicalSex);
+  }
+
   Future<UserProfile> updateGoal(UserGoal goal) {
     return _client.profile.updateGoal(goal);
   }
