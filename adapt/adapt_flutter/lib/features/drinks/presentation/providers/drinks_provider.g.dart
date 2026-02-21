@@ -6,7 +6,7 @@ part of 'drinks_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$drinkReferenceHash() => r'20ee74d2b375f1c4e1e1a41531c19e4e1c78c732';
+String _$drinkReferenceHash() => r'd774ae941a0016c55cbfe72a13b8bd1e0676f42e';
 
 /// Static drink reference data — loaded once and kept alive.
 ///

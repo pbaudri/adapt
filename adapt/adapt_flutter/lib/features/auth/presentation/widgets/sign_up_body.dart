@@ -55,27 +55,15 @@ class _SignUpBodyState extends ConsumerState<SignUpBody> {
       );
       return;
     }
-    // Step 1: send a verification email. The user must click the link to get
-    // a registrationToken, which is used to finishRegistration (not yet
-    // implemented in the UI — a verification screen would be the next step).
-    await ref.read(authNotifierProvider.notifier).startSignUp(email);
+    await ref.read(authNotifierProvider.notifier).signUp(email, password);
     if (!mounted) return;
-    final errorMessage = ref.read(authNotifierProvider).maybeWhen(
-      error: (m) => m,
-      orElse: () => null,
-    );
-    if (errorMessage != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
-      return;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Check your email to complete registration.'),
+    ref.read(authNotifierProvider).maybeWhen(
+      authenticated: (_) => context.go(AppRoutes.home),
+      error: (message) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
       ),
+      orElse: () {},
     );
-    context.go(AppRoutes.signIn);
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'package:adapt_client/adapt_client.dart';
-import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/auth_repository.dart';
@@ -10,7 +9,23 @@ part 'auth_provider.g.dart';
 @Riverpod(keepAlive: true)
 class AuthNotifier extends _$AuthNotifier {
   @override
-  AuthState build() => const AuthState.initial();
+  AuthState build() {
+    // Schedule session restoration without blocking the build.
+    Future.microtask(_initialize);
+    return const AuthState.checking();
+  }
+
+  /// Restore a previous session from secure storage.
+  /// Transitions state to [authenticated] or [initial].
+  Future<void> _initialize() async {
+    try {
+      final token = await ref.read(authRepositoryProvider).initialize();
+      state =
+          token != null ? AuthState.authenticated(token) : const AuthState.initial();
+    } catch (_) {
+      state = const AuthState.initial();
+    }
+  }
 
   Future<void> signIn(String email, String password) async {
     state = const AuthState.loading();
@@ -20,17 +35,18 @@ class AuthNotifier extends _$AuthNotifier {
           .signInWithEmail(email, password);
       state = AuthState.authenticated(token);
     } catch (e) {
-      // TODO(PROD-BLOCKER): Remove this bypass before production.
-      // Development only: if sign-in fails (e.g. email not yet verified),
-      // proceed as a guest so onboarding and home can be tested without
-      // completing the email verification flow. isGuest:true skips all
-      // server calls in providers, giving a fully functional UI preview.
-      if (kDebugMode) {
-        state = AuthState.authenticated(
-          AuthToken(key: '', userId: email, isGuest: true),
-        );
-        return;
-      }
+      state = AuthState.error(e.toString());
+    }
+  }
+
+  /// Create a new account (bypasses email verification in dev).
+  Future<void> signUp(String email, String password) async {
+    state = const AuthState.loading();
+    try {
+      final token =
+          await ref.read(authRepositoryProvider).signUp(email, password);
+      state = AuthState.authenticated(token);
+    } catch (e) {
       state = AuthState.error(e.toString());
     }
   }
@@ -73,6 +89,16 @@ class AuthNotifier extends _$AuthNotifier {
     } catch (e) {
       state = AuthState.error(e.toString());
     }
+  }
+
+  Future<void> signOut() async {
+    state = const AuthState.loading();
+    try {
+      await ref.read(authRepositoryProvider).signOut();
+    } catch (_) {
+      // Sign out locally even if the server call fails.
+    }
+    state = const AuthState.initial();
   }
 
   void clearError() {

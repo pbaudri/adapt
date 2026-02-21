@@ -7,7 +7,7 @@ part of 'morning_recap_repository.dart';
 // **************************************************************************
 
 String _$morningRecapRepositoryHash() =>
-    r'ee22ffeef6d8e2f92b9298995185ab4dbfd8340b';
+    r'315a3b11f2ae35c895fc0acac2286246975e6aa1';
 
 /// See also [morningRecapRepository].
 @ProviderFor(morningRecapRepository)

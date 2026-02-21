@@ -6,7 +6,7 @@ part of 'morning_recap_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$morningRecapHash() => r'ae46a77aae0d420a576b125c04abd0c24cb0c800';
+String _$morningRecapHash() => r'7605d44c094ce63ac55719d601a66f80333540a4';
 
 /// Fetches today's morning recap.
 ///

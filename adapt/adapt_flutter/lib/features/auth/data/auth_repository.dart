@@ -53,6 +53,46 @@ class AuthRepository {
     return _client.auth.continueAsGuest();
   }
 
+  /// Restore a previous session from secure storage on app launch.
+  ///
+  /// Returns a valid [AuthToken] if a session was found, or null if the
+  /// user needs to sign in.
+  Future<AuthToken?> initialize() async {
+    final manager = _client.authKeyProvider as FlutterAuthSessionManager;
+    // Restore JWT from secure storage — no network call.
+    await manager.restore();
+    if (manager.authInfo == null) return null;
+    // Session exists: ensure the server profile is in sync.
+    try {
+      return await _client.auth.ensureProfile();
+    } catch (_) {
+      // Token may be expired or server unreachable — sign in again.
+      return null;
+    }
+  }
+
+  /// Create a new account directly, bypassing email verification.
+  ///
+  /// Suitable for development. After the account is created the user is
+  /// logged in via the standard email IDP flow so a JWT is persisted.
+  Future<AuthToken> signUp(String email, String password) async {
+    // Create account server-side (no email verification required).
+    await _client.auth.signUpWithEmail(email, password);
+    // Obtain a JWT by logging in with the newly created credentials.
+    final success = await _client.emailIdp.login(
+      email: email,
+      password: password,
+    );
+    await _applyAuthSuccess(success);
+    return _client.auth.ensureProfile();
+  }
+
+  /// Sign out from the current device and clear secure storage.
+  Future<void> signOut() async {
+    final manager = _client.authKeyProvider as FlutterAuthSessionManager;
+    await manager.signOutDevice();
+  }
+
   /// Apply Serverpod AuthSuccess so subsequent calls are authenticated.
   /// The session manager persists the JWT to secure storage.
   Future<void> _applyAuthSuccess(AuthSuccess success) async {

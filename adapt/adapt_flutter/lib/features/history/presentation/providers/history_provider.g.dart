@@ -6,7 +6,7 @@ part of 'history_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$weekSummaryHash() => r'f4b2512b401e8e75fa00be3c7ed89628f3978ceb';
+String _$weekSummaryHash() => r'44d4c81d571ffdb53d31bee4d587e463662b4bfa';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -165,7 +165,7 @@ class _WeekSummaryProviderElement
   DateTime get weekStartDate => (origin as WeekSummaryProvider).weekStartDate;
 }
 
-String _$dayDetailHash() => r'55039ee48b6161b144297e0d7ea4902d33914b36';
+String _$dayDetailHash() => r'2740d14bdfa21c141fa4feb0782daa4b5466fc38';
 
 /// Returns full day detail for [date].
 ///

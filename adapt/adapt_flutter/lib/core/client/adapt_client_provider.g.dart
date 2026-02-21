@@ -6,7 +6,7 @@ part of 'adapt_client_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adaptClientHash() => r'57330eb33c510f5581a386ef1a253208555db614';
+String _$adaptClientHash() => r'1acb188b8789c61d264e88155c63ddd22454abe7';
 
 /// Singleton Serverpod client, kept alive for the app lifetime.
 /// The [FlutterAuthSessionManager] is registered as the auth key provider

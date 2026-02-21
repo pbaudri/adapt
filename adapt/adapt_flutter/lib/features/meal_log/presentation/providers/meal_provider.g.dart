@@ -6,7 +6,7 @@ part of 'meal_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todayMealsHash() => r'67e4f1fefd4fa2828eed2a8b13564c34688f378d';
+String _$todayMealsHash() => r'12a4bcfd1fd05eb21d9a6e0bfca497b9cd3b46ef';
 
 /// Today's meal logs — refreshed after every confirmation.
 ///
@@ -25,7 +25,7 @@ final todayMealsProvider = AutoDisposeFutureProvider<List<dynamic>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TodayMealsRef = AutoDisposeFutureProviderRef<List<dynamic>>;
-String _$pendingMealResultHash() => r'6811aa27e1c3144af5e3e565992cb8210757b6d4';
+String _$pendingMealResultHash() => r'aac68dce74068c84000b0377e8932351b6de0287';
 
 /// Exposes the currently-pending MealResult for the result and edit screens.
 ///

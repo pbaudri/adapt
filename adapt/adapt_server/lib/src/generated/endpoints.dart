@@ -336,6 +336,31 @@ class Endpoints extends _i1.EndpointDispatch {
                 session,
               ),
         ),
+        'signUpWithEmail': _i1.MethodConnector(
+          name: 'signUpWithEmail',
+          params: {
+            'email': _i1.ParameterDescription(
+              name: 'email',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'password': _i1.ParameterDescription(
+              name: 'password',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['auth'] as _i4.AuthEndpoint).signUpWithEmail(
+                    session,
+                    params['email'],
+                    params['password'],
+                  ),
+        ),
       },
     );
     connectors['drink'] = _i1.EndpointConnector(

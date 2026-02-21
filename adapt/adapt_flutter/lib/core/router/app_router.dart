@@ -157,6 +157,12 @@ class _RouterNotifier extends ChangeNotifier {
         location == AppRoutes.signIn || location == AppRoutes.signUp;
 
     final authState = _ref.read(authNotifierProvider);
+
+    // ── Checking (app launch session restore) ────────────────────────────────
+    // Stay put while restoring a previous session from secure storage.
+    final isChecking = authState.maybeWhen(checking: () => true, orElse: () => false);
+    if (isChecking) return null;
+
     final isAuthenticated = authState.maybeWhen(
       authenticated: (_) => true,
       orElse: () => false,

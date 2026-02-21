@@ -12,6 +12,7 @@ jwtRefresh:
 auth:
   - continueAsGuest:
   - ensureProfile:
+  - signUpWithEmail:
 drink:
   - getDrinkReference:
   - logDrinks:

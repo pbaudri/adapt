@@ -272,6 +272,12 @@ class EndpointAuth extends _i2.EndpointRef {
   String get name => 'auth';
 
   /// Creates a guest-mode user profile and returns a placeholder token.
+  ///
+  /// A UserProfile row is inserted into the DB with [isGuest] = true so that
+  /// server-side history and profile queries can reference the guest.
+  /// The guest session key is not a real Serverpod auth token; authenticated
+  /// endpoints remain inaccessible from the client — all guest data operations
+  /// are handled client-side.
   _i3.Future<_i5.AuthToken> continueAsGuest() =>
       caller.callServerEndpoint<_i5.AuthToken>(
         'auth',
@@ -289,6 +295,28 @@ class EndpointAuth extends _i2.EndpointRef {
         'ensureProfile',
         {},
       );
+
+  /// Creates a new account directly, bypassing email verification.
+  ///
+  /// Intended for development/testing environments where the email
+  /// verification flow cannot be completed. In production this should be
+  /// replaced by the standard startRegistration → verify → finishRegistration
+  /// flow exposed by Serverpod's built-in EmailIdpEndpoint.
+  ///
+  /// On success returns an [AuthToken] the client can use to authenticate
+  /// immediately (the caller should follow up with a normal sign-in to obtain
+  /// a JWT via [EmailIdpEndpoint.login]).
+  _i3.Future<_i5.AuthToken> signUpWithEmail(
+    String email,
+    String password,
+  ) => caller.callServerEndpoint<_i5.AuthToken>(
+    'auth',
+    'signUpWithEmail',
+    {
+      'email': email,
+      'password': password,
+    },
+  );
 }
 
 /// Handles drink reference lookups and drink logging.
