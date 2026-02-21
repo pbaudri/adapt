@@ -175,14 +175,14 @@ class _RouterNotifier extends ChangeNotifier {
     }
 
     // ── Guest ────────────────────────────────────────────────────────────────
+    // Guests can freely navigate, including back to auth pages to sign in.
+    // The guest → onboarding navigation is handled explicitly in sign_in_body.dart
+    // after continueAsGuest() succeeds, so no router redirect is needed here.
     final isGuest = authState.maybeWhen(
       authenticated: (token) => token.isGuest,
       orElse: () => false,
     );
-    if (isGuest) {
-      // Guests coming from an auth page always start onboarding fresh.
-      return isOnAuthPage ? AppRoutes.onboardingName : null;
-    }
+    if (isGuest) return null;
 
     // ── Real user — check onboarding completion ──────────────────────────────
     // Apply the profile check when routing FROM an auth page (normal post-auth
