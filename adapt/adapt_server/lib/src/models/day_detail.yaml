@@ -1,0 +1,11 @@
+### Detailed breakdown for a single day in the history screen.
+### Combines the daily summary with its constituent meal and drink logs.
+class: DayDetail
+
+fields:
+  ### The aggregated daily summary for this day.
+  summary: DailySummary
+  ### All meal logs for this day.
+  meals: List<MealLog>
+  ### All drink logs for this day.
+  drinks: List<DrinkLog>

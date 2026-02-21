@@ -28,6 +28,7 @@
       "name": "adapt_server",
       "version": "0.0.0",
       "dependencies": [
+        "http",
         "serverpod",
         "serverpod_auth_idp_server"
       ],
@@ -455,6 +456,16 @@
       "dependencies": []
     },
     {
+      "name": "http",
+      "version": "1.6.0",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta",
+        "web"
+      ]
+    },
+    {
       "name": "serverpod_auth_idp_server",
       "version": "3.3.1",
       "dependencies": [
@@ -611,16 +622,6 @@
       "name": "mustache_template",
       "version": "2.0.3",
       "dependencies": []
-    },
-    {
-      "name": "http",
-      "version": "1.6.0",
-      "dependencies": [
-        "async",
-        "http_parser",
-        "meta",
-        "web"
-      ]
     },
     {
       "name": "graphs",
@@ -1480,6 +1481,16 @@
       ]
     },
     {
+      "name": "http_parser",
+      "version": "4.1.2",
+      "dependencies": [
+        "collection",
+        "source_span",
+        "string_scanner",
+        "typed_data"
+      ]
+    },
+    {
       "name": "sign_in_with_apple_server",
       "version": "1.0.0",
       "dependencies": [
@@ -1676,16 +1687,6 @@
       "name": "charcode",
       "version": "1.4.0",
       "dependencies": []
-    },
-    {
-      "name": "http_parser",
-      "version": "4.1.2",
-      "dependencies": [
-        "collection",
-        "source_span",
-        "string_scanner",
-        "typed_data"
-      ]
     },
     {
       "name": "path_provider_windows",

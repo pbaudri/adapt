@@ -1,0 +1,22 @@
+### AI-generated morning recap shown to the user each morning.
+class: MorningRecap
+table: morning_recaps
+
+fields:
+  ### Serverpod auth userIdentifier — UUID string from AuthenticationInfo.
+  userId: String
+  ### Date this recap covers (midnight UTC).
+  date: DateTime
+  ### Personalised headline, e.g. "Morning, Pierre."
+  headline: String
+  ### Supporting message shown below the headline.
+  subMessage: String
+  ### JSON-encoded list of tip objects: [{icon, title, subtitle}].
+  tips: String
+  ### Timestamp when the user opened the recap. Null until viewed.
+  seenAt: DateTime?
+
+indexes:
+  morning_recaps_user_date_idx:
+    fields: userId, date
+    unique: true

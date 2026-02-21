@@ -9,5 +9,42 @@ emailIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+auth:
+  - continueAsGuest:
+  - ensureProfile:
+drink:
+  - getDrinkReference:
+  - logDrinks:
+  - getTodayDrinks:
+history:
+  - getWeekSummary:
+  - getDayDetail:
+home:
+  - getHomeData:
+meal:
+  - logMealByText:
+  - logMealByPhoto:
+  - confirmMeal:
+  - correctMeal:
+  - getTodayMeals:
+onboarding:
+  - saveName:
+  - saveEatingStyle:
+  - saveGoal:
+  - saveAlcoholHabit:
+  - savePersonalInfo:
+profile:
+  - getProfile:
+  - updateWeight:
+  - updateHeight:
+  - updateAge:
+  - updateGoal:
+  - updateWeightUnit:
+  - updateHeightUnit:
+  - updatePreferences:
+  - deleteAllData:
+recap:
+  - getMorningRecap:
+  - markRecapSeen:
 greeting:
   - hello:

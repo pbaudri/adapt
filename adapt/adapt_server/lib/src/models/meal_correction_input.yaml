@@ -1,0 +1,14 @@
+### Input for correcting a meal's nutritional values.
+### caloriesKcal is deliberately excluded — it is always recalculated
+### server-side via NutritionService: (p×4) + (c×4) + (f×9).
+class: MealCorrectionInput
+
+fields:
+  ### Updated meal name. Null means keep existing.
+  name: String?
+  ### Updated protein in grams. Null means keep existing.
+  proteinG: double?
+  ### Updated carbohydrates in grams. Null means keep existing.
+  carbsG: double?
+  ### Updated fat in grams. Null means keep existing.
+  fatG: double?

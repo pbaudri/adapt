@@ -1,0 +1,29 @@
+### AI-estimated or user-corrected nutritional result for a meal.
+### One-to-one with meal_logs.
+class: MealResult
+table: meal_results
+
+fields:
+  ### FK → meal_logs.id (one-to-one).
+  mealLogId: int, relation(parent=meal_logs)
+  ### AI-normalised meal name, e.g. "Big Mac Menu".
+  name: String
+  ### Auto-calculated: (proteinG×4) + (carbsG×4) + (fatG×9). Never user-supplied.
+  caloriesKcal: int
+  ### Protein in grams.
+  proteinG: double
+  ### Carbohydrates in grams.
+  carbsG: double
+  ### Fat in grams.
+  fatG: double
+  ### Zero-judgment AI message shown to the user.
+  aiMessage: String
+  ### Optional follow-up suggestion from AI.
+  aiTip: String?
+  ### Source: 'ai_estimated' | 'database' | 'user_corrected'
+  source: String
+
+indexes:
+  meal_results_meal_log_id_unique_idx:
+    fields: mealLogId
+    unique: true

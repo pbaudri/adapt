@@ -1,0 +1,22 @@
+### A single drink logging event.
+### caloriesKcal is denormalised (quantity × reference calories) for fast history reads.
+class: DrinkLog
+table: drink_logs
+
+fields:
+  ### Serverpod auth userIdentifier — UUID string from AuthenticationInfo.
+  userId: String
+  ### When the drinks were logged.
+  loggedAt: DateTime
+  ### Drink type: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
+  drinkType: String
+  ### Number of glasses/units logged.
+  quantity: int
+  ### Pre-calculated total calories: quantity × drinkReference.caloriesPerUnit.
+  caloriesKcal: int
+
+indexes:
+  drink_logs_user_id_idx:
+    fields: userId
+  drink_logs_logged_at_idx:
+    fields: loggedAt

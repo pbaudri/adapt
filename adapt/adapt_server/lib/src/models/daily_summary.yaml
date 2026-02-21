@@ -1,0 +1,29 @@
+### Aggregated daily nutrition summary for a user.
+### Updated after every meal log or drink log.
+class: DailySummary
+table: daily_summaries
+
+fields:
+  ### Serverpod auth userIdentifier — UUID string from AuthenticationInfo.
+  userId: String
+  ### Date of the summary (time component is always midnight UTC).
+  date: DateTime
+  ### Total calories consumed that day.
+  totalKcal: int
+  ### Total protein in grams.
+  totalProteinG: double
+  ### Total carbohydrates in grams.
+  totalCarbsG: double
+  ### Total fat in grams.
+  totalFatG: double
+  ### True if any alcohol was logged that day.
+  hadAlcohol: bool
+  ### JSON array of meal emoji identifiers, e.g. '["pizza","salad"]'.
+  mealEmojis: String
+  ### True once a morning recap has been generated and sent for this day.
+  morningRecapSent: bool
+
+indexes:
+  daily_summaries_user_date_unique_idx:
+    fields: userId, date
+    unique: true

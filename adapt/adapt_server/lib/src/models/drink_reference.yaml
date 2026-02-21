@@ -1,0 +1,15 @@
+### Static reference table for drink calorie values.
+### Populated once via seed migration. Never modified at runtime.
+class: DrinkReference
+table: drink_reference
+
+fields:
+  ### Drink type identifier: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
+  drinkType: String
+  ### Calories per standard glass/unit.
+  caloriesPerUnit: int
+
+indexes:
+  drink_reference_drink_type_unique_idx:
+    fields: drinkType
+    unique: true

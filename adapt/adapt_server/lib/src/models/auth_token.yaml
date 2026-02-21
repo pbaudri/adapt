@@ -1,0 +1,10 @@
+### Authentication token returned after sign-in, sign-up, or guest session creation.
+class: AuthToken
+
+fields:
+  ### Serverpod session key for authenticating subsequent requests.
+  key: String
+  ### The authenticated user's UUID string.
+  userId: String
+  ### True when this is a guest session (no account created).
+  isGuest: bool

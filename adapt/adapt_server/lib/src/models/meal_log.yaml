@@ -1,0 +1,27 @@
+### A single meal logging event.
+class: MealLog
+table: meal_logs
+
+fields:
+  ### Serverpod auth userIdentifier — UUID string from AuthenticationInfo.
+  userId: String
+  ### When the meal was logged.
+  loggedAt: DateTime
+  ### Meal type: 'breakfast' | 'lunch' | 'dinner' | 'snack'
+  mealType: String
+  ### Input method: 'photo' | 'text' | 'location'
+  inputMethod: String
+  ### Raw text description or photo prompt.
+  rawInput: String?
+  ### URL to uploaded photo if inputMethod is 'photo'.
+  imageUrl: String?
+  ### Restaurant or location name if inputMethod is 'location'.
+  locationName: String?
+  ### True when nutrition values are AI-estimated (not confirmed by user).
+  estimated: bool
+
+indexes:
+  meal_logs_user_id_idx:
+    fields: userId
+  meal_logs_logged_at_idx:
+    fields: loggedAt

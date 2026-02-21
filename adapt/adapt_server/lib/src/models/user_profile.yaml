@@ -1,0 +1,41 @@
+### Extended profile for an Adapt user.
+### References the Serverpod auth user via userId.
+class: UserProfile
+table: user_profiles
+
+fields:
+  ### Serverpod auth userIdentifier — UUID string from AuthenticationInfo.
+  userId: String
+  ### Display name set during onboarding.
+  name: String?
+  ### Whether this user is in guest mode (no account).
+  isGuest: bool
+  ### Age in years.
+  age: int?
+  ### Biological sex: 'male' | 'female'
+  biologicalSex: String?
+  ### Weight stored in kg (SI). Never stores lbs.
+  weightKg: double?
+  ### Height stored in cm (SI). Never stores ft.
+  heightCm: double?
+  ### Display unit preference: 'kg' | 'lbs' — display only.
+  weightUnit: String
+  ### Display unit preference: 'cm' | 'ft' — display only.
+  heightUnit: String
+  ### Goal: 'lose_weight' | 'eat_better' | 'stay_aware'
+  goal: String
+  ### Eating style: 'home_cooked' | 'takeaway' | 'restaurants' | 'mixed'
+  eatingStyle: String
+  ### Alcohol habit: 'rarely' | 'sometimes' | 'often'
+  alcoholHabit: String
+  ### Whether to include alcohol in daily calorie total.
+  alcoholTracking: bool
+  ### Whether to send morning recap notifications.
+  morningRecap: bool
+  ### Last updated timestamp.
+  updatedAt: DateTime
+
+indexes:
+  user_profiles_user_id_unique_idx:
+    fields: userId
+    unique: true

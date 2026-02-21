@@ -1,0 +1,15 @@
+### Aggregated response for the home screen.
+### Combines greeting, daily summary, and recent meals.
+class: HomeData
+
+fields:
+  ### Personalised greeting, e.g. "Good morning, Pierre."
+  greeting: String
+  ### Total calories consumed today.
+  dailyKcal: int
+  ### Target daily calorie budget.
+  targetKcal: int
+  ### Zero-judgment adaptive message based on today's intake.
+  adaptiveMessage: String
+  ### Today's meal logs (most recent first).
+  meals: List<MealLog>
