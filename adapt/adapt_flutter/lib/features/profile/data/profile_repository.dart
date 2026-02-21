@@ -1,8 +1,5 @@
-import 'package:adapt_client/src/protocol/client.dart';
-import 'package:adapt_client/src/protocol/enums/height_unit.dart';
-import 'package:adapt_client/src/protocol/enums/user_goal.dart';
-import 'package:adapt_client/src/protocol/enums/weight_unit.dart';
-import 'package:adapt_client/src/protocol/user_profile.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/client/adapt_client_provider.dart';
@@ -10,7 +7,7 @@ import '../../../core/client/adapt_client_provider.dart';
 part 'profile_repository.g.dart';
 
 @riverpod
-ProfileRepository profileRepository(ProfileRepositoryRef ref) {
+ProfileRepository profileRepository(Ref ref) {
   return ProfileRepository(ref.watch(adaptClientProvider));
 }
 

@@ -1,4 +1,4 @@
-import 'package:adapt_client/src/protocol/auth_token.dart';
+import 'package:adapt_client/adapt_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

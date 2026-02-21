@@ -1,4 +1,4 @@
-import 'package:adapt_client/src/protocol/day_detail.dart';
+import 'package:adapt_client/adapt_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'day_detail_state.freezed.dart';

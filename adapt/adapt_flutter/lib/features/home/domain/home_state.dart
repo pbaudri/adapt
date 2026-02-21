@@ -1,4 +1,4 @@
-import 'package:adapt_client/src/protocol/home_data.dart';
+import 'package:adapt_client/adapt_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'home_state.freezed.dart';

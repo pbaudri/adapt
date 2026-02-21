@@ -26,7 +26,7 @@ import 'app_routes.dart';
 part 'app_router.g.dart';
 
 @Riverpod(keepAlive: true)
-GoRouter appRouter(AppRouterRef ref) {
+GoRouter appRouter(Ref ref) {
   final notifier = _RouterNotifier(ref);
   return GoRouter(
     initialLocation: AppRoutes.signIn,
@@ -144,8 +144,8 @@ class _RouterNotifier extends ChangeNotifier {
 
   _RouterNotifier(this._ref) {
     // Listen to both providers so go_router re-evaluates redirect on any change.
-    _ref.listen(authNotifierProvider, (_, _a) => notifyListeners());
-    _ref.listen(profileNotifierProvider, (_, _a) => notifyListeners());
+    _ref.listen(authNotifierProvider, (_, _) => notifyListeners());
+    _ref.listen(profileNotifierProvider, (_, _) => notifyListeners());
   }
 
   FutureOr<String?> redirect(

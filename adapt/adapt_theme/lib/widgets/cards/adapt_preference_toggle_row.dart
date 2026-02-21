@@ -50,7 +50,7 @@ class AdaptPreferenceToggleRow extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppColors.textPrimary,
+            activeThumbColor: AppColors.textPrimary,
             activeTrackColor: AppColors.primary,
             inactiveThumbColor: AppColors.textMuted,
             inactiveTrackColor: AppColors.surfaceElevated,

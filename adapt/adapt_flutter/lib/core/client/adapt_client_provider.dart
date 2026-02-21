@@ -1,4 +1,5 @@
-import 'package:adapt_client/src/protocol/client.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_auth_core_flutter/serverpod_auth_core_flutter.dart';
 
@@ -12,7 +13,7 @@ const _serverHost = 'http://localhost:8080/';
 /// The [FlutterAuthSessionManager] is registered as the auth key provider
 /// so JWTs are persisted to secure storage and attached to every request.
 @Riverpod(keepAlive: true)
-Client adaptClient(AdaptClientRef ref) {
+Client adaptClient(Ref ref) {
   final client = Client(_serverHost);
   client.authSessionManager = FlutterAuthSessionManager();
   return client;

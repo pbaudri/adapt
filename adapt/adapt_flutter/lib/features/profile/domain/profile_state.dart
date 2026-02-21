@@ -1,4 +1,4 @@
-import 'package:adapt_client/src/protocol/user_profile.dart';
+import 'package:adapt_client/adapt_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'profile_state.freezed.dart';

@@ -1,12 +1,8 @@
-/// Adapt design system.
-///
-/// Import this single file to access all colours, typography, dimensions,
-/// and shared widgets:
-///
-/// ```dart
-/// import 'package:adapt_theme/adapt_theme.dart';
-/// ```
-library adapt_theme;
+// Adapt design system.
+// Import this single file to access all colours, typography, dimensions,
+// and shared widgets:
+//
+//   import 'package:adapt_theme/adapt_theme.dart';
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 export 'theme/app_colors.dart';

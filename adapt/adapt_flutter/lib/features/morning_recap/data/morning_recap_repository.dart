@@ -1,5 +1,5 @@
-import 'package:adapt_client/src/protocol/client.dart';
-import 'package:adapt_client/src/protocol/morning_recap.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/client/adapt_client_provider.dart';
@@ -7,7 +7,7 @@ import '../../../core/client/adapt_client_provider.dart';
 part 'morning_recap_repository.g.dart';
 
 @riverpod
-MorningRecapRepository morningRecapRepository(MorningRecapRepositoryRef ref) {
+MorningRecapRepository morningRecapRepository(Ref ref) {
   return MorningRecapRepository(ref.watch(adaptClientProvider));
 }
 

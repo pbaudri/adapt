@@ -1,8 +1,5 @@
-import 'package:adapt_client/src/protocol/client.dart';
-import 'package:adapt_client/src/protocol/daily_summary.dart';
-import 'package:adapt_client/src/protocol/drink_log.dart';
-import 'package:adapt_client/src/protocol/drink_reference.dart';
-import 'package:adapt_client/src/protocol/enums/drink_type.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/client/adapt_client_provider.dart';
@@ -10,7 +7,7 @@ import '../../../core/client/adapt_client_provider.dart';
 part 'drinks_repository.g.dart';
 
 @riverpod
-DrinksRepository drinksRepository(DrinksRepositoryRef ref) {
+DrinksRepository drinksRepository(Ref ref) {
   return DrinksRepository(ref.watch(adaptClientProvider));
 }
 

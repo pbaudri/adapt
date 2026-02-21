@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:adapt_client/src/protocol/meal_correction_input.dart';
-import 'package:adapt_client/src/protocol/meal_result.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/meal_repository.dart';
@@ -76,13 +76,13 @@ class MealNotifier extends _$MealNotifier {
 
 /// Today's meal logs — refreshed after every confirmation.
 @riverpod
-Future<List<dynamic>> todayMeals(TodayMealsRef ref) {
+Future<List<dynamic>> todayMeals(Ref ref) {
   return ref.watch(mealRepositoryProvider).getTodayMeals();
 }
 
 /// Exposes the currently-pending MealResult for the result and edit screens.
 @riverpod
-MealResult? pendingMealResult(PendingMealResultRef ref) {
+MealResult? pendingMealResult(Ref ref) {
   final state = ref.watch(mealNotifierProvider);
   return state.maybeWhen(result: (r) => r, orElse: () => null);
 }

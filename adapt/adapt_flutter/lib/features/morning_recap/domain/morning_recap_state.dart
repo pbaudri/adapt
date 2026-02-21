@@ -1,4 +1,4 @@
-import 'package:adapt_client/src/protocol/morning_recap.dart';
+import 'package:adapt_client/adapt_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'morning_recap_state.freezed.dart';

@@ -1,4 +1,4 @@
-import 'package:adapt_client/src/protocol/daily_summary.dart';
+import 'package:adapt_client/adapt_client.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
 

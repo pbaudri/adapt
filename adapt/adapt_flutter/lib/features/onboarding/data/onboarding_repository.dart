@@ -1,8 +1,5 @@
-import 'package:adapt_client/src/protocol/client.dart';
-import 'package:adapt_client/src/protocol/enums/alcohol_habit.dart';
-import 'package:adapt_client/src/protocol/enums/biological_sex.dart';
-import 'package:adapt_client/src/protocol/enums/eating_style.dart';
-import 'package:adapt_client/src/protocol/enums/user_goal.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/client/adapt_client_provider.dart';
@@ -10,7 +7,7 @@ import '../../../core/client/adapt_client_provider.dart';
 part 'onboarding_repository.g.dart';
 
 @riverpod
-OnboardingRepository onboardingRepository(OnboardingRepositoryRef ref) {
+OnboardingRepository onboardingRepository(Ref ref) {
   return OnboardingRepository(ref.watch(adaptClientProvider));
 }
 

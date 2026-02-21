@@ -1,7 +1,4 @@
-import 'package:adapt_client/src/protocol/enums/alcohol_habit.dart';
-import 'package:adapt_client/src/protocol/enums/biological_sex.dart';
-import 'package:adapt_client/src/protocol/enums/eating_style.dart';
-import 'package:adapt_client/src/protocol/enums/user_goal.dart';
+import 'package:adapt_client/adapt_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';

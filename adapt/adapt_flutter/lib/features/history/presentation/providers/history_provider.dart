@@ -1,5 +1,5 @@
-import 'package:adapt_client/src/protocol/daily_summary.dart';
-import 'package:adapt_client/src/protocol/day_detail.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -11,7 +11,7 @@ part 'history_provider.g.dart';
 /// Automatically re-fetches when [weekStartDate] changes.
 @riverpod
 Future<List<DailySummary>> weekSummary(
-  WeekSummaryRef ref,
+  Ref ref,
   DateTime weekStartDate,
 ) {
   final isGuest = ref.watch(authNotifierProvider).maybeWhen(
@@ -24,7 +24,7 @@ Future<List<DailySummary>> weekSummary(
 
 /// Returns full day detail for [date].
 @riverpod
-Future<DayDetail> dayDetail(DayDetailRef ref, DateTime date) {
+Future<DayDetail> dayDetail(Ref ref, DateTime date) {
   final isGuest = ref.watch(authNotifierProvider).maybeWhen(
     authenticated: (token) => token.isGuest,
     orElse: () => false,

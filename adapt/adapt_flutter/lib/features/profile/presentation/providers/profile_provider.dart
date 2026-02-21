@@ -1,9 +1,5 @@
-import 'package:adapt_client/src/protocol/enums/alcohol_habit.dart';
-import 'package:adapt_client/src/protocol/enums/eating_style.dart';
-import 'package:adapt_client/src/protocol/enums/height_unit.dart';
-import 'package:adapt_client/src/protocol/enums/user_goal.dart';
-import 'package:adapt_client/src/protocol/enums/weight_unit.dart';
-import 'package:adapt_client/src/protocol/user_profile.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -22,15 +18,19 @@ UserProfile _guestProfile() => UserProfile(
   alcoholTracking: false,
   morningRecap: false,
   updatedAt: DateTime.now(),
+  heightCm: 190,
+  weightKg: 90,
 );
 
 /// Loads and caches the user profile.
 @riverpod
-Future<UserProfile> userProfile(UserProfileRef ref) {
-  final isGuest = ref.watch(authNotifierProvider).maybeWhen(
-    authenticated: (token) => token.isGuest,
-    orElse: () => false,
-  );
+Future<UserProfile> userProfile(Ref ref) {
+  final isGuest = ref
+      .watch(authNotifierProvider)
+      .maybeWhen(
+        authenticated: (token) => token.isGuest,
+        orElse: () => false,
+      );
   if (isGuest) return Future.value(_guestProfile());
   return ref.watch(profileRepositoryProvider).getProfile();
 }
@@ -39,10 +39,12 @@ Future<UserProfile> userProfile(UserProfileRef ref) {
 class ProfileNotifier extends _$ProfileNotifier {
   @override
   Future<UserProfile> build() {
-    final isGuest = ref.watch(authNotifierProvider).maybeWhen(
-      authenticated: (token) => token.isGuest,
-      orElse: () => false,
-    );
+    final isGuest = ref
+        .watch(authNotifierProvider)
+        .maybeWhen(
+          authenticated: (token) => token.isGuest,
+          orElse: () => false,
+        );
     if (isGuest) return Future.value(_guestProfile());
     return ref.watch(profileRepositoryProvider).getProfile();
   }
@@ -75,10 +77,12 @@ class ProfileNotifier extends _$ProfileNotifier {
     required bool alcoholTracking,
     required bool morningRecap,
   }) => _update(
-    () => ref.read(profileRepositoryProvider).updatePreferences(
-      alcoholTracking: alcoholTracking,
-      morningRecap: morningRecap,
-    ),
+    () => ref
+        .read(profileRepositoryProvider)
+        .updatePreferences(
+          alcoholTracking: alcoholTracking,
+          morningRecap: morningRecap,
+        ),
   );
 
   Future<void> deleteAllData() async {
@@ -86,10 +90,12 @@ class ProfileNotifier extends _$ProfileNotifier {
     ref.invalidateSelf();
   }
 
-  bool get _isGuest => ref.read(authNotifierProvider).maybeWhen(
-    authenticated: (token) => token.isGuest,
-    orElse: () => false,
-  );
+  bool get _isGuest => ref
+      .read(authNotifierProvider)
+      .maybeWhen(
+        authenticated: (token) => token.isGuest,
+        orElse: () => false,
+      );
 
   Future<void> _update(Future<UserProfile> Function() action) async {
     if (_isGuest) return;

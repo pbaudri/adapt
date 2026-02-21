@@ -1,5 +1,5 @@
-import 'package:adapt_client/src/protocol/drink_reference.dart';
-import 'package:adapt_client/src/protocol/enums/drink_type.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/drinks_repository.dart';
@@ -9,7 +9,7 @@ part 'drinks_provider.g.dart';
 
 /// Static drink reference data — loaded once and kept alive.
 @Riverpod(keepAlive: true)
-Future<List<DrinkReference>> drinkReference(DrinkReferenceRef ref) {
+Future<List<DrinkReference>> drinkReference(Ref ref) {
   return ref.watch(drinksRepositoryProvider).getDrinkReference();
 }
 

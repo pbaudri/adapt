@@ -1,5 +1,5 @@
-import 'package:adapt_client/src/protocol/auth_token.dart';
-import 'package:adapt_client/src/protocol/client.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_auth_core_flutter/serverpod_auth_core_flutter.dart';
 
@@ -8,7 +8,7 @@ import '../../../core/client/adapt_client_provider.dart';
 part 'auth_repository.g.dart';
 
 @riverpod
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   return AuthRepository(ref.watch(adaptClientProvider));
 }
 

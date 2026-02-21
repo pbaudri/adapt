@@ -1,10 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:adapt_client/src/protocol/client.dart';
-import 'package:adapt_client/src/protocol/daily_summary.dart';
-import 'package:adapt_client/src/protocol/meal_correction_input.dart';
-import 'package:adapt_client/src/protocol/meal_log.dart';
-import 'package:adapt_client/src/protocol/meal_result.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/client/adapt_client_provider.dart';
@@ -12,7 +9,7 @@ import '../../../core/client/adapt_client_provider.dart';
 part 'meal_repository.g.dart';
 
 @riverpod
-MealRepository mealRepository(MealRepositoryRef ref) {
+MealRepository mealRepository(Ref ref) {
   return MealRepository(ref.watch(adaptClientProvider));
 }
 

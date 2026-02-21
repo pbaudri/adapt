@@ -1,4 +1,5 @@
-import 'package:adapt_client/src/protocol/home_data.dart';
+import 'package:adapt_client/adapt_client.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -9,7 +10,7 @@ part 'home_provider.g.dart';
 /// Fetches and caches home screen data.
 /// Call [ref.invalidate(homeDataProvider)] to force a refresh.
 @riverpod
-Future<HomeData> homeData(HomeDataRef ref) {
+Future<HomeData> homeData(Ref ref) {
   final isGuest = ref.watch(authNotifierProvider).maybeWhen(
     authenticated: (token) => token.isGuest,
     orElse: () => false,
