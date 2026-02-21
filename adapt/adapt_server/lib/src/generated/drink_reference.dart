@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import 'enums/drink_type.dart' as _i2;
 
 /// Static reference table for drink calorie values.
 /// Populated once via seed migration. Never modified at runtime.
@@ -24,14 +25,16 @@ abstract class DrinkReference
 
   factory DrinkReference({
     int? id,
-    required String drinkType,
+    required _i2.DrinkType drinkType,
     required int caloriesPerUnit,
   }) = _DrinkReferenceImpl;
 
   factory DrinkReference.fromJson(Map<String, dynamic> jsonSerialization) {
     return DrinkReference(
       id: jsonSerialization['id'] as int?,
-      drinkType: jsonSerialization['drinkType'] as String,
+      drinkType: _i2.DrinkType.fromJson(
+        (jsonSerialization['drinkType'] as String),
+      ),
       caloriesPerUnit: jsonSerialization['caloriesPerUnit'] as int,
     );
   }
@@ -43,8 +46,8 @@ abstract class DrinkReference
   @override
   int? id;
 
-  /// Drink type identifier: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
-  String drinkType;
+  /// Drink type identifier.
+  _i2.DrinkType drinkType;
 
   /// Calories per standard glass/unit.
   int caloriesPerUnit;
@@ -57,7 +60,7 @@ abstract class DrinkReference
   @_i1.useResult
   DrinkReference copyWith({
     int? id,
-    String? drinkType,
+    _i2.DrinkType? drinkType,
     int? caloriesPerUnit,
   });
   @override
@@ -65,7 +68,7 @@ abstract class DrinkReference
     return {
       '__className__': 'DrinkReference',
       if (id != null) 'id': id,
-      'drinkType': drinkType,
+      'drinkType': drinkType.toJson(),
       'caloriesPerUnit': caloriesPerUnit,
     };
   }
@@ -75,7 +78,7 @@ abstract class DrinkReference
     return {
       '__className__': 'DrinkReference',
       if (id != null) 'id': id,
-      'drinkType': drinkType,
+      'drinkType': drinkType.toJson(),
       'caloriesPerUnit': caloriesPerUnit,
     };
   }
@@ -115,7 +118,7 @@ class _Undefined {}
 class _DrinkReferenceImpl extends DrinkReference {
   _DrinkReferenceImpl({
     int? id,
-    required String drinkType,
+    required _i2.DrinkType drinkType,
     required int caloriesPerUnit,
   }) : super._(
          id: id,
@@ -129,7 +132,7 @@ class _DrinkReferenceImpl extends DrinkReference {
   @override
   DrinkReference copyWith({
     Object? id = _Undefined,
-    String? drinkType,
+    _i2.DrinkType? drinkType,
     int? caloriesPerUnit,
   }) {
     return DrinkReference(
@@ -143,7 +146,9 @@ class _DrinkReferenceImpl extends DrinkReference {
 class DrinkReferenceUpdateTable extends _i1.UpdateTable<DrinkReferenceTable> {
   DrinkReferenceUpdateTable(super.table);
 
-  _i1.ColumnValue<String, String> drinkType(String value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i2.DrinkType, _i2.DrinkType> drinkType(
+    _i2.DrinkType value,
+  ) => _i1.ColumnValue(
     table.drinkType,
     value,
   );
@@ -158,9 +163,10 @@ class DrinkReferenceTable extends _i1.Table<int?> {
   DrinkReferenceTable({super.tableRelation})
     : super(tableName: 'drink_reference') {
     updateTable = DrinkReferenceUpdateTable(this);
-    drinkType = _i1.ColumnString(
+    drinkType = _i1.ColumnEnum(
       'drinkType',
       this,
+      _i1.EnumSerialization.byName,
     );
     caloriesPerUnit = _i1.ColumnInt(
       'caloriesPerUnit',
@@ -170,8 +176,8 @@ class DrinkReferenceTable extends _i1.Table<int?> {
 
   late final DrinkReferenceUpdateTable updateTable;
 
-  /// Drink type identifier: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
-  late final _i1.ColumnString drinkType;
+  /// Drink type identifier.
+  late final _i1.ColumnEnum<_i2.DrinkType> drinkType;
 
   /// Calories per standard glass/unit.
   late final _i1.ColumnInt caloriesPerUnit;

@@ -14,27 +14,22 @@ class HomeEndpoint extends Endpoint {
     final dayStart = DateTime.utc(now.year, now.month, now.day);
     final dayEnd = dayStart.add(const Duration(days: 1));
 
-    // Load profile (for name + daily target calculation)
     final profile = await UserProfile.db.findFirstRow(
       session,
       where: (t) => t.userId.equals(userId),
     );
 
-    // Today's meals (most recent first)
     final meals = await MealLog.db.find(
       session,
       where: (t) =>
-          t.userId.equals(userId) &
-          t.loggedAt.between(dayStart, dayEnd),
+          t.userId.equals(userId) & t.loggedAt.between(dayStart, dayEnd),
       orderBy: (t) => t.loggedAt,
       orderDescending: true,
     );
 
-    // Today's summary
     final summary = await DailySummary.db.findFirstRow(
       session,
-      where: (t) =>
-          t.userId.equals(userId) & t.date.equals(dayStart),
+      where: (t) => t.userId.equals(userId) & t.date.equals(dayStart),
     );
 
     final dailyKcal = summary?.totalKcal ?? 0;

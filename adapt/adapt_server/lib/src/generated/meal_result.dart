@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import 'enums/meal_source.dart' as _i2;
 
 /// AI-estimated or user-corrected nutritional result for a meal.
 /// One-to-one with meal_logs.
@@ -39,7 +40,7 @@ abstract class MealResult
     required double fatG,
     required String aiMessage,
     String? aiTip,
-    required String source,
+    required _i2.MealSource source,
   }) = _MealResultImpl;
 
   factory MealResult.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -53,7 +54,7 @@ abstract class MealResult
       fatG: (jsonSerialization['fatG'] as num).toDouble(),
       aiMessage: jsonSerialization['aiMessage'] as String,
       aiTip: jsonSerialization['aiTip'] as String?,
-      source: jsonSerialization['source'] as String,
+      source: _i2.MealSource.fromJson((jsonSerialization['source'] as String)),
     );
   }
 
@@ -88,8 +89,8 @@ abstract class MealResult
   /// Optional follow-up suggestion from AI.
   String? aiTip;
 
-  /// Source: 'ai_estimated' | 'database' | 'user_corrected'
-  String source;
+  /// How this result was produced.
+  _i2.MealSource source;
 
   @override
   _i1.Table<int?> get table => t;
@@ -107,7 +108,7 @@ abstract class MealResult
     double? fatG,
     String? aiMessage,
     String? aiTip,
-    String? source,
+    _i2.MealSource? source,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -122,7 +123,7 @@ abstract class MealResult
       'fatG': fatG,
       'aiMessage': aiMessage,
       if (aiTip != null) 'aiTip': aiTip,
-      'source': source,
+      'source': source.toJson(),
     };
   }
 
@@ -139,7 +140,7 @@ abstract class MealResult
       'fatG': fatG,
       'aiMessage': aiMessage,
       if (aiTip != null) 'aiTip': aiTip,
-      'source': source,
+      'source': source.toJson(),
     };
   }
 
@@ -186,7 +187,7 @@ class _MealResultImpl extends MealResult {
     required double fatG,
     required String aiMessage,
     String? aiTip,
-    required String source,
+    required _i2.MealSource source,
   }) : super._(
          id: id,
          mealLogId: mealLogId,
@@ -214,7 +215,7 @@ class _MealResultImpl extends MealResult {
     double? fatG,
     String? aiMessage,
     Object? aiTip = _Undefined,
-    String? source,
+    _i2.MealSource? source,
   }) {
     return MealResult(
       id: id is int? ? id : this.id,
@@ -274,7 +275,9 @@ class MealResultUpdateTable extends _i1.UpdateTable<MealResultTable> {
     value,
   );
 
-  _i1.ColumnValue<String, String> source(String value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i2.MealSource, _i2.MealSource> source(
+    _i2.MealSource value,
+  ) => _i1.ColumnValue(
     table.source,
     value,
   );
@@ -315,9 +318,10 @@ class MealResultTable extends _i1.Table<int?> {
       'aiTip',
       this,
     );
-    source = _i1.ColumnString(
+    source = _i1.ColumnEnum(
       'source',
       this,
+      _i1.EnumSerialization.byName,
     );
   }
 
@@ -347,8 +351,8 @@ class MealResultTable extends _i1.Table<int?> {
   /// Optional follow-up suggestion from AI.
   late final _i1.ColumnString aiTip;
 
-  /// Source: 'ai_estimated' | 'database' | 'user_corrected'
-  late final _i1.ColumnString source;
+  /// How this result was produced.
+  late final _i1.ColumnEnum<_i2.MealSource> source;
 
   @override
   List<_i1.Column> get columns => [

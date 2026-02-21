@@ -1,0 +1,6 @@
+enum: AlcoholHabit
+serialized: byName
+values:
+  - rarely
+  - sometimes
+  - often

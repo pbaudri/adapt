@@ -1,0 +1,5 @@
+enum: WeightUnit
+serialized: byName
+values:
+  - kg
+  - lbs

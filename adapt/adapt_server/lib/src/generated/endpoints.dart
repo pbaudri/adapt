@@ -22,12 +22,19 @@ import '../endpoints/onboarding_endpoint.dart' as _i9;
 import '../endpoints/profile_endpoint.dart' as _i10;
 import '../endpoints/recap_endpoint.dart' as _i11;
 import '../greetings/greeting_endpoint.dart' as _i12;
-import 'dart:typed_data' as _i13;
-import 'package:adapt_server/src/generated/meal_correction_input.dart' as _i14;
+import 'package:adapt_server/src/generated/enums/drink_type.dart' as _i13;
+import 'dart:typed_data' as _i14;
+import 'package:adapt_server/src/generated/meal_correction_input.dart' as _i15;
+import 'package:adapt_server/src/generated/enums/eating_style.dart' as _i16;
+import 'package:adapt_server/src/generated/enums/user_goal.dart' as _i17;
+import 'package:adapt_server/src/generated/enums/alcohol_habit.dart' as _i18;
+import 'package:adapt_server/src/generated/enums/biological_sex.dart' as _i19;
+import 'package:adapt_server/src/generated/enums/weight_unit.dart' as _i20;
+import 'package:adapt_server/src/generated/enums/height_unit.dart' as _i21;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
-    as _i15;
+    as _i22;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
-    as _i16;
+    as _i23;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -350,7 +357,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'drinkType': _i1.ParameterDescription(
               name: 'drinkType',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i13.DrinkType>(),
               nullable: false,
             ),
             'quantity': _i1.ParameterDescription(
@@ -468,7 +475,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'imageBytes': _i1.ParameterDescription(
               name: 'imageBytes',
-              type: _i1.getType<_i13.ByteData>(),
+              type: _i1.getType<_i14.ByteData>(),
               nullable: false,
             ),
           },
@@ -509,7 +516,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'correctedData': _i1.ParameterDescription(
               name: 'correctedData',
-              type: _i1.getType<_i14.MealCorrectionInput>(),
+              type: _i1.getType<_i15.MealCorrectionInput>(),
               nullable: false,
             ),
           },
@@ -564,7 +571,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'style': _i1.ParameterDescription(
               name: 'style',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i16.EatingStyle>(),
               nullable: false,
             ),
           },
@@ -583,7 +590,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i17.UserGoal>(),
               nullable: false,
             ),
           },
@@ -602,7 +609,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'habit': _i1.ParameterDescription(
               name: 'habit',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i18.AlcoholHabit>(),
               nullable: false,
             ),
           },
@@ -626,7 +633,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'biologicalSex': _i1.ParameterDescription(
               name: 'biologicalSex',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i19.BiologicalSex>(),
               nullable: false,
             ),
             'weightKg': _i1.ParameterDescription(
@@ -731,7 +738,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'goal': _i1.ParameterDescription(
               name: 'goal',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i17.UserGoal>(),
               nullable: false,
             ),
           },
@@ -750,7 +757,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'unit': _i1.ParameterDescription(
               name: 'unit',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i20.WeightUnit>(),
               nullable: false,
             ),
           },
@@ -769,7 +776,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'unit': _i1.ParameterDescription(
               name: 'unit',
-              type: _i1.getType<String>(),
+              type: _i1.getType<_i21.HeightUnit>(),
               nullable: false,
             ),
           },
@@ -879,9 +886,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth_idp'] = _i15.Endpoints()
+    modules['serverpod_auth_idp'] = _i22.Endpoints()
       ..initializeEndpoints(server);
-    modules['serverpod_auth_core'] = _i16.Endpoints()
+    modules['serverpod_auth_core'] = _i23.Endpoints()
       ..initializeEndpoints(server);
   }
 }

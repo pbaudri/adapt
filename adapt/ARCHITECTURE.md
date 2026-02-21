@@ -94,6 +94,25 @@ scripts:
 
 All data is stored in PostgreSQL via Serverpod. Units are always stored in SI (kg, cm) — unit preferences are display-only.
 
+Fields with predefined values use **Serverpod enums** — never raw Strings. Each enum is defined as a separate YAML file in `adapt_server/lib/src/models/`.
+
+### Enums
+
+| Enum | Values |
+|---|---|
+| `BiologicalSex` | `male`, `female` |
+| `UserGoal` | `loseWeight`, `eatBetter`, `stayAware` |
+| `EatingStyle` | `homeCooked`, `takeaway`, `restaurants`, `mixed` |
+| `AlcoholHabit` | `rarely`, `sometimes`, `often` |
+| `WeightUnit` | `kg`, `lbs` |
+| `HeightUnit` | `cm`, `ft` |
+| `MealType` | `breakfast`, `lunch`, `dinner`, `snack` |
+| `InputMethod` | `photo`, `text`, `location` |
+| `MealSource` | `aiEstimated`, `database`, `userCorrected` |
+| `DrinkType` | `beer`, `wine`, `champagne`, `cocktail`, `whisky`, `longDrink`, `hardSeltzer`, `other` |
+
+---
+
 ### users
 
 | Column | Type / Notes |
@@ -111,14 +130,14 @@ All data is stored in PostgreSQL via Serverpod. Units are always stored in SI (k
 | `id` | int — Primary Key |
 | `user_id` | int — FK → users |
 | `age` | int? |
-| `biological_sex` | String? — `'male'` \| `'female'` |
+| `biological_sex` | `BiologicalSex?` |
 | `weight_kg` | double? — always stored in kg |
 | `height_cm` | double? — always stored in cm |
-| `weight_unit` | String — `'kg'` \| `'lbs'` (display preference only) |
-| `height_unit` | String — `'cm'` \| `'ft'` (display preference only) |
-| `goal` | String — `'lose_weight'` \| `'eat_better'` \| `'stay_aware'` |
-| `eating_style` | String — `'home_cooked'` \| `'takeaway'` \| `'restaurants'` \| `'mixed'` |
-| `alcohol_habit` | String — `'rarely'` \| `'sometimes'` \| `'often'` |
+| `weight_unit` | `WeightUnit` — display preference only |
+| `height_unit` | `HeightUnit` — display preference only |
+| `goal` | `UserGoal` |
+| `eating_style` | `EatingStyle` |
+| `alcohol_habit` | `AlcoholHabit` |
 | `alcohol_tracking` | bool — default true |
 | `morning_recap` | bool — default true |
 | `updated_at` | DateTime |
@@ -130,8 +149,8 @@ All data is stored in PostgreSQL via Serverpod. Units are always stored in SI (k
 | `id` | int — Primary Key |
 | `user_id` | int — FK → users |
 | `logged_at` | DateTime |
-| `meal_type` | String — `'breakfast'` \| `'lunch'` \| `'dinner'` \| `'snack'` |
-| `input_method` | String — `'photo'` \| `'text'` \| `'location'` |
+| `meal_type` | `MealType` |
+| `input_method` | `InputMethod` |
 | `raw_input` | String? — text entered or photo prompt |
 | `image_url` | String? — if photo |
 | `location_name` | String? — e.g. McDonald's |
@@ -150,7 +169,7 @@ All data is stored in PostgreSQL via Serverpod. Units are always stored in SI (k
 | `fat_g` | double |
 | `ai_message` | String — zero-judgment message |
 | `ai_tip` | String? — optional suggestion |
-| `source` | String — `'ai_estimated'` \| `'database'` \| `'user_corrected'` |
+| `source` | `MealSource` |
 
 ### drink_logs
 
@@ -159,7 +178,7 @@ All data is stored in PostgreSQL via Serverpod. Units are always stored in SI (k
 | `id` | int — Primary Key |
 | `user_id` | int — FK → users |
 | `logged_at` | DateTime |
-| `drink_type` | String — `'beer'` \| `'wine'` \| `'champagne'` \| `'cocktail'` \| `'whisky'` \| `'long_drink'` \| `'hard_seltzer'` \| `'other'` |
+| `drink_type` | `DrinkType` |
 | `quantity` | int — number of glasses |
 | `calories_kcal` | int — denormalised: `quantity × ref calories` |
 
@@ -174,8 +193,8 @@ Static seed table — never modified at runtime.
 | `champagne` | 90 kcal |
 | `cocktail` | 180 kcal |
 | `whisky` | 70 kcal |
-| `long_drink` | 200 kcal |
-| `hard_seltzer` | 100 kcal |
+| `longDrink` | 200 kcal |
+| `hardSeltzer` | 100 kcal |
 
 ### daily_summaries
 
@@ -332,7 +351,7 @@ adapt_flutter/
 │   │   │   ├── app_router.dart
 │   │   │   └── app_routes.dart
 │   │   └── utils/
-│   │       ├── unit_converter.dart     # kg↔lbs, cm↔ft
+│   │       ├── unit_converter.dart     # kg↔lbs, cm↔ft — only place for unit conversion
 │   │       └── date_formatter.dart
 │   └── features/
 │       ├── auth/
@@ -507,6 +526,9 @@ adapt_theme/
 ---
 
 ## 8. Key Architectural Decisions
+
+### Enums for predefined values
+All fields with a fixed set of possible values use Serverpod enums defined as YAML files — never raw `String`. This enforces type safety at the Dart level and prevents invalid data from entering the database. Each enum lives in its own file in `adapt_server/lib/src/models/`.
 
 ### Units stored in SI
 `weight_kg` and `height_cm` are always stored in kilograms and centimetres. `weight_unit` and `height_unit` are user display preferences only. Conversion is handled in `unit_converter.dart`, never in the database layer.

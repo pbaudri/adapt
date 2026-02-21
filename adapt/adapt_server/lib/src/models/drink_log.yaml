@@ -8,8 +8,8 @@ fields:
   userId: String
   ### When the drinks were logged.
   loggedAt: DateTime
-  ### Drink type: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
-  drinkType: String
+  ### Type of drink.
+  drinkType: DrinkType
   ### Number of glasses/units logged.
   quantity: int
   ### Pre-calculated total calories: quantity × drinkReference.caloriesPerUnit.

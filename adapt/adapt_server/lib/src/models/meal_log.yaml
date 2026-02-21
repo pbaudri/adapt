@@ -7,15 +7,15 @@ fields:
   userId: String
   ### When the meal was logged.
   loggedAt: DateTime
-  ### Meal type: 'breakfast' | 'lunch' | 'dinner' | 'snack'
-  mealType: String
-  ### Input method: 'photo' | 'text' | 'location'
-  inputMethod: String
+  ### Meal type.
+  mealType: MealType
+  ### Input method used.
+  inputMethod: InputMethod
   ### Raw text description or photo prompt.
   rawInput: String?
-  ### URL to uploaded photo if inputMethod is 'photo'.
+  ### URL to uploaded photo if inputMethod is photo.
   imageUrl: String?
-  ### Restaurant or location name if inputMethod is 'location'.
+  ### Restaurant or location name if inputMethod is location.
   locationName: String?
   ### True when nutrition values are AI-estimated (not confirmed by user).
   estimated: bool

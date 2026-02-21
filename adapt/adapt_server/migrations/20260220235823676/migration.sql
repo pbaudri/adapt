@@ -138,19 +138,6 @@ ALTER TABLE ONLY "meal_results"
 
 
 --
--- SEED drink_reference (static, never modified at runtime)
---
-INSERT INTO "drink_reference" ("drinkType", "caloriesPerUnit") VALUES
-    ('beer',        150),
-    ('wine',        120),
-    ('champagne',    90),
-    ('cocktail',    180),
-    ('whisky',       70),
-    ('long_drink',  200),
-    ('hard_seltzer', 100)
-ON CONFLICT ("drinkType") DO NOTHING;
-
---
 -- MIGRATION VERSION FOR adapt
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")

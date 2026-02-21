@@ -1,3 +1,5 @@
+import '../generated/protocol.dart';
+
 /// Single source of truth for all calorie calculations.
 ///
 /// This is the ONLY place in the codebase where calories are computed.
@@ -26,11 +28,11 @@ abstract final class NutritionService {
     required double weightKg,
     required double heightCm,
     required int age,
-    required String biologicalSex,
-    required String goal,
+    required BiologicalSex biologicalSex,
+    required UserGoal goal,
   }) {
     // Mifflin-St Jeor BMR
-    final bmr = biologicalSex == 'female'
+    final bmr = biologicalSex == BiologicalSex.female
         ? (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161
         : (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
 
@@ -38,10 +40,9 @@ abstract final class NutritionService {
     final tdee = (bmr * 1.2).round();
 
     return switch (goal) {
-      'lose_weight' => (tdee * 0.85).round(), // ~15% deficit
-      'eat_better' => tdee,
-      'stay_aware' => tdee,
-      _ => tdee,
+      UserGoal.loseWeight => (tdee * 0.85).round(), // ~15% deficit
+      UserGoal.eatBetter => tdee,
+      UserGoal.stayAware => tdee,
     };
   }
 }

@@ -1,0 +1,7 @@
+enum: EatingStyle
+serialized: byName
+values:
+  - homeCooked
+  - takeaway
+  - restaurants
+  - mixed

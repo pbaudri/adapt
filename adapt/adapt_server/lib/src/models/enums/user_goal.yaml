@@ -1,0 +1,6 @@
+enum: UserGoal
+serialized: byName
+values:
+  - loseWeight
+  - eatBetter
+  - stayAware

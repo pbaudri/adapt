@@ -1,0 +1,5 @@
+enum: HeightUnit
+serialized: byName
+values:
+  - cm
+  - ft

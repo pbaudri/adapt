@@ -19,17 +19,24 @@ import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
 import 'package:adapt_client/src/protocol/auth_token.dart' as _i5;
 import 'package:adapt_client/src/protocol/drink_reference.dart' as _i6;
 import 'package:adapt_client/src/protocol/daily_summary.dart' as _i7;
-import 'package:adapt_client/src/protocol/drink_log.dart' as _i8;
-import 'package:adapt_client/src/protocol/day_detail.dart' as _i9;
-import 'package:adapt_client/src/protocol/home_data.dart' as _i10;
-import 'package:adapt_client/src/protocol/meal_result.dart' as _i11;
-import 'dart:typed_data' as _i12;
-import 'package:adapt_client/src/protocol/meal_correction_input.dart' as _i13;
-import 'package:adapt_client/src/protocol/meal_log.dart' as _i14;
-import 'package:adapt_client/src/protocol/user_profile.dart' as _i15;
-import 'package:adapt_client/src/protocol/morning_recap.dart' as _i16;
-import 'package:adapt_client/src/protocol/greetings/greeting.dart' as _i17;
-import 'protocol.dart' as _i18;
+import 'package:adapt_client/src/protocol/enums/drink_type.dart' as _i8;
+import 'package:adapt_client/src/protocol/drink_log.dart' as _i9;
+import 'package:adapt_client/src/protocol/day_detail.dart' as _i10;
+import 'package:adapt_client/src/protocol/home_data.dart' as _i11;
+import 'package:adapt_client/src/protocol/meal_result.dart' as _i12;
+import 'dart:typed_data' as _i13;
+import 'package:adapt_client/src/protocol/meal_correction_input.dart' as _i14;
+import 'package:adapt_client/src/protocol/meal_log.dart' as _i15;
+import 'package:adapt_client/src/protocol/enums/eating_style.dart' as _i16;
+import 'package:adapt_client/src/protocol/enums/user_goal.dart' as _i17;
+import 'package:adapt_client/src/protocol/enums/alcohol_habit.dart' as _i18;
+import 'package:adapt_client/src/protocol/enums/biological_sex.dart' as _i19;
+import 'package:adapt_client/src/protocol/user_profile.dart' as _i20;
+import 'package:adapt_client/src/protocol/enums/weight_unit.dart' as _i21;
+import 'package:adapt_client/src/protocol/enums/height_unit.dart' as _i22;
+import 'package:adapt_client/src/protocol/morning_recap.dart' as _i23;
+import 'package:adapt_client/src/protocol/greetings/greeting.dart' as _i24;
+import 'protocol.dart' as _i25;
 
 /// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
 /// are made available on the server and enable the corresponding sign-in widget
@@ -254,9 +261,9 @@ class EndpointJwtRefresh extends _i4.EndpointRefreshJwtTokens {
 
 /// Handles guest session creation.
 ///
-/// Email sign-in and sign-up are handled by the built-in EmailIdpEndpoint
-/// (lib/src/auth/email_idp_endpoint.dart). This endpoint creates user profiles
-/// for newly authenticated users and provides guest-mode access.
+/// Email sign-in and sign-up are handled by the built-in EmailIdpEndpoint.
+/// This endpoint creates user profiles for newly authenticated users and
+/// provides guest-mode access.
 /// {@category Endpoint}
 class EndpointAuth extends _i2.EndpointRef {
   EndpointAuth(_i2.EndpointCaller caller) : super(caller);
@@ -265,9 +272,6 @@ class EndpointAuth extends _i2.EndpointRef {
   String get name => 'auth';
 
   /// Creates a guest-mode user profile and returns a placeholder token.
-  ///
-  /// The client stores the returned key locally (via sqflite) for offline-first
-  /// guest usage. Guest data is not synced until the user signs in.
   _i3.Future<_i5.AuthToken> continueAsGuest() =>
       caller.callServerEndpoint<_i5.AuthToken>(
         'auth',
@@ -305,7 +309,7 @@ class EndpointDrink extends _i2.EndpointRef {
 
   /// Logs a drink for the authenticated user and returns the updated summary.
   _i3.Future<_i7.DailySummary> logDrinks(
-    String drinkType,
+    _i8.DrinkType drinkType,
     int quantity,
   ) => caller.callServerEndpoint<_i7.DailySummary>(
     'drink',
@@ -317,8 +321,8 @@ class EndpointDrink extends _i2.EndpointRef {
   );
 
   /// Returns today's drink logs for the authenticated user.
-  _i3.Future<List<_i8.DrinkLog>> getTodayDrinks() =>
-      caller.callServerEndpoint<List<_i8.DrinkLog>>(
+  _i3.Future<List<_i9.DrinkLog>> getTodayDrinks() =>
+      caller.callServerEndpoint<List<_i9.DrinkLog>>(
         'drink',
         'getTodayDrinks',
         {},
@@ -342,8 +346,8 @@ class EndpointHistory extends _i2.EndpointRef {
       );
 
   /// Returns the full detail for a single day: summary + meals + drinks.
-  _i3.Future<_i9.DayDetail> getDayDetail(DateTime date) =>
-      caller.callServerEndpoint<_i9.DayDetail>(
+  _i3.Future<_i10.DayDetail> getDayDetail(DateTime date) =>
+      caller.callServerEndpoint<_i10.DayDetail>(
         'history',
         'getDayDetail',
         {'date': date},
@@ -358,8 +362,8 @@ class EndpointHome extends _i2.EndpointRef {
   @override
   String get name => 'home';
 
-  _i3.Future<_i10.HomeData> getHomeData() =>
-      caller.callServerEndpoint<_i10.HomeData>(
+  _i3.Future<_i11.HomeData> getHomeData() =>
+      caller.callServerEndpoint<_i11.HomeData>(
         'home',
         'getHomeData',
         {},
@@ -375,16 +379,16 @@ class EndpointMeal extends _i2.EndpointRef {
   String get name => 'meal';
 
   /// Analyses free-text input and returns a MealResult (not yet confirmed).
-  _i3.Future<_i11.MealResult> logMealByText(String text) =>
-      caller.callServerEndpoint<_i11.MealResult>(
+  _i3.Future<_i12.MealResult> logMealByText(String text) =>
+      caller.callServerEndpoint<_i12.MealResult>(
         'meal',
         'logMealByText',
         {'text': text},
       );
 
   /// Analyses a photo (bytes) and returns a MealResult (not yet confirmed).
-  _i3.Future<_i11.MealResult> logMealByPhoto(_i12.ByteData imageBytes) =>
-      caller.callServerEndpoint<_i11.MealResult>(
+  _i3.Future<_i12.MealResult> logMealByPhoto(_i13.ByteData imageBytes) =>
+      caller.callServerEndpoint<_i12.MealResult>(
         'meal',
         'logMealByPhoto',
         {'imageBytes': imageBytes},
@@ -399,10 +403,10 @@ class EndpointMeal extends _i2.EndpointRef {
       );
 
   /// Corrects macros for a meal. caloriesKcal is always recalculated.
-  _i3.Future<_i11.MealResult> correctMeal(
+  _i3.Future<_i12.MealResult> correctMeal(
     int mealLogId,
-    _i13.MealCorrectionInput correctedData,
-  ) => caller.callServerEndpoint<_i11.MealResult>(
+    _i14.MealCorrectionInput correctedData,
+  ) => caller.callServerEndpoint<_i12.MealResult>(
     'meal',
     'correctMeal',
     {
@@ -412,8 +416,8 @@ class EndpointMeal extends _i2.EndpointRef {
   );
 
   /// Returns today's meal logs for the authenticated user.
-  _i3.Future<List<_i14.MealLog>> getTodayMeals() =>
-      caller.callServerEndpoint<List<_i14.MealLog>>(
+  _i3.Future<List<_i15.MealLog>> getTodayMeals() =>
+      caller.callServerEndpoint<List<_i15.MealLog>>(
         'meal',
         'getTodayMeals',
         {},
@@ -437,20 +441,21 @@ class EndpointOnboarding extends _i2.EndpointRef {
     {'name': name},
   );
 
-  _i3.Future<void> saveEatingStyle(String style) =>
+  _i3.Future<void> saveEatingStyle(_i16.EatingStyle style) =>
       caller.callServerEndpoint<void>(
         'onboarding',
         'saveEatingStyle',
         {'style': style},
       );
 
-  _i3.Future<void> saveGoal(String goal) => caller.callServerEndpoint<void>(
-    'onboarding',
-    'saveGoal',
-    {'goal': goal},
-  );
+  _i3.Future<void> saveGoal(_i17.UserGoal goal) =>
+      caller.callServerEndpoint<void>(
+        'onboarding',
+        'saveGoal',
+        {'goal': goal},
+      );
 
-  _i3.Future<void> saveAlcoholHabit(String habit) =>
+  _i3.Future<void> saveAlcoholHabit(_i18.AlcoholHabit habit) =>
       caller.callServerEndpoint<void>(
         'onboarding',
         'saveAlcoholHabit',
@@ -463,7 +468,7 @@ class EndpointOnboarding extends _i2.EndpointRef {
   /// [heightCm] — height in cm (conversion happens on client, never here).
   _i3.Future<void> savePersonalInfo(
     int age,
-    String biologicalSex,
+    _i19.BiologicalSex biologicalSex,
     double weightKg,
     double heightCm,
   ) => caller.callServerEndpoint<void>(
@@ -486,59 +491,59 @@ class EndpointProfile extends _i2.EndpointRef {
   @override
   String get name => 'profile';
 
-  _i3.Future<_i15.UserProfile> getProfile() =>
-      caller.callServerEndpoint<_i15.UserProfile>(
+  _i3.Future<_i20.UserProfile> getProfile() =>
+      caller.callServerEndpoint<_i20.UserProfile>(
         'profile',
         'getProfile',
         {},
       );
 
-  _i3.Future<_i15.UserProfile> updateWeight(double weightKg) =>
-      caller.callServerEndpoint<_i15.UserProfile>(
+  _i3.Future<_i20.UserProfile> updateWeight(double weightKg) =>
+      caller.callServerEndpoint<_i20.UserProfile>(
         'profile',
         'updateWeight',
         {'weightKg': weightKg},
       );
 
-  _i3.Future<_i15.UserProfile> updateHeight(double heightCm) =>
-      caller.callServerEndpoint<_i15.UserProfile>(
+  _i3.Future<_i20.UserProfile> updateHeight(double heightCm) =>
+      caller.callServerEndpoint<_i20.UserProfile>(
         'profile',
         'updateHeight',
         {'heightCm': heightCm},
       );
 
-  _i3.Future<_i15.UserProfile> updateAge(int age) =>
-      caller.callServerEndpoint<_i15.UserProfile>(
+  _i3.Future<_i20.UserProfile> updateAge(int age) =>
+      caller.callServerEndpoint<_i20.UserProfile>(
         'profile',
         'updateAge',
         {'age': age},
       );
 
-  _i3.Future<_i15.UserProfile> updateGoal(String goal) =>
-      caller.callServerEndpoint<_i15.UserProfile>(
+  _i3.Future<_i20.UserProfile> updateGoal(_i17.UserGoal goal) =>
+      caller.callServerEndpoint<_i20.UserProfile>(
         'profile',
         'updateGoal',
         {'goal': goal},
       );
 
-  _i3.Future<_i15.UserProfile> updateWeightUnit(String unit) =>
-      caller.callServerEndpoint<_i15.UserProfile>(
+  _i3.Future<_i20.UserProfile> updateWeightUnit(_i21.WeightUnit unit) =>
+      caller.callServerEndpoint<_i20.UserProfile>(
         'profile',
         'updateWeightUnit',
         {'unit': unit},
       );
 
-  _i3.Future<_i15.UserProfile> updateHeightUnit(String unit) =>
-      caller.callServerEndpoint<_i15.UserProfile>(
+  _i3.Future<_i20.UserProfile> updateHeightUnit(_i22.HeightUnit unit) =>
+      caller.callServerEndpoint<_i20.UserProfile>(
         'profile',
         'updateHeightUnit',
         {'unit': unit},
       );
 
-  _i3.Future<_i15.UserProfile> updatePreferences(
+  _i3.Future<_i20.UserProfile> updatePreferences(
     bool alcoholTracking,
     bool morningRecap,
-  ) => caller.callServerEndpoint<_i15.UserProfile>(
+  ) => caller.callServerEndpoint<_i20.UserProfile>(
     'profile',
     'updatePreferences',
     {
@@ -566,8 +571,8 @@ class EndpointRecap extends _i2.EndpointRef {
   /// Returns today's morning recap, generating one if needed.
   ///
   /// Returns `null` if there is no data for yesterday (first day of use).
-  _i3.Future<_i16.MorningRecap?> getMorningRecap() =>
-      caller.callServerEndpoint<_i16.MorningRecap?>(
+  _i3.Future<_i23.MorningRecap?> getMorningRecap() =>
+      caller.callServerEndpoint<_i23.MorningRecap?>(
         'recap',
         'getMorningRecap',
         {},
@@ -592,8 +597,8 @@ class EndpointGreeting extends _i2.EndpointRef {
   String get name => 'greeting';
 
   /// Returns a personalized greeting message: "Hello {name}".
-  _i3.Future<_i17.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i17.Greeting>(
+  _i3.Future<_i24.Greeting> hello(String name) =>
+      caller.callServerEndpoint<_i24.Greeting>(
         'greeting',
         'hello',
         {'name': name},
@@ -631,7 +636,7 @@ class Client extends _i2.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i18.Protocol(),
+         _i25.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,

@@ -1,0 +1,6 @@
+enum: MealSource
+serialized: byName
+values:
+  - aiEstimated
+  - database
+  - userCorrected

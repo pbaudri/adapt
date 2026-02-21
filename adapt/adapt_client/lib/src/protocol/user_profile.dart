@@ -11,9 +11,15 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import 'enums/biological_sex.dart' as _i2;
+import 'enums/weight_unit.dart' as _i3;
+import 'enums/height_unit.dart' as _i4;
+import 'enums/user_goal.dart' as _i5;
+import 'enums/eating_style.dart' as _i6;
+import 'enums/alcohol_habit.dart' as _i7;
 
 /// Extended profile for an Adapt user.
-/// References the Serverpod auth user via userId.
+/// References the Serverpod auth user via userId (UUID string from IDP auth).
 abstract class UserProfile implements _i1.SerializableModel {
   UserProfile._({
     this.id,
@@ -40,14 +46,14 @@ abstract class UserProfile implements _i1.SerializableModel {
     String? name,
     required bool isGuest,
     int? age,
-    String? biologicalSex,
+    _i2.BiologicalSex? biologicalSex,
     double? weightKg,
     double? heightCm,
-    required String weightUnit,
-    required String heightUnit,
-    required String goal,
-    required String eatingStyle,
-    required String alcoholHabit,
+    required _i3.WeightUnit weightUnit,
+    required _i4.HeightUnit heightUnit,
+    required _i5.UserGoal goal,
+    required _i6.EatingStyle eatingStyle,
+    required _i7.AlcoholHabit alcoholHabit,
     required bool alcoholTracking,
     required bool morningRecap,
     required DateTime updatedAt,
@@ -60,14 +66,26 @@ abstract class UserProfile implements _i1.SerializableModel {
       name: jsonSerialization['name'] as String?,
       isGuest: jsonSerialization['isGuest'] as bool,
       age: jsonSerialization['age'] as int?,
-      biologicalSex: jsonSerialization['biologicalSex'] as String?,
+      biologicalSex: jsonSerialization['biologicalSex'] == null
+          ? null
+          : _i2.BiologicalSex.fromJson(
+              (jsonSerialization['biologicalSex'] as String),
+            ),
       weightKg: (jsonSerialization['weightKg'] as num?)?.toDouble(),
       heightCm: (jsonSerialization['heightCm'] as num?)?.toDouble(),
-      weightUnit: jsonSerialization['weightUnit'] as String,
-      heightUnit: jsonSerialization['heightUnit'] as String,
-      goal: jsonSerialization['goal'] as String,
-      eatingStyle: jsonSerialization['eatingStyle'] as String,
-      alcoholHabit: jsonSerialization['alcoholHabit'] as String,
+      weightUnit: _i3.WeightUnit.fromJson(
+        (jsonSerialization['weightUnit'] as String),
+      ),
+      heightUnit: _i4.HeightUnit.fromJson(
+        (jsonSerialization['heightUnit'] as String),
+      ),
+      goal: _i5.UserGoal.fromJson((jsonSerialization['goal'] as String)),
+      eatingStyle: _i6.EatingStyle.fromJson(
+        (jsonSerialization['eatingStyle'] as String),
+      ),
+      alcoholHabit: _i7.AlcoholHabit.fromJson(
+        (jsonSerialization['alcoholHabit'] as String),
+      ),
       alcoholTracking: jsonSerialization['alcoholTracking'] as bool,
       morningRecap: jsonSerialization['morningRecap'] as bool,
       updatedAt: _i1.DateTimeJsonExtension.fromJson(
@@ -93,8 +111,8 @@ abstract class UserProfile implements _i1.SerializableModel {
   /// Age in years.
   int? age;
 
-  /// Biological sex: 'male' | 'female'
-  String? biologicalSex;
+  /// Biological sex.
+  _i2.BiologicalSex? biologicalSex;
 
   /// Weight stored in kg (SI). Never stores lbs.
   double? weightKg;
@@ -102,20 +120,20 @@ abstract class UserProfile implements _i1.SerializableModel {
   /// Height stored in cm (SI). Never stores ft.
   double? heightCm;
 
-  /// Display unit preference: 'kg' | 'lbs' — display only.
-  String weightUnit;
+  /// Display unit preference — display only.
+  _i3.WeightUnit weightUnit;
 
-  /// Display unit preference: 'cm' | 'ft' — display only.
-  String heightUnit;
+  /// Display unit preference — display only.
+  _i4.HeightUnit heightUnit;
 
-  /// Goal: 'lose_weight' | 'eat_better' | 'stay_aware'
-  String goal;
+  /// User's primary nutrition goal.
+  _i5.UserGoal goal;
 
-  /// Eating style: 'home_cooked' | 'takeaway' | 'restaurants' | 'mixed'
-  String eatingStyle;
+  /// Primary eating style.
+  _i6.EatingStyle eatingStyle;
 
-  /// Alcohol habit: 'rarely' | 'sometimes' | 'often'
-  String alcoholHabit;
+  /// Alcohol consumption frequency.
+  _i7.AlcoholHabit alcoholHabit;
 
   /// Whether to include alcohol in daily calorie total.
   bool alcoholTracking;
@@ -135,14 +153,14 @@ abstract class UserProfile implements _i1.SerializableModel {
     String? name,
     bool? isGuest,
     int? age,
-    String? biologicalSex,
+    _i2.BiologicalSex? biologicalSex,
     double? weightKg,
     double? heightCm,
-    String? weightUnit,
-    String? heightUnit,
-    String? goal,
-    String? eatingStyle,
-    String? alcoholHabit,
+    _i3.WeightUnit? weightUnit,
+    _i4.HeightUnit? heightUnit,
+    _i5.UserGoal? goal,
+    _i6.EatingStyle? eatingStyle,
+    _i7.AlcoholHabit? alcoholHabit,
     bool? alcoholTracking,
     bool? morningRecap,
     DateTime? updatedAt,
@@ -156,14 +174,14 @@ abstract class UserProfile implements _i1.SerializableModel {
       if (name != null) 'name': name,
       'isGuest': isGuest,
       if (age != null) 'age': age,
-      if (biologicalSex != null) 'biologicalSex': biologicalSex,
+      if (biologicalSex != null) 'biologicalSex': biologicalSex?.toJson(),
       if (weightKg != null) 'weightKg': weightKg,
       if (heightCm != null) 'heightCm': heightCm,
-      'weightUnit': weightUnit,
-      'heightUnit': heightUnit,
-      'goal': goal,
-      'eatingStyle': eatingStyle,
-      'alcoholHabit': alcoholHabit,
+      'weightUnit': weightUnit.toJson(),
+      'heightUnit': heightUnit.toJson(),
+      'goal': goal.toJson(),
+      'eatingStyle': eatingStyle.toJson(),
+      'alcoholHabit': alcoholHabit.toJson(),
       'alcoholTracking': alcoholTracking,
       'morningRecap': morningRecap,
       'updatedAt': updatedAt.toJson(),
@@ -185,14 +203,14 @@ class _UserProfileImpl extends UserProfile {
     String? name,
     required bool isGuest,
     int? age,
-    String? biologicalSex,
+    _i2.BiologicalSex? biologicalSex,
     double? weightKg,
     double? heightCm,
-    required String weightUnit,
-    required String heightUnit,
-    required String goal,
-    required String eatingStyle,
-    required String alcoholHabit,
+    required _i3.WeightUnit weightUnit,
+    required _i4.HeightUnit heightUnit,
+    required _i5.UserGoal goal,
+    required _i6.EatingStyle eatingStyle,
+    required _i7.AlcoholHabit alcoholHabit,
     required bool alcoholTracking,
     required bool morningRecap,
     required DateTime updatedAt,
@@ -228,11 +246,11 @@ class _UserProfileImpl extends UserProfile {
     Object? biologicalSex = _Undefined,
     Object? weightKg = _Undefined,
     Object? heightCm = _Undefined,
-    String? weightUnit,
-    String? heightUnit,
-    String? goal,
-    String? eatingStyle,
-    String? alcoholHabit,
+    _i3.WeightUnit? weightUnit,
+    _i4.HeightUnit? heightUnit,
+    _i5.UserGoal? goal,
+    _i6.EatingStyle? eatingStyle,
+    _i7.AlcoholHabit? alcoholHabit,
     bool? alcoholTracking,
     bool? morningRecap,
     DateTime? updatedAt,
@@ -243,7 +261,7 @@ class _UserProfileImpl extends UserProfile {
       name: name is String? ? name : this.name,
       isGuest: isGuest ?? this.isGuest,
       age: age is int? ? age : this.age,
-      biologicalSex: biologicalSex is String?
+      biologicalSex: biologicalSex is _i2.BiologicalSex?
           ? biologicalSex
           : this.biologicalSex,
       weightKg: weightKg is double? ? weightKg : this.weightKg,

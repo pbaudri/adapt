@@ -15,7 +15,7 @@ class OnboardingEndpoint extends Endpoint {
     await _updateProfile(session, userId, (p) => p.copyWith(name: name));
   }
 
-  Future<void> saveEatingStyle(Session session, String style) async {
+  Future<void> saveEatingStyle(Session session, EatingStyle style) async {
     final userId = session.authenticated!.userIdentifier;
     await _updateProfile(
       session,
@@ -24,12 +24,12 @@ class OnboardingEndpoint extends Endpoint {
     );
   }
 
-  Future<void> saveGoal(Session session, String goal) async {
+  Future<void> saveGoal(Session session, UserGoal goal) async {
     final userId = session.authenticated!.userIdentifier;
     await _updateProfile(session, userId, (p) => p.copyWith(goal: goal));
   }
 
-  Future<void> saveAlcoholHabit(Session session, String habit) async {
+  Future<void> saveAlcoholHabit(Session session, AlcoholHabit habit) async {
     final userId = session.authenticated!.userIdentifier;
     await _updateProfile(
       session,
@@ -45,7 +45,7 @@ class OnboardingEndpoint extends Endpoint {
   Future<void> savePersonalInfo(
     Session session,
     int age,
-    String biologicalSex,
+    BiologicalSex biologicalSex,
     double weightKg,
     double heightCm,
   ) async {
@@ -79,11 +79,11 @@ class OnboardingEndpoint extends Endpoint {
       profile = UserProfile(
         userId: userId,
         isGuest: false,
-        weightUnit: 'kg',
-        heightUnit: 'cm',
-        goal: 'stay_aware',
-        eatingStyle: 'mixed',
-        alcoholHabit: 'rarely',
+        weightUnit: WeightUnit.kg,
+        heightUnit: HeightUnit.cm,
+        goal: UserGoal.stayAware,
+        eatingStyle: EatingStyle.mixed,
+        alcoholHabit: AlcoholHabit.rarely,
         alcoholTracking: true,
         morningRecap: true,
         updatedAt: DateTime.now(),

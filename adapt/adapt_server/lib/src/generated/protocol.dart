@@ -21,22 +21,42 @@ import 'daily_summary.dart' as _i6;
 import 'day_detail.dart' as _i7;
 import 'drink_log.dart' as _i8;
 import 'drink_reference.dart' as _i9;
-import 'greetings/greeting.dart' as _i10;
-import 'home_data.dart' as _i11;
-import 'meal_correction_input.dart' as _i12;
-import 'meal_log.dart' as _i13;
-import 'meal_result.dart' as _i14;
-import 'morning_recap.dart' as _i15;
-import 'user_profile.dart' as _i16;
-import 'package:adapt_server/src/generated/drink_reference.dart' as _i17;
-import 'package:adapt_server/src/generated/drink_log.dart' as _i18;
-import 'package:adapt_server/src/generated/daily_summary.dart' as _i19;
-import 'package:adapt_server/src/generated/meal_log.dart' as _i20;
+import 'enums/alcohol_habit.dart' as _i10;
+import 'enums/biological_sex.dart' as _i11;
+import 'enums/drink_type.dart' as _i12;
+import 'enums/eating_style.dart' as _i13;
+import 'enums/height_unit.dart' as _i14;
+import 'enums/input_method.dart' as _i15;
+import 'enums/meal_source.dart' as _i16;
+import 'enums/meal_type.dart' as _i17;
+import 'enums/user_goal.dart' as _i18;
+import 'enums/weight_unit.dart' as _i19;
+import 'greetings/greeting.dart' as _i20;
+import 'home_data.dart' as _i21;
+import 'meal_correction_input.dart' as _i22;
+import 'meal_log.dart' as _i23;
+import 'meal_result.dart' as _i24;
+import 'morning_recap.dart' as _i25;
+import 'user_profile.dart' as _i26;
+import 'package:adapt_server/src/generated/drink_reference.dart' as _i27;
+import 'package:adapt_server/src/generated/drink_log.dart' as _i28;
+import 'package:adapt_server/src/generated/daily_summary.dart' as _i29;
+import 'package:adapt_server/src/generated/meal_log.dart' as _i30;
 export 'auth_token.dart';
 export 'daily_summary.dart';
 export 'day_detail.dart';
 export 'drink_log.dart';
 export 'drink_reference.dart';
+export 'enums/alcohol_habit.dart';
+export 'enums/biological_sex.dart';
+export 'enums/drink_type.dart';
+export 'enums/eating_style.dart';
+export 'enums/height_unit.dart';
+export 'enums/input_method.dart';
+export 'enums/meal_source.dart';
+export 'enums/meal_type.dart';
+export 'enums/user_goal.dart';
+export 'enums/weight_unit.dart';
 export 'greetings/greeting.dart';
 export 'home_data.dart';
 export 'meal_correction_input.dart';
@@ -185,7 +205,7 @@ class Protocol extends _i1.SerializationManagerServer {
           name: 'drinkType',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:DrinkType',
         ),
         _i2.ColumnDefinition(
           name: 'quantity',
@@ -261,7 +281,7 @@ class Protocol extends _i1.SerializationManagerServer {
           name: 'drinkType',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:DrinkType',
         ),
         _i2.ColumnDefinition(
           name: 'caloriesPerUnit',
@@ -330,13 +350,13 @@ class Protocol extends _i1.SerializationManagerServer {
           name: 'mealType',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:MealType',
         ),
         _i2.ColumnDefinition(
           name: 'inputMethod',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:InputMethod',
         ),
         _i2.ColumnDefinition(
           name: 'rawInput',
@@ -472,7 +492,7 @@ class Protocol extends _i1.SerializationManagerServer {
           name: 'source',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:MealSource',
         ),
       ],
       foreignKeys: [
@@ -643,7 +663,7 @@ class Protocol extends _i1.SerializationManagerServer {
           name: 'biologicalSex',
           columnType: _i2.ColumnType.text,
           isNullable: true,
-          dartType: 'String?',
+          dartType: 'protocol:BiologicalSex?',
         ),
         _i2.ColumnDefinition(
           name: 'weightKg',
@@ -661,31 +681,31 @@ class Protocol extends _i1.SerializationManagerServer {
           name: 'weightUnit',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:WeightUnit',
         ),
         _i2.ColumnDefinition(
           name: 'heightUnit',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:HeightUnit',
         ),
         _i2.ColumnDefinition(
           name: 'goal',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:UserGoal',
         ),
         _i2.ColumnDefinition(
           name: 'eatingStyle',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:EatingStyle',
         ),
         _i2.ColumnDefinition(
           name: 'alcoholHabit',
           columnType: _i2.ColumnType.text,
           isNullable: false,
-          dartType: 'String',
+          dartType: 'protocol:AlcoholHabit',
         ),
         _i2.ColumnDefinition(
           name: 'alcoholTracking',
@@ -784,26 +804,56 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i9.DrinkReference) {
       return _i9.DrinkReference.fromJson(data) as T;
     }
-    if (t == _i10.Greeting) {
-      return _i10.Greeting.fromJson(data) as T;
+    if (t == _i10.AlcoholHabit) {
+      return _i10.AlcoholHabit.fromJson(data) as T;
     }
-    if (t == _i11.HomeData) {
-      return _i11.HomeData.fromJson(data) as T;
+    if (t == _i11.BiologicalSex) {
+      return _i11.BiologicalSex.fromJson(data) as T;
     }
-    if (t == _i12.MealCorrectionInput) {
-      return _i12.MealCorrectionInput.fromJson(data) as T;
+    if (t == _i12.DrinkType) {
+      return _i12.DrinkType.fromJson(data) as T;
     }
-    if (t == _i13.MealLog) {
-      return _i13.MealLog.fromJson(data) as T;
+    if (t == _i13.EatingStyle) {
+      return _i13.EatingStyle.fromJson(data) as T;
     }
-    if (t == _i14.MealResult) {
-      return _i14.MealResult.fromJson(data) as T;
+    if (t == _i14.HeightUnit) {
+      return _i14.HeightUnit.fromJson(data) as T;
     }
-    if (t == _i15.MorningRecap) {
-      return _i15.MorningRecap.fromJson(data) as T;
+    if (t == _i15.InputMethod) {
+      return _i15.InputMethod.fromJson(data) as T;
     }
-    if (t == _i16.UserProfile) {
-      return _i16.UserProfile.fromJson(data) as T;
+    if (t == _i16.MealSource) {
+      return _i16.MealSource.fromJson(data) as T;
+    }
+    if (t == _i17.MealType) {
+      return _i17.MealType.fromJson(data) as T;
+    }
+    if (t == _i18.UserGoal) {
+      return _i18.UserGoal.fromJson(data) as T;
+    }
+    if (t == _i19.WeightUnit) {
+      return _i19.WeightUnit.fromJson(data) as T;
+    }
+    if (t == _i20.Greeting) {
+      return _i20.Greeting.fromJson(data) as T;
+    }
+    if (t == _i21.HomeData) {
+      return _i21.HomeData.fromJson(data) as T;
+    }
+    if (t == _i22.MealCorrectionInput) {
+      return _i22.MealCorrectionInput.fromJson(data) as T;
+    }
+    if (t == _i23.MealLog) {
+      return _i23.MealLog.fromJson(data) as T;
+    }
+    if (t == _i24.MealResult) {
+      return _i24.MealResult.fromJson(data) as T;
+    }
+    if (t == _i25.MorningRecap) {
+      return _i25.MorningRecap.fromJson(data) as T;
+    }
+    if (t == _i26.UserProfile) {
+      return _i26.UserProfile.fromJson(data) as T;
     }
     if (t == _i1.getType<_i5.AuthToken?>()) {
       return (data != null ? _i5.AuthToken.fromJson(data) : null) as T;
@@ -820,54 +870,84 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i9.DrinkReference?>()) {
       return (data != null ? _i9.DrinkReference.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i10.Greeting?>()) {
-      return (data != null ? _i10.Greeting.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i10.AlcoholHabit?>()) {
+      return (data != null ? _i10.AlcoholHabit.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i11.HomeData?>()) {
-      return (data != null ? _i11.HomeData.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i11.BiologicalSex?>()) {
+      return (data != null ? _i11.BiologicalSex.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i12.MealCorrectionInput?>()) {
-      return (data != null ? _i12.MealCorrectionInput.fromJson(data) : null)
+    if (t == _i1.getType<_i12.DrinkType?>()) {
+      return (data != null ? _i12.DrinkType.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i13.EatingStyle?>()) {
+      return (data != null ? _i13.EatingStyle.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i14.HeightUnit?>()) {
+      return (data != null ? _i14.HeightUnit.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i15.InputMethod?>()) {
+      return (data != null ? _i15.InputMethod.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i16.MealSource?>()) {
+      return (data != null ? _i16.MealSource.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i17.MealType?>()) {
+      return (data != null ? _i17.MealType.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i18.UserGoal?>()) {
+      return (data != null ? _i18.UserGoal.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i19.WeightUnit?>()) {
+      return (data != null ? _i19.WeightUnit.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i20.Greeting?>()) {
+      return (data != null ? _i20.Greeting.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i21.HomeData?>()) {
+      return (data != null ? _i21.HomeData.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i22.MealCorrectionInput?>()) {
+      return (data != null ? _i22.MealCorrectionInput.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i13.MealLog?>()) {
-      return (data != null ? _i13.MealLog.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i23.MealLog?>()) {
+      return (data != null ? _i23.MealLog.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i14.MealResult?>()) {
-      return (data != null ? _i14.MealResult.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i24.MealResult?>()) {
+      return (data != null ? _i24.MealResult.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i15.MorningRecap?>()) {
-      return (data != null ? _i15.MorningRecap.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i25.MorningRecap?>()) {
+      return (data != null ? _i25.MorningRecap.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i16.UserProfile?>()) {
-      return (data != null ? _i16.UserProfile.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i26.UserProfile?>()) {
+      return (data != null ? _i26.UserProfile.fromJson(data) : null) as T;
     }
-    if (t == List<_i13.MealLog>) {
-      return (data as List).map((e) => deserialize<_i13.MealLog>(e)).toList()
+    if (t == List<_i23.MealLog>) {
+      return (data as List).map((e) => deserialize<_i23.MealLog>(e)).toList()
           as T;
     }
     if (t == List<_i8.DrinkLog>) {
       return (data as List).map((e) => deserialize<_i8.DrinkLog>(e)).toList()
           as T;
     }
-    if (t == List<_i17.DrinkReference>) {
+    if (t == List<_i27.DrinkReference>) {
       return (data as List)
-              .map((e) => deserialize<_i17.DrinkReference>(e))
+              .map((e) => deserialize<_i27.DrinkReference>(e))
               .toList()
           as T;
     }
-    if (t == List<_i18.DrinkLog>) {
-      return (data as List).map((e) => deserialize<_i18.DrinkLog>(e)).toList()
+    if (t == List<_i28.DrinkLog>) {
+      return (data as List).map((e) => deserialize<_i28.DrinkLog>(e)).toList()
           as T;
     }
-    if (t == List<_i19.DailySummary>) {
+    if (t == List<_i29.DailySummary>) {
       return (data as List)
-              .map((e) => deserialize<_i19.DailySummary>(e))
+              .map((e) => deserialize<_i29.DailySummary>(e))
               .toList()
           as T;
     }
-    if (t == List<_i20.MealLog>) {
-      return (data as List).map((e) => deserialize<_i20.MealLog>(e)).toList()
+    if (t == List<_i30.MealLog>) {
+      return (data as List).map((e) => deserialize<_i30.MealLog>(e)).toList()
           as T;
     }
     try {
@@ -889,13 +969,23 @@ class Protocol extends _i1.SerializationManagerServer {
       _i7.DayDetail => 'DayDetail',
       _i8.DrinkLog => 'DrinkLog',
       _i9.DrinkReference => 'DrinkReference',
-      _i10.Greeting => 'Greeting',
-      _i11.HomeData => 'HomeData',
-      _i12.MealCorrectionInput => 'MealCorrectionInput',
-      _i13.MealLog => 'MealLog',
-      _i14.MealResult => 'MealResult',
-      _i15.MorningRecap => 'MorningRecap',
-      _i16.UserProfile => 'UserProfile',
+      _i10.AlcoholHabit => 'AlcoholHabit',
+      _i11.BiologicalSex => 'BiologicalSex',
+      _i12.DrinkType => 'DrinkType',
+      _i13.EatingStyle => 'EatingStyle',
+      _i14.HeightUnit => 'HeightUnit',
+      _i15.InputMethod => 'InputMethod',
+      _i16.MealSource => 'MealSource',
+      _i17.MealType => 'MealType',
+      _i18.UserGoal => 'UserGoal',
+      _i19.WeightUnit => 'WeightUnit',
+      _i20.Greeting => 'Greeting',
+      _i21.HomeData => 'HomeData',
+      _i22.MealCorrectionInput => 'MealCorrectionInput',
+      _i23.MealLog => 'MealLog',
+      _i24.MealResult => 'MealResult',
+      _i25.MorningRecap => 'MorningRecap',
+      _i26.UserProfile => 'UserProfile',
       _ => null,
     };
   }
@@ -920,19 +1010,39 @@ class Protocol extends _i1.SerializationManagerServer {
         return 'DrinkLog';
       case _i9.DrinkReference():
         return 'DrinkReference';
-      case _i10.Greeting():
+      case _i10.AlcoholHabit():
+        return 'AlcoholHabit';
+      case _i11.BiologicalSex():
+        return 'BiologicalSex';
+      case _i12.DrinkType():
+        return 'DrinkType';
+      case _i13.EatingStyle():
+        return 'EatingStyle';
+      case _i14.HeightUnit():
+        return 'HeightUnit';
+      case _i15.InputMethod():
+        return 'InputMethod';
+      case _i16.MealSource():
+        return 'MealSource';
+      case _i17.MealType():
+        return 'MealType';
+      case _i18.UserGoal():
+        return 'UserGoal';
+      case _i19.WeightUnit():
+        return 'WeightUnit';
+      case _i20.Greeting():
         return 'Greeting';
-      case _i11.HomeData():
+      case _i21.HomeData():
         return 'HomeData';
-      case _i12.MealCorrectionInput():
+      case _i22.MealCorrectionInput():
         return 'MealCorrectionInput';
-      case _i13.MealLog():
+      case _i23.MealLog():
         return 'MealLog';
-      case _i14.MealResult():
+      case _i24.MealResult():
         return 'MealResult';
-      case _i15.MorningRecap():
+      case _i25.MorningRecap():
         return 'MorningRecap';
-      case _i16.UserProfile():
+      case _i26.UserProfile():
         return 'UserProfile';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -971,26 +1081,56 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'DrinkReference') {
       return deserialize<_i9.DrinkReference>(data['data']);
     }
+    if (dataClassName == 'AlcoholHabit') {
+      return deserialize<_i10.AlcoholHabit>(data['data']);
+    }
+    if (dataClassName == 'BiologicalSex') {
+      return deserialize<_i11.BiologicalSex>(data['data']);
+    }
+    if (dataClassName == 'DrinkType') {
+      return deserialize<_i12.DrinkType>(data['data']);
+    }
+    if (dataClassName == 'EatingStyle') {
+      return deserialize<_i13.EatingStyle>(data['data']);
+    }
+    if (dataClassName == 'HeightUnit') {
+      return deserialize<_i14.HeightUnit>(data['data']);
+    }
+    if (dataClassName == 'InputMethod') {
+      return deserialize<_i15.InputMethod>(data['data']);
+    }
+    if (dataClassName == 'MealSource') {
+      return deserialize<_i16.MealSource>(data['data']);
+    }
+    if (dataClassName == 'MealType') {
+      return deserialize<_i17.MealType>(data['data']);
+    }
+    if (dataClassName == 'UserGoal') {
+      return deserialize<_i18.UserGoal>(data['data']);
+    }
+    if (dataClassName == 'WeightUnit') {
+      return deserialize<_i19.WeightUnit>(data['data']);
+    }
     if (dataClassName == 'Greeting') {
-      return deserialize<_i10.Greeting>(data['data']);
+      return deserialize<_i20.Greeting>(data['data']);
     }
     if (dataClassName == 'HomeData') {
-      return deserialize<_i11.HomeData>(data['data']);
+      return deserialize<_i21.HomeData>(data['data']);
     }
     if (dataClassName == 'MealCorrectionInput') {
-      return deserialize<_i12.MealCorrectionInput>(data['data']);
+      return deserialize<_i22.MealCorrectionInput>(data['data']);
     }
     if (dataClassName == 'MealLog') {
-      return deserialize<_i13.MealLog>(data['data']);
+      return deserialize<_i23.MealLog>(data['data']);
     }
     if (dataClassName == 'MealResult') {
-      return deserialize<_i14.MealResult>(data['data']);
+      return deserialize<_i24.MealResult>(data['data']);
     }
     if (dataClassName == 'MorningRecap') {
-      return deserialize<_i15.MorningRecap>(data['data']);
+      return deserialize<_i25.MorningRecap>(data['data']);
     }
     if (dataClassName == 'UserProfile') {
-      return deserialize<_i16.UserProfile>(data['data']);
+      return deserialize<_i26.UserProfile>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -1034,14 +1174,14 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i8.DrinkLog.t;
       case _i9.DrinkReference:
         return _i9.DrinkReference.t;
-      case _i13.MealLog:
-        return _i13.MealLog.t;
-      case _i14.MealResult:
-        return _i14.MealResult.t;
-      case _i15.MorningRecap:
-        return _i15.MorningRecap.t;
-      case _i16.UserProfile:
-        return _i16.UserProfile.t;
+      case _i23.MealLog:
+        return _i23.MealLog.t;
+      case _i24.MealResult:
+        return _i24.MealResult.t;
+      case _i25.MorningRecap:
+        return _i25.MorningRecap.t;
+      case _i26.UserProfile:
+        return _i26.UserProfile.t;
     }
     return null;
   }

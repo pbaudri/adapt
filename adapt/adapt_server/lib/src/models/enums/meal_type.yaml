@@ -1,0 +1,7 @@
+enum: MealType
+serialized: byName
+values:
+  - breakfast
+  - lunch
+  - dinner
+  - snack

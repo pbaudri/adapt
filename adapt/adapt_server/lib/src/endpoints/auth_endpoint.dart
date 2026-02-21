@@ -4,23 +4,14 @@ import '../generated/protocol.dart';
 
 /// Handles guest session creation.
 ///
-/// Email sign-in and sign-up are handled by the built-in EmailIdpEndpoint
-/// (lib/src/auth/email_idp_endpoint.dart). This endpoint creates user profiles
-/// for newly authenticated users and provides guest-mode access.
+/// Email sign-in and sign-up are handled by the built-in EmailIdpEndpoint.
+/// This endpoint creates user profiles for newly authenticated users and
+/// provides guest-mode access.
 class AuthEndpoint extends Endpoint {
   /// Creates a guest-mode user profile and returns a placeholder token.
-  ///
-  /// The client stores the returned key locally (via sqflite) for offline-first
-  /// guest usage. Guest data is not synced until the user signs in.
   Future<AuthToken> continueAsGuest(Session session) async {
     final guestKey = 'guest_${DateTime.now().millisecondsSinceEpoch}';
-    const guestUserId = 'guest';
-
-    return AuthToken(
-      key: guestKey,
-      userId: guestUserId,
-      isGuest: true,
-    );
+    return AuthToken(key: guestKey, userId: 'guest', isGuest: true);
   }
 
   /// Ensures a UserProfile exists for the authenticated user.
@@ -42,11 +33,11 @@ class AuthEndpoint extends Endpoint {
       profile = UserProfile(
         userId: userId,
         isGuest: false,
-        weightUnit: 'kg',
-        heightUnit: 'cm',
-        goal: 'stay_aware',
-        eatingStyle: 'mixed',
-        alcoholHabit: 'rarely',
+        weightUnit: WeightUnit.kg,
+        heightUnit: HeightUnit.cm,
+        goal: UserGoal.stayAware,
+        eatingStyle: EatingStyle.mixed,
+        alcoholHabit: AlcoholHabit.rarely,
         alcoholTracking: true,
         morningRecap: true,
         updatedAt: DateTime.now(),
@@ -54,10 +45,6 @@ class AuthEndpoint extends Endpoint {
       profile = await UserProfile.db.insertRow(session, profile);
     }
 
-    return AuthToken(
-      key: '',
-      userId: userId,
-      isGuest: false,
-    );
+    return AuthToken(key: '', userId: userId, isGuest: false);
   }
 }

@@ -238,7 +238,7 @@ Return only valid JSON. No markdown fences.
 MealResult buildMealResult({
   required int mealLogId,
   required AiMealAnalysis analysis,
-  String source = 'ai_estimated',
+  MealSource source = MealSource.aiEstimated,
 }) {
   return MealResult(
     mealLogId: mealLogId,

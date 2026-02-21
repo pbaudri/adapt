@@ -19,16 +19,23 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
 import 'package:adapt_server/src/generated/auth_token.dart' as _i5;
 import 'package:adapt_server/src/generated/drink_reference.dart' as _i6;
 import 'package:adapt_server/src/generated/daily_summary.dart' as _i7;
-import 'package:adapt_server/src/generated/drink_log.dart' as _i8;
-import 'package:adapt_server/src/generated/day_detail.dart' as _i9;
-import 'package:adapt_server/src/generated/home_data.dart' as _i10;
-import 'package:adapt_server/src/generated/meal_result.dart' as _i11;
-import 'dart:typed_data' as _i12;
-import 'package:adapt_server/src/generated/meal_correction_input.dart' as _i13;
-import 'package:adapt_server/src/generated/meal_log.dart' as _i14;
-import 'package:adapt_server/src/generated/user_profile.dart' as _i15;
-import 'package:adapt_server/src/generated/morning_recap.dart' as _i16;
-import 'package:adapt_server/src/generated/greetings/greeting.dart' as _i17;
+import 'package:adapt_server/src/generated/enums/drink_type.dart' as _i8;
+import 'package:adapt_server/src/generated/drink_log.dart' as _i9;
+import 'package:adapt_server/src/generated/day_detail.dart' as _i10;
+import 'package:adapt_server/src/generated/home_data.dart' as _i11;
+import 'package:adapt_server/src/generated/meal_result.dart' as _i12;
+import 'dart:typed_data' as _i13;
+import 'package:adapt_server/src/generated/meal_correction_input.dart' as _i14;
+import 'package:adapt_server/src/generated/meal_log.dart' as _i15;
+import 'package:adapt_server/src/generated/enums/eating_style.dart' as _i16;
+import 'package:adapt_server/src/generated/enums/user_goal.dart' as _i17;
+import 'package:adapt_server/src/generated/enums/alcohol_habit.dart' as _i18;
+import 'package:adapt_server/src/generated/enums/biological_sex.dart' as _i19;
+import 'package:adapt_server/src/generated/user_profile.dart' as _i20;
+import 'package:adapt_server/src/generated/enums/weight_unit.dart' as _i21;
+import 'package:adapt_server/src/generated/enums/height_unit.dart' as _i22;
+import 'package:adapt_server/src/generated/morning_recap.dart' as _i23;
+import 'package:adapt_server/src/generated/greetings/greeting.dart' as _i24;
 import 'package:adapt_server/src/generated/protocol.dart';
 import 'package:adapt_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -644,7 +651,7 @@ class _DrinkEndpoint {
 
   _i3.Future<_i7.DailySummary> logDrinks(
     _i1.TestSessionBuilder sessionBuilder,
-    String drinkType,
+    _i8.DrinkType drinkType,
     int quantity,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -677,7 +684,7 @@ class _DrinkEndpoint {
     });
   }
 
-  _i3.Future<List<_i8.DrinkLog>> getTodayDrinks(
+  _i3.Future<List<_i9.DrinkLog>> getTodayDrinks(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -699,7 +706,7 @@ class _DrinkEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i8.DrinkLog>>);
+                as _i3.Future<List<_i9.DrinkLog>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -749,7 +756,7 @@ class _HistoryEndpoint {
     });
   }
 
-  _i3.Future<_i9.DayDetail> getDayDetail(
+  _i3.Future<_i10.DayDetail> getDayDetail(
     _i1.TestSessionBuilder sessionBuilder,
     DateTime date,
   ) async {
@@ -772,7 +779,7 @@ class _HistoryEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i9.DayDetail>);
+                as _i3.Future<_i10.DayDetail>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -791,7 +798,7 @@ class _HomeEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i10.HomeData> getHomeData(
+  _i3.Future<_i11.HomeData> getHomeData(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -813,7 +820,7 @@ class _HomeEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i10.HomeData>);
+                as _i3.Future<_i11.HomeData>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -832,7 +839,7 @@ class _MealEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i11.MealResult> logMealByText(
+  _i3.Future<_i12.MealResult> logMealByText(
     _i1.TestSessionBuilder sessionBuilder,
     String text,
   ) async {
@@ -855,7 +862,7 @@ class _MealEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i11.MealResult>);
+                as _i3.Future<_i12.MealResult>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -863,9 +870,9 @@ class _MealEndpoint {
     });
   }
 
-  _i3.Future<_i11.MealResult> logMealByPhoto(
+  _i3.Future<_i12.MealResult> logMealByPhoto(
     _i1.TestSessionBuilder sessionBuilder,
-    _i12.ByteData imageBytes,
+    _i13.ByteData imageBytes,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -886,7 +893,7 @@ class _MealEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i11.MealResult>);
+                as _i3.Future<_i12.MealResult>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -925,10 +932,10 @@ class _MealEndpoint {
     });
   }
 
-  _i3.Future<_i11.MealResult> correctMeal(
+  _i3.Future<_i12.MealResult> correctMeal(
     _i1.TestSessionBuilder sessionBuilder,
     int mealLogId,
-    _i13.MealCorrectionInput correctedData,
+    _i14.MealCorrectionInput correctedData,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -952,7 +959,7 @@ class _MealEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i11.MealResult>);
+                as _i3.Future<_i12.MealResult>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -960,7 +967,7 @@ class _MealEndpoint {
     });
   }
 
-  _i3.Future<List<_i14.MealLog>> getTodayMeals(
+  _i3.Future<List<_i15.MealLog>> getTodayMeals(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -982,7 +989,7 @@ class _MealEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<List<_i14.MealLog>>);
+                as _i3.Future<List<_i15.MealLog>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1034,7 +1041,7 @@ class _OnboardingEndpoint {
 
   _i3.Future<void> saveEatingStyle(
     _i1.TestSessionBuilder sessionBuilder,
-    String style,
+    _i16.EatingStyle style,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1065,7 +1072,7 @@ class _OnboardingEndpoint {
 
   _i3.Future<void> saveGoal(
     _i1.TestSessionBuilder sessionBuilder,
-    String goal,
+    _i17.UserGoal goal,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1096,7 +1103,7 @@ class _OnboardingEndpoint {
 
   _i3.Future<void> saveAlcoholHabit(
     _i1.TestSessionBuilder sessionBuilder,
-    String habit,
+    _i18.AlcoholHabit habit,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1128,7 +1135,7 @@ class _OnboardingEndpoint {
   _i3.Future<void> savePersonalInfo(
     _i1.TestSessionBuilder sessionBuilder,
     int age,
-    String biologicalSex,
+    _i19.BiologicalSex biologicalSex,
     double weightKg,
     double heightCm,
   ) async {
@@ -1175,7 +1182,7 @@ class _ProfileEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i15.UserProfile> getProfile(
+  _i3.Future<_i20.UserProfile> getProfile(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1197,7 +1204,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1205,7 +1212,7 @@ class _ProfileEndpoint {
     });
   }
 
-  _i3.Future<_i15.UserProfile> updateWeight(
+  _i3.Future<_i20.UserProfile> updateWeight(
     _i1.TestSessionBuilder sessionBuilder,
     double weightKg,
   ) async {
@@ -1228,7 +1235,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1236,7 +1243,7 @@ class _ProfileEndpoint {
     });
   }
 
-  _i3.Future<_i15.UserProfile> updateHeight(
+  _i3.Future<_i20.UserProfile> updateHeight(
     _i1.TestSessionBuilder sessionBuilder,
     double heightCm,
   ) async {
@@ -1259,7 +1266,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1267,7 +1274,7 @@ class _ProfileEndpoint {
     });
   }
 
-  _i3.Future<_i15.UserProfile> updateAge(
+  _i3.Future<_i20.UserProfile> updateAge(
     _i1.TestSessionBuilder sessionBuilder,
     int age,
   ) async {
@@ -1290,7 +1297,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1298,9 +1305,9 @@ class _ProfileEndpoint {
     });
   }
 
-  _i3.Future<_i15.UserProfile> updateGoal(
+  _i3.Future<_i20.UserProfile> updateGoal(
     _i1.TestSessionBuilder sessionBuilder,
-    String goal,
+    _i17.UserGoal goal,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1321,7 +1328,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1329,9 +1336,9 @@ class _ProfileEndpoint {
     });
   }
 
-  _i3.Future<_i15.UserProfile> updateWeightUnit(
+  _i3.Future<_i20.UserProfile> updateWeightUnit(
     _i1.TestSessionBuilder sessionBuilder,
-    String unit,
+    _i21.WeightUnit unit,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1352,7 +1359,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1360,9 +1367,9 @@ class _ProfileEndpoint {
     });
   }
 
-  _i3.Future<_i15.UserProfile> updateHeightUnit(
+  _i3.Future<_i20.UserProfile> updateHeightUnit(
     _i1.TestSessionBuilder sessionBuilder,
-    String unit,
+    _i22.HeightUnit unit,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1383,7 +1390,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1391,7 +1398,7 @@ class _ProfileEndpoint {
     });
   }
 
-  _i3.Future<_i15.UserProfile> updatePreferences(
+  _i3.Future<_i20.UserProfile> updatePreferences(
     _i1.TestSessionBuilder sessionBuilder,
     bool alcoholTracking,
     bool morningRecap,
@@ -1418,7 +1425,7 @@ class _ProfileEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i15.UserProfile>);
+                as _i3.Future<_i20.UserProfile>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1465,7 +1472,7 @@ class _RecapEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i16.MorningRecap?> getMorningRecap(
+  _i3.Future<_i23.MorningRecap?> getMorningRecap(
     _i1.TestSessionBuilder sessionBuilder,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
@@ -1487,7 +1494,7 @@ class _RecapEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i16.MorningRecap?>);
+                as _i3.Future<_i23.MorningRecap?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1537,7 +1544,7 @@ class _GreetingEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i17.Greeting> hello(
+  _i3.Future<_i24.Greeting> hello(
     _i1.TestSessionBuilder sessionBuilder,
     String name,
   ) async {
@@ -1560,7 +1567,7 @@ class _GreetingEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i17.Greeting>);
+                as _i3.Future<_i24.Greeting>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

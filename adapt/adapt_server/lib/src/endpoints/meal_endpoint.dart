@@ -22,7 +22,7 @@ class MealEndpoint extends Endpoint {
         userId: userId,
         loggedAt: DateTime.now(),
         mealType: _guessMealType(),
-        inputMethod: 'text',
+        inputMethod: InputMethod.text,
         rawInput: text,
         estimated: true,
       ),
@@ -45,7 +45,7 @@ class MealEndpoint extends Endpoint {
         userId: userId,
         loggedAt: DateTime.now(),
         mealType: _guessMealType(),
-        inputMethod: 'photo',
+        inputMethod: InputMethod.photo,
         estimated: true,
       ),
     );
@@ -67,10 +67,7 @@ class MealEndpoint extends Endpoint {
       throw Exception('Meal log not found.');
     }
 
-    await MealLog.db.updateRow(
-      session,
-      mealLog.copyWith(estimated: false),
-    );
+    await MealLog.db.updateRow(session, mealLog.copyWith(estimated: false));
 
     final result = await MealResult.db.findFirstRow(
       session,
@@ -104,7 +101,6 @@ class MealEndpoint extends Endpoint {
     );
     if (existing == null) throw Exception('Meal result not found.');
 
-    // Recalculate calories from the corrected macros
     final newProtein = correctedData.proteinG ?? existing.proteinG;
     final newCarbs = correctedData.carbsG ?? existing.carbsG;
     final newFat = correctedData.fatG ?? existing.fatG;
@@ -114,7 +110,6 @@ class MealEndpoint extends Endpoint {
       fatG: newFat,
     );
 
-    // Remove old contribution from daily summary (if meal was confirmed)
     if (!mealLog.estimated) {
       await DailySummaryService.removeMealResult(
         session,
@@ -131,17 +126,12 @@ class MealEndpoint extends Endpoint {
         carbsG: newCarbs,
         fatG: newFat,
         caloriesKcal: newCalories,
-        source: 'user_corrected',
+        source: MealSource.userCorrected,
       ),
     );
 
-    // Mark the meal as confirmed with corrected data
-    await MealLog.db.updateRow(
-      session,
-      mealLog.copyWith(estimated: false),
-    );
+    await MealLog.db.updateRow(session, mealLog.copyWith(estimated: false));
 
-    // Add updated contribution to daily summary
     await DailySummaryService.addMealResult(
       session,
       userId: userId,
@@ -169,12 +159,11 @@ class MealEndpoint extends Endpoint {
 
   // ── Private helpers ───────────────────────────────────────────────────────
 
-  /// Guesses meal type based on current time of day.
-  String _guessMealType() {
+  MealType _guessMealType() {
     final hour = DateTime.now().hour;
-    if (hour < 10) return 'breakfast';
-    if (hour < 14) return 'lunch';
-    if (hour < 18) return 'snack';
-    return 'dinner';
+    if (hour < 10) return MealType.breakfast;
+    if (hour < 14) return MealType.lunch;
+    if (hour < 18) return MealType.snack;
+    return MealType.dinner;
   }
 }

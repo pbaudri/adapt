@@ -1,0 +1,6 @@
+enum: InputMethod
+serialized: byName
+values:
+  - photo
+  - text
+  - location

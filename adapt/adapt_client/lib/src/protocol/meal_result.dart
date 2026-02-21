@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import 'enums/meal_source.dart' as _i2;
 
 /// AI-estimated or user-corrected nutritional result for a meal.
 /// One-to-one with meal_logs.
@@ -38,7 +39,7 @@ abstract class MealResult implements _i1.SerializableModel {
     required double fatG,
     required String aiMessage,
     String? aiTip,
-    required String source,
+    required _i2.MealSource source,
   }) = _MealResultImpl;
 
   factory MealResult.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -52,7 +53,7 @@ abstract class MealResult implements _i1.SerializableModel {
       fatG: (jsonSerialization['fatG'] as num).toDouble(),
       aiMessage: jsonSerialization['aiMessage'] as String,
       aiTip: jsonSerialization['aiTip'] as String?,
-      source: jsonSerialization['source'] as String,
+      source: _i2.MealSource.fromJson((jsonSerialization['source'] as String)),
     );
   }
 
@@ -85,8 +86,8 @@ abstract class MealResult implements _i1.SerializableModel {
   /// Optional follow-up suggestion from AI.
   String? aiTip;
 
-  /// Source: 'ai_estimated' | 'database' | 'user_corrected'
-  String source;
+  /// How this result was produced.
+  _i2.MealSource source;
 
   /// Returns a shallow copy of this [MealResult]
   /// with some or all fields replaced by the given arguments.
@@ -101,7 +102,7 @@ abstract class MealResult implements _i1.SerializableModel {
     double? fatG,
     String? aiMessage,
     String? aiTip,
-    String? source,
+    _i2.MealSource? source,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -116,7 +117,7 @@ abstract class MealResult implements _i1.SerializableModel {
       'fatG': fatG,
       'aiMessage': aiMessage,
       if (aiTip != null) 'aiTip': aiTip,
-      'source': source,
+      'source': source.toJson(),
     };
   }
 
@@ -139,7 +140,7 @@ class _MealResultImpl extends MealResult {
     required double fatG,
     required String aiMessage,
     String? aiTip,
-    required String source,
+    required _i2.MealSource source,
   }) : super._(
          id: id,
          mealLogId: mealLogId,
@@ -167,7 +168,7 @@ class _MealResultImpl extends MealResult {
     double? fatG,
     String? aiMessage,
     Object? aiTip = _Undefined,
-    String? source,
+    _i2.MealSource? source,
   }) {
     return MealResult(
       id: id is int? ? id : this.id,

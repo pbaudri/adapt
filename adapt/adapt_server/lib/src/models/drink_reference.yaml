@@ -4,8 +4,8 @@ class: DrinkReference
 table: drink_reference
 
 fields:
-  ### Drink type identifier: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
-  drinkType: String
+  ### Drink type identifier.
+  drinkType: DrinkType
   ### Calories per standard glass/unit.
   caloriesPerUnit: int
 

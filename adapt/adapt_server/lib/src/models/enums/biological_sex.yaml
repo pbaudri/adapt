@@ -1,0 +1,5 @@
+enum: BiologicalSex
+serialized: byName
+values:
+  - male
+  - female

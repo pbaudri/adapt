@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import 'enums/drink_type.dart' as _i2;
 
 /// A single drink logging event.
 /// caloriesKcal is denormalised (quantity × reference calories) for fast history reads.
@@ -29,7 +30,7 @@ abstract class DrinkLog
     int? id,
     required String userId,
     required DateTime loggedAt,
-    required String drinkType,
+    required _i2.DrinkType drinkType,
     required int quantity,
     required int caloriesKcal,
   }) = _DrinkLogImpl;
@@ -41,7 +42,9 @@ abstract class DrinkLog
       loggedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['loggedAt'],
       ),
-      drinkType: jsonSerialization['drinkType'] as String,
+      drinkType: _i2.DrinkType.fromJson(
+        (jsonSerialization['drinkType'] as String),
+      ),
       quantity: jsonSerialization['quantity'] as int,
       caloriesKcal: jsonSerialization['caloriesKcal'] as int,
     );
@@ -60,8 +63,8 @@ abstract class DrinkLog
   /// When the drinks were logged.
   DateTime loggedAt;
 
-  /// Drink type: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
-  String drinkType;
+  /// Type of drink.
+  _i2.DrinkType drinkType;
 
   /// Number of glasses/units logged.
   int quantity;
@@ -79,7 +82,7 @@ abstract class DrinkLog
     int? id,
     String? userId,
     DateTime? loggedAt,
-    String? drinkType,
+    _i2.DrinkType? drinkType,
     int? quantity,
     int? caloriesKcal,
   });
@@ -90,7 +93,7 @@ abstract class DrinkLog
       if (id != null) 'id': id,
       'userId': userId,
       'loggedAt': loggedAt.toJson(),
-      'drinkType': drinkType,
+      'drinkType': drinkType.toJson(),
       'quantity': quantity,
       'caloriesKcal': caloriesKcal,
     };
@@ -103,7 +106,7 @@ abstract class DrinkLog
       if (id != null) 'id': id,
       'userId': userId,
       'loggedAt': loggedAt.toJson(),
-      'drinkType': drinkType,
+      'drinkType': drinkType.toJson(),
       'quantity': quantity,
       'caloriesKcal': caloriesKcal,
     };
@@ -146,7 +149,7 @@ class _DrinkLogImpl extends DrinkLog {
     int? id,
     required String userId,
     required DateTime loggedAt,
-    required String drinkType,
+    required _i2.DrinkType drinkType,
     required int quantity,
     required int caloriesKcal,
   }) : super._(
@@ -166,7 +169,7 @@ class _DrinkLogImpl extends DrinkLog {
     Object? id = _Undefined,
     String? userId,
     DateTime? loggedAt,
-    String? drinkType,
+    _i2.DrinkType? drinkType,
     int? quantity,
     int? caloriesKcal,
   }) {
@@ -195,7 +198,9 @@ class DrinkLogUpdateTable extends _i1.UpdateTable<DrinkLogTable> {
         value,
       );
 
-  _i1.ColumnValue<String, String> drinkType(String value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i2.DrinkType, _i2.DrinkType> drinkType(
+    _i2.DrinkType value,
+  ) => _i1.ColumnValue(
     table.drinkType,
     value,
   );
@@ -222,9 +227,10 @@ class DrinkLogTable extends _i1.Table<int?> {
       'loggedAt',
       this,
     );
-    drinkType = _i1.ColumnString(
+    drinkType = _i1.ColumnEnum(
       'drinkType',
       this,
+      _i1.EnumSerialization.byName,
     );
     quantity = _i1.ColumnInt(
       'quantity',
@@ -244,8 +250,8 @@ class DrinkLogTable extends _i1.Table<int?> {
   /// When the drinks were logged.
   late final _i1.ColumnDateTime loggedAt;
 
-  /// Drink type: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
-  late final _i1.ColumnString drinkType;
+  /// Type of drink.
+  late final _i1.ColumnEnum<_i2.DrinkType> drinkType;
 
   /// Number of glasses/units logged.
   late final _i1.ColumnInt quantity;

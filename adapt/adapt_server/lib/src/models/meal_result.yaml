@@ -20,8 +20,8 @@ fields:
   aiMessage: String
   ### Optional follow-up suggestion from AI.
   aiTip: String?
-  ### Source: 'ai_estimated' | 'database' | 'user_corrected'
-  source: String
+  ### How this result was produced.
+  source: MealSource
 
 indexes:
   meal_results_meal_log_id_unique_idx:

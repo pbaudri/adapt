@@ -11,9 +11,15 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import 'enums/biological_sex.dart' as _i2;
+import 'enums/weight_unit.dart' as _i3;
+import 'enums/height_unit.dart' as _i4;
+import 'enums/user_goal.dart' as _i5;
+import 'enums/eating_style.dart' as _i6;
+import 'enums/alcohol_habit.dart' as _i7;
 
 /// Extended profile for an Adapt user.
-/// References the Serverpod auth user via userId.
+/// References the Serverpod auth user via userId (UUID string from IDP auth).
 abstract class UserProfile
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   UserProfile._({
@@ -41,14 +47,14 @@ abstract class UserProfile
     String? name,
     required bool isGuest,
     int? age,
-    String? biologicalSex,
+    _i2.BiologicalSex? biologicalSex,
     double? weightKg,
     double? heightCm,
-    required String weightUnit,
-    required String heightUnit,
-    required String goal,
-    required String eatingStyle,
-    required String alcoholHabit,
+    required _i3.WeightUnit weightUnit,
+    required _i4.HeightUnit heightUnit,
+    required _i5.UserGoal goal,
+    required _i6.EatingStyle eatingStyle,
+    required _i7.AlcoholHabit alcoholHabit,
     required bool alcoholTracking,
     required bool morningRecap,
     required DateTime updatedAt,
@@ -61,14 +67,26 @@ abstract class UserProfile
       name: jsonSerialization['name'] as String?,
       isGuest: jsonSerialization['isGuest'] as bool,
       age: jsonSerialization['age'] as int?,
-      biologicalSex: jsonSerialization['biologicalSex'] as String?,
+      biologicalSex: jsonSerialization['biologicalSex'] == null
+          ? null
+          : _i2.BiologicalSex.fromJson(
+              (jsonSerialization['biologicalSex'] as String),
+            ),
       weightKg: (jsonSerialization['weightKg'] as num?)?.toDouble(),
       heightCm: (jsonSerialization['heightCm'] as num?)?.toDouble(),
-      weightUnit: jsonSerialization['weightUnit'] as String,
-      heightUnit: jsonSerialization['heightUnit'] as String,
-      goal: jsonSerialization['goal'] as String,
-      eatingStyle: jsonSerialization['eatingStyle'] as String,
-      alcoholHabit: jsonSerialization['alcoholHabit'] as String,
+      weightUnit: _i3.WeightUnit.fromJson(
+        (jsonSerialization['weightUnit'] as String),
+      ),
+      heightUnit: _i4.HeightUnit.fromJson(
+        (jsonSerialization['heightUnit'] as String),
+      ),
+      goal: _i5.UserGoal.fromJson((jsonSerialization['goal'] as String)),
+      eatingStyle: _i6.EatingStyle.fromJson(
+        (jsonSerialization['eatingStyle'] as String),
+      ),
+      alcoholHabit: _i7.AlcoholHabit.fromJson(
+        (jsonSerialization['alcoholHabit'] as String),
+      ),
       alcoholTracking: jsonSerialization['alcoholTracking'] as bool,
       morningRecap: jsonSerialization['morningRecap'] as bool,
       updatedAt: _i1.DateTimeJsonExtension.fromJson(
@@ -96,8 +114,8 @@ abstract class UserProfile
   /// Age in years.
   int? age;
 
-  /// Biological sex: 'male' | 'female'
-  String? biologicalSex;
+  /// Biological sex.
+  _i2.BiologicalSex? biologicalSex;
 
   /// Weight stored in kg (SI). Never stores lbs.
   double? weightKg;
@@ -105,20 +123,20 @@ abstract class UserProfile
   /// Height stored in cm (SI). Never stores ft.
   double? heightCm;
 
-  /// Display unit preference: 'kg' | 'lbs' — display only.
-  String weightUnit;
+  /// Display unit preference — display only.
+  _i3.WeightUnit weightUnit;
 
-  /// Display unit preference: 'cm' | 'ft' — display only.
-  String heightUnit;
+  /// Display unit preference — display only.
+  _i4.HeightUnit heightUnit;
 
-  /// Goal: 'lose_weight' | 'eat_better' | 'stay_aware'
-  String goal;
+  /// User's primary nutrition goal.
+  _i5.UserGoal goal;
 
-  /// Eating style: 'home_cooked' | 'takeaway' | 'restaurants' | 'mixed'
-  String eatingStyle;
+  /// Primary eating style.
+  _i6.EatingStyle eatingStyle;
 
-  /// Alcohol habit: 'rarely' | 'sometimes' | 'often'
-  String alcoholHabit;
+  /// Alcohol consumption frequency.
+  _i7.AlcoholHabit alcoholHabit;
 
   /// Whether to include alcohol in daily calorie total.
   bool alcoholTracking;
@@ -141,14 +159,14 @@ abstract class UserProfile
     String? name,
     bool? isGuest,
     int? age,
-    String? biologicalSex,
+    _i2.BiologicalSex? biologicalSex,
     double? weightKg,
     double? heightCm,
-    String? weightUnit,
-    String? heightUnit,
-    String? goal,
-    String? eatingStyle,
-    String? alcoholHabit,
+    _i3.WeightUnit? weightUnit,
+    _i4.HeightUnit? heightUnit,
+    _i5.UserGoal? goal,
+    _i6.EatingStyle? eatingStyle,
+    _i7.AlcoholHabit? alcoholHabit,
     bool? alcoholTracking,
     bool? morningRecap,
     DateTime? updatedAt,
@@ -162,14 +180,14 @@ abstract class UserProfile
       if (name != null) 'name': name,
       'isGuest': isGuest,
       if (age != null) 'age': age,
-      if (biologicalSex != null) 'biologicalSex': biologicalSex,
+      if (biologicalSex != null) 'biologicalSex': biologicalSex?.toJson(),
       if (weightKg != null) 'weightKg': weightKg,
       if (heightCm != null) 'heightCm': heightCm,
-      'weightUnit': weightUnit,
-      'heightUnit': heightUnit,
-      'goal': goal,
-      'eatingStyle': eatingStyle,
-      'alcoholHabit': alcoholHabit,
+      'weightUnit': weightUnit.toJson(),
+      'heightUnit': heightUnit.toJson(),
+      'goal': goal.toJson(),
+      'eatingStyle': eatingStyle.toJson(),
+      'alcoholHabit': alcoholHabit.toJson(),
       'alcoholTracking': alcoholTracking,
       'morningRecap': morningRecap,
       'updatedAt': updatedAt.toJson(),
@@ -185,14 +203,14 @@ abstract class UserProfile
       if (name != null) 'name': name,
       'isGuest': isGuest,
       if (age != null) 'age': age,
-      if (biologicalSex != null) 'biologicalSex': biologicalSex,
+      if (biologicalSex != null) 'biologicalSex': biologicalSex?.toJson(),
       if (weightKg != null) 'weightKg': weightKg,
       if (heightCm != null) 'heightCm': heightCm,
-      'weightUnit': weightUnit,
-      'heightUnit': heightUnit,
-      'goal': goal,
-      'eatingStyle': eatingStyle,
-      'alcoholHabit': alcoholHabit,
+      'weightUnit': weightUnit.toJson(),
+      'heightUnit': heightUnit.toJson(),
+      'goal': goal.toJson(),
+      'eatingStyle': eatingStyle.toJson(),
+      'alcoholHabit': alcoholHabit.toJson(),
       'alcoholTracking': alcoholTracking,
       'morningRecap': morningRecap,
       'updatedAt': updatedAt.toJson(),
@@ -238,14 +256,14 @@ class _UserProfileImpl extends UserProfile {
     String? name,
     required bool isGuest,
     int? age,
-    String? biologicalSex,
+    _i2.BiologicalSex? biologicalSex,
     double? weightKg,
     double? heightCm,
-    required String weightUnit,
-    required String heightUnit,
-    required String goal,
-    required String eatingStyle,
-    required String alcoholHabit,
+    required _i3.WeightUnit weightUnit,
+    required _i4.HeightUnit heightUnit,
+    required _i5.UserGoal goal,
+    required _i6.EatingStyle eatingStyle,
+    required _i7.AlcoholHabit alcoholHabit,
     required bool alcoholTracking,
     required bool morningRecap,
     required DateTime updatedAt,
@@ -281,11 +299,11 @@ class _UserProfileImpl extends UserProfile {
     Object? biologicalSex = _Undefined,
     Object? weightKg = _Undefined,
     Object? heightCm = _Undefined,
-    String? weightUnit,
-    String? heightUnit,
-    String? goal,
-    String? eatingStyle,
-    String? alcoholHabit,
+    _i3.WeightUnit? weightUnit,
+    _i4.HeightUnit? heightUnit,
+    _i5.UserGoal? goal,
+    _i6.EatingStyle? eatingStyle,
+    _i7.AlcoholHabit? alcoholHabit,
     bool? alcoholTracking,
     bool? morningRecap,
     DateTime? updatedAt,
@@ -296,7 +314,7 @@ class _UserProfileImpl extends UserProfile {
       name: name is String? ? name : this.name,
       isGuest: isGuest ?? this.isGuest,
       age: age is int? ? age : this.age,
-      biologicalSex: biologicalSex is String?
+      biologicalSex: biologicalSex is _i2.BiologicalSex?
           ? biologicalSex
           : this.biologicalSex,
       weightKg: weightKg is double? ? weightKg : this.weightKg,
@@ -336,11 +354,12 @@ class UserProfileUpdateTable extends _i1.UpdateTable<UserProfileTable> {
     value,
   );
 
-  _i1.ColumnValue<String, String> biologicalSex(String? value) =>
-      _i1.ColumnValue(
-        table.biologicalSex,
-        value,
-      );
+  _i1.ColumnValue<_i2.BiologicalSex, _i2.BiologicalSex> biologicalSex(
+    _i2.BiologicalSex? value,
+  ) => _i1.ColumnValue(
+    table.biologicalSex,
+    value,
+  );
 
   _i1.ColumnValue<double, double> weightKg(double? value) => _i1.ColumnValue(
     table.weightKg,
@@ -352,27 +371,36 @@ class UserProfileUpdateTable extends _i1.UpdateTable<UserProfileTable> {
     value,
   );
 
-  _i1.ColumnValue<String, String> weightUnit(String value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i3.WeightUnit, _i3.WeightUnit> weightUnit(
+    _i3.WeightUnit value,
+  ) => _i1.ColumnValue(
     table.weightUnit,
     value,
   );
 
-  _i1.ColumnValue<String, String> heightUnit(String value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i4.HeightUnit, _i4.HeightUnit> heightUnit(
+    _i4.HeightUnit value,
+  ) => _i1.ColumnValue(
     table.heightUnit,
     value,
   );
 
-  _i1.ColumnValue<String, String> goal(String value) => _i1.ColumnValue(
-    table.goal,
-    value,
-  );
+  _i1.ColumnValue<_i5.UserGoal, _i5.UserGoal> goal(_i5.UserGoal value) =>
+      _i1.ColumnValue(
+        table.goal,
+        value,
+      );
 
-  _i1.ColumnValue<String, String> eatingStyle(String value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i6.EatingStyle, _i6.EatingStyle> eatingStyle(
+    _i6.EatingStyle value,
+  ) => _i1.ColumnValue(
     table.eatingStyle,
     value,
   );
 
-  _i1.ColumnValue<String, String> alcoholHabit(String value) => _i1.ColumnValue(
+  _i1.ColumnValue<_i7.AlcoholHabit, _i7.AlcoholHabit> alcoholHabit(
+    _i7.AlcoholHabit value,
+  ) => _i1.ColumnValue(
     table.alcoholHabit,
     value,
   );
@@ -413,9 +441,10 @@ class UserProfileTable extends _i1.Table<int?> {
       'age',
       this,
     );
-    biologicalSex = _i1.ColumnString(
+    biologicalSex = _i1.ColumnEnum(
       'biologicalSex',
       this,
+      _i1.EnumSerialization.byName,
     );
     weightKg = _i1.ColumnDouble(
       'weightKg',
@@ -425,25 +454,30 @@ class UserProfileTable extends _i1.Table<int?> {
       'heightCm',
       this,
     );
-    weightUnit = _i1.ColumnString(
+    weightUnit = _i1.ColumnEnum(
       'weightUnit',
       this,
+      _i1.EnumSerialization.byName,
     );
-    heightUnit = _i1.ColumnString(
+    heightUnit = _i1.ColumnEnum(
       'heightUnit',
       this,
+      _i1.EnumSerialization.byName,
     );
-    goal = _i1.ColumnString(
+    goal = _i1.ColumnEnum(
       'goal',
       this,
+      _i1.EnumSerialization.byName,
     );
-    eatingStyle = _i1.ColumnString(
+    eatingStyle = _i1.ColumnEnum(
       'eatingStyle',
       this,
+      _i1.EnumSerialization.byName,
     );
-    alcoholHabit = _i1.ColumnString(
+    alcoholHabit = _i1.ColumnEnum(
       'alcoholHabit',
       this,
+      _i1.EnumSerialization.byName,
     );
     alcoholTracking = _i1.ColumnBool(
       'alcoholTracking',
@@ -473,8 +507,8 @@ class UserProfileTable extends _i1.Table<int?> {
   /// Age in years.
   late final _i1.ColumnInt age;
 
-  /// Biological sex: 'male' | 'female'
-  late final _i1.ColumnString biologicalSex;
+  /// Biological sex.
+  late final _i1.ColumnEnum<_i2.BiologicalSex> biologicalSex;
 
   /// Weight stored in kg (SI). Never stores lbs.
   late final _i1.ColumnDouble weightKg;
@@ -482,20 +516,20 @@ class UserProfileTable extends _i1.Table<int?> {
   /// Height stored in cm (SI). Never stores ft.
   late final _i1.ColumnDouble heightCm;
 
-  /// Display unit preference: 'kg' | 'lbs' — display only.
-  late final _i1.ColumnString weightUnit;
+  /// Display unit preference — display only.
+  late final _i1.ColumnEnum<_i3.WeightUnit> weightUnit;
 
-  /// Display unit preference: 'cm' | 'ft' — display only.
-  late final _i1.ColumnString heightUnit;
+  /// Display unit preference — display only.
+  late final _i1.ColumnEnum<_i4.HeightUnit> heightUnit;
 
-  /// Goal: 'lose_weight' | 'eat_better' | 'stay_aware'
-  late final _i1.ColumnString goal;
+  /// User's primary nutrition goal.
+  late final _i1.ColumnEnum<_i5.UserGoal> goal;
 
-  /// Eating style: 'home_cooked' | 'takeaway' | 'restaurants' | 'mixed'
-  late final _i1.ColumnString eatingStyle;
+  /// Primary eating style.
+  late final _i1.ColumnEnum<_i6.EatingStyle> eatingStyle;
 
-  /// Alcohol habit: 'rarely' | 'sometimes' | 'often'
-  late final _i1.ColumnString alcoholHabit;
+  /// Alcohol consumption frequency.
+  late final _i1.ColumnEnum<_i7.AlcoholHabit> alcoholHabit;
 
   /// Whether to include alcohol in daily calorie total.
   late final _i1.ColumnBool alcoholTracking;

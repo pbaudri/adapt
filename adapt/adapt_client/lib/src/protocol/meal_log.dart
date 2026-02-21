@@ -11,6 +11,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import 'enums/meal_type.dart' as _i2;
+import 'enums/input_method.dart' as _i3;
 
 /// A single meal logging event.
 abstract class MealLog implements _i1.SerializableModel {
@@ -30,8 +32,8 @@ abstract class MealLog implements _i1.SerializableModel {
     int? id,
     required String userId,
     required DateTime loggedAt,
-    required String mealType,
-    required String inputMethod,
+    required _i2.MealType mealType,
+    required _i3.InputMethod inputMethod,
     String? rawInput,
     String? imageUrl,
     String? locationName,
@@ -45,8 +47,12 @@ abstract class MealLog implements _i1.SerializableModel {
       loggedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['loggedAt'],
       ),
-      mealType: jsonSerialization['mealType'] as String,
-      inputMethod: jsonSerialization['inputMethod'] as String,
+      mealType: _i2.MealType.fromJson(
+        (jsonSerialization['mealType'] as String),
+      ),
+      inputMethod: _i3.InputMethod.fromJson(
+        (jsonSerialization['inputMethod'] as String),
+      ),
       rawInput: jsonSerialization['rawInput'] as String?,
       imageUrl: jsonSerialization['imageUrl'] as String?,
       locationName: jsonSerialization['locationName'] as String?,
@@ -65,19 +71,19 @@ abstract class MealLog implements _i1.SerializableModel {
   /// When the meal was logged.
   DateTime loggedAt;
 
-  /// Meal type: 'breakfast' | 'lunch' | 'dinner' | 'snack'
-  String mealType;
+  /// Meal type.
+  _i2.MealType mealType;
 
-  /// Input method: 'photo' | 'text' | 'location'
-  String inputMethod;
+  /// Input method used.
+  _i3.InputMethod inputMethod;
 
   /// Raw text description or photo prompt.
   String? rawInput;
 
-  /// URL to uploaded photo if inputMethod is 'photo'.
+  /// URL to uploaded photo if inputMethod is photo.
   String? imageUrl;
 
-  /// Restaurant or location name if inputMethod is 'location'.
+  /// Restaurant or location name if inputMethod is location.
   String? locationName;
 
   /// True when nutrition values are AI-estimated (not confirmed by user).
@@ -90,8 +96,8 @@ abstract class MealLog implements _i1.SerializableModel {
     int? id,
     String? userId,
     DateTime? loggedAt,
-    String? mealType,
-    String? inputMethod,
+    _i2.MealType? mealType,
+    _i3.InputMethod? inputMethod,
     String? rawInput,
     String? imageUrl,
     String? locationName,
@@ -104,8 +110,8 @@ abstract class MealLog implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'userId': userId,
       'loggedAt': loggedAt.toJson(),
-      'mealType': mealType,
-      'inputMethod': inputMethod,
+      'mealType': mealType.toJson(),
+      'inputMethod': inputMethod.toJson(),
       if (rawInput != null) 'rawInput': rawInput,
       if (imageUrl != null) 'imageUrl': imageUrl,
       if (locationName != null) 'locationName': locationName,
@@ -126,8 +132,8 @@ class _MealLogImpl extends MealLog {
     int? id,
     required String userId,
     required DateTime loggedAt,
-    required String mealType,
-    required String inputMethod,
+    required _i2.MealType mealType,
+    required _i3.InputMethod inputMethod,
     String? rawInput,
     String? imageUrl,
     String? locationName,
@@ -152,8 +158,8 @@ class _MealLogImpl extends MealLog {
     Object? id = _Undefined,
     String? userId,
     DateTime? loggedAt,
-    String? mealType,
-    String? inputMethod,
+    _i2.MealType? mealType,
+    _i3.InputMethod? inputMethod,
     Object? rawInput = _Undefined,
     Object? imageUrl = _Undefined,
     Object? locationName = _Undefined,

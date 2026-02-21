@@ -1,0 +1,11 @@
+enum: DrinkType
+serialized: byName
+values:
+  - beer
+  - wine
+  - champagne
+  - cocktail
+  - whisky
+  - longDrink
+  - hardSeltzer
+  - other

@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import 'enums/drink_type.dart' as _i2;
 
 /// A single drink logging event.
 /// caloriesKcal is denormalised (quantity × reference calories) for fast history reads.
@@ -28,7 +29,7 @@ abstract class DrinkLog implements _i1.SerializableModel {
     int? id,
     required String userId,
     required DateTime loggedAt,
-    required String drinkType,
+    required _i2.DrinkType drinkType,
     required int quantity,
     required int caloriesKcal,
   }) = _DrinkLogImpl;
@@ -40,7 +41,9 @@ abstract class DrinkLog implements _i1.SerializableModel {
       loggedAt: _i1.DateTimeJsonExtension.fromJson(
         jsonSerialization['loggedAt'],
       ),
-      drinkType: jsonSerialization['drinkType'] as String,
+      drinkType: _i2.DrinkType.fromJson(
+        (jsonSerialization['drinkType'] as String),
+      ),
       quantity: jsonSerialization['quantity'] as int,
       caloriesKcal: jsonSerialization['caloriesKcal'] as int,
     );
@@ -57,8 +60,8 @@ abstract class DrinkLog implements _i1.SerializableModel {
   /// When the drinks were logged.
   DateTime loggedAt;
 
-  /// Drink type: 'beer' | 'wine' | 'champagne' | 'cocktail' | 'whisky' | 'long_drink' | 'hard_seltzer' | 'other'
-  String drinkType;
+  /// Type of drink.
+  _i2.DrinkType drinkType;
 
   /// Number of glasses/units logged.
   int quantity;
@@ -73,7 +76,7 @@ abstract class DrinkLog implements _i1.SerializableModel {
     int? id,
     String? userId,
     DateTime? loggedAt,
-    String? drinkType,
+    _i2.DrinkType? drinkType,
     int? quantity,
     int? caloriesKcal,
   });
@@ -84,7 +87,7 @@ abstract class DrinkLog implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'userId': userId,
       'loggedAt': loggedAt.toJson(),
-      'drinkType': drinkType,
+      'drinkType': drinkType.toJson(),
       'quantity': quantity,
       'caloriesKcal': caloriesKcal,
     };
@@ -103,7 +106,7 @@ class _DrinkLogImpl extends DrinkLog {
     int? id,
     required String userId,
     required DateTime loggedAt,
-    required String drinkType,
+    required _i2.DrinkType drinkType,
     required int quantity,
     required int caloriesKcal,
   }) : super._(
@@ -123,7 +126,7 @@ class _DrinkLogImpl extends DrinkLog {
     Object? id = _Undefined,
     String? userId,
     DateTime? loggedAt,
-    String? drinkType,
+    _i2.DrinkType? drinkType,
     int? quantity,
     int? caloriesKcal,
   }) {

@@ -19,12 +19,11 @@ class DrinkEndpoint extends Endpoint {
   /// Logs a drink for the authenticated user and returns the updated summary.
   Future<DailySummary> logDrinks(
     Session session,
-    String drinkType,
+    DrinkType drinkType,
     int quantity,
   ) async {
     final userId = session.authenticated!.userIdentifier;
 
-    // Look up reference calories for this drink type
     final ref = await DrinkReference.db.findFirstRow(
       session,
       where: (t) => t.drinkType.equals(drinkType),
@@ -32,13 +31,12 @@ class DrinkEndpoint extends Endpoint {
     if (ref == null) throw Exception('Unknown drink type: $drinkType');
 
     final caloriesKcal = ref.caloriesPerUnit * quantity;
-    final now = DateTime.now();
 
     final drinkLog = await DrinkLog.db.insertRow(
       session,
       DrinkLog(
         userId: userId,
-        loggedAt: now,
+        loggedAt: DateTime.now(),
         drinkType: drinkType,
         quantity: quantity,
         caloriesKcal: caloriesKcal,

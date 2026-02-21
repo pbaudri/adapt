@@ -1,5 +1,5 @@
 ### Extended profile for an Adapt user.
-### References the Serverpod auth user via userId.
+### References the Serverpod auth user via userId (UUID string from IDP auth).
 class: UserProfile
 table: user_profiles
 
@@ -12,22 +12,22 @@ fields:
   isGuest: bool
   ### Age in years.
   age: int?
-  ### Biological sex: 'male' | 'female'
-  biologicalSex: String?
+  ### Biological sex.
+  biologicalSex: BiologicalSex?
   ### Weight stored in kg (SI). Never stores lbs.
   weightKg: double?
   ### Height stored in cm (SI). Never stores ft.
   heightCm: double?
-  ### Display unit preference: 'kg' | 'lbs' — display only.
-  weightUnit: String
-  ### Display unit preference: 'cm' | 'ft' — display only.
-  heightUnit: String
-  ### Goal: 'lose_weight' | 'eat_better' | 'stay_aware'
-  goal: String
-  ### Eating style: 'home_cooked' | 'takeaway' | 'restaurants' | 'mixed'
-  eatingStyle: String
-  ### Alcohol habit: 'rarely' | 'sometimes' | 'often'
-  alcoholHabit: String
+  ### Display unit preference — display only.
+  weightUnit: WeightUnit
+  ### Display unit preference — display only.
+  heightUnit: HeightUnit
+  ### User's primary nutrition goal.
+  goal: UserGoal
+  ### Primary eating style.
+  eatingStyle: EatingStyle
+  ### Alcohol consumption frequency.
+  alcoholHabit: AlcoholHabit
   ### Whether to include alcohol in daily calorie total.
   alcoholTracking: bool
   ### Whether to send morning recap notifications.
