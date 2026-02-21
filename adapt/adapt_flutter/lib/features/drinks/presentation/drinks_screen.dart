@@ -22,27 +22,34 @@ class _DrinksScreenState extends ConsumerState<DrinksScreen> {
 
   Future<void> _onLog() async {
     if (_selectedDrink == null) return;
-    await ref.read(drinksNotifierProvider.notifier).logDrinks(
-      _selectedDrink!,
-      _quantity,
-    );
+    await ref
+        .read(drinksNotifierProvider.notifier)
+        .logDrinks(
+          _selectedDrink!,
+          _quantity,
+        );
     if (!mounted) return;
-    ref.read(drinksNotifierProvider).maybeWhen(
-      logged: (_) {
-        ref.invalidate(homeDataProvider);
-        context.go(AppRoutes.home);
-      },
-      error: (message) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      ),
-      orElse: () {},
-    );
+    ref
+        .read(drinksNotifierProvider)
+        .maybeWhen(
+          logged: (_) {
+            ref.invalidate(homeDataProvider);
+            context.go(AppRoutes.home);
+          },
+          error: (message) => ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message)),
+          ),
+          orElse: () {},
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     final drinksState = ref.watch(drinksNotifierProvider);
-    final isLoading = drinksState.maybeWhen(loading: () => true, orElse: () => false);
+    final isLoading = drinksState.maybeWhen(
+      loading: () => true,
+      orElse: () => false,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -80,32 +87,40 @@ class _DrinksScreenState extends ConsumerState<DrinksScreen> {
                       selected: _selectedDrink,
                       onSelect: (v) => setState(() => _selectedDrink = v),
                     ),
-                    const SizedBox(height: AppDimensions.spacing24),
-                    const AdaptSectionTitle(label: 'How many glasses?'),
-                    const SizedBox(height: AppDimensions.spacing16),
-                    AdaptQuantitySelector(
-                      value: _quantity,
-                      label: 'glasses',
-                      minValue: 1,
-                      onDecrement: () =>
-                          setState(() => _quantity = (_quantity - 1).clamp(1, 99)),
-                      onIncrement: () => setState(() => _quantity++),
-                    ),
                   ],
                 ),
               ),
             ),
-            Padding(
-              padding: AppDimensions.screenPadding.copyWith(
-                top: AppDimensions.spacing12,
-                bottom: AppDimensions.spacing32,
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: AppDimensions.screenPadding.copyWith(
+          top: AppDimensions.spacing12,
+          bottom: AppDimensions.spacing32,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AdaptSectionTitle(label: 'How many glasses?'),
+            const SizedBox(height: AppDimensions.spacing16),
+            AdaptQuantitySelector(
+              value: _quantity,
+              label: 'glasses',
+              minValue: 1,
+              onDecrement: () => setState(
+                () => _quantity = (_quantity - 1).clamp(1, 99),
               ),
-              child: AdaptPrimaryButton(
-                label: 'Log $_quantity ${_quantity == 1 ? 'glass' : 'glasses'}',
-                onTap: _onLog,
-                isDisabled: _selectedDrink == null,
-                isLoading: isLoading,
-              ),
+              onIncrement: () => setState(() => _quantity++),
+            ),
+            const SizedBox(height: AppDimensions.spacing16),
+            AdaptPrimaryButton(
+              label: 'Log $_quantity ${_quantity == 1 ? 'glass' : 'glasses'}',
+              onTap: _onLog,
+              isDisabled: _selectedDrink == null,
+              isLoading: isLoading,
             ),
           ],
         ),

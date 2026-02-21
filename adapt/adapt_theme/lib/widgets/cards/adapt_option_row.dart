@@ -39,7 +39,7 @@ class AdaptOptionRow extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.surfaceElevated : AppColors.surface,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusFull),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
           border: Border.all(
             color: isSelected ? AppColors.primary : Colors.transparent,
             width: 1.5,

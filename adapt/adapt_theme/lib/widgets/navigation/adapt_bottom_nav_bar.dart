@@ -38,11 +38,6 @@ class AdaptBottomNavBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_circle_outline_rounded),
-          activeIcon: Icon(Icons.add_circle_rounded),
-          label: 'Log',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.bar_chart_outlined),
           activeIcon: Icon(Icons.bar_chart_rounded),
           label: 'History',

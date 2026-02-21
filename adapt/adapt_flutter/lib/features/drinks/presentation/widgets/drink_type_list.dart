@@ -19,7 +19,12 @@ class DrinkTypeList extends StatelessWidget {
     (value: DrinkType.champagne, label: 'Champagne', icon: '🥂', calories: 90),
     (value: DrinkType.cocktail, label: 'Cocktail', icon: '🍹', calories: 180),
     (value: DrinkType.whisky, label: 'Whisky', icon: '🥃', calories: 70),
-    (value: DrinkType.longDrink, label: 'Long drink', icon: '🧃', calories: 200),
+    (
+      value: DrinkType.longDrink,
+      label: 'Long drink',
+      icon: '🧃',
+      calories: 200,
+    ),
     (
       value: DrinkType.hardSeltzer,
       label: 'Hard seltzer',
@@ -31,25 +36,29 @@ class DrinkTypeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: _drinks
-          .map(
-            (d) => Padding(
-              padding: const EdgeInsets.only(bottom: AppDimensions.spacing8),
-              child: AdaptOptionRow(
+    return SizedBox(
+      height: 3000,
+      child: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: AppDimensions.spacing8,
+        mainAxisSpacing: AppDimensions.spacing8,
+        children: _drinks
+            .map(
+              (d) => AdaptOptionRow(
                 leading: Text(
                   d.icon,
                   style: const TextStyle(fontSize: 20),
                 ),
                 title: d.label,
-                subtitle:
-                    d.calories != null ? '${d.calories} kcal / glass' : null,
+                subtitle: d.calories != null
+                    ? '${d.calories} kcal / glass'
+                    : null,
                 isSelected: selected == d.value,
                 onTap: () => onSelect(d.value),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 }
