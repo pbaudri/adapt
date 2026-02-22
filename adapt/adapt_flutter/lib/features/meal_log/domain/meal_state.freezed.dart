@@ -20,25 +20,25 @@ mixin _$MealState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(MealResult result) result,
-    required TResult Function() confirmed,
+    required TResult Function(String message) loading,
+    required TResult Function(MealResult result) success,
+    required TResult Function(DailySummary summary) confirmed,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(MealResult result)? result,
-    TResult? Function()? confirmed,
+    TResult? Function(String message)? loading,
+    TResult? Function(MealResult result)? success,
+    TResult? Function(DailySummary summary)? confirmed,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(MealResult result)? result,
-    TResult Function()? confirmed,
+    TResult Function(String message)? loading,
+    TResult Function(MealResult result)? success,
+    TResult Function(DailySummary summary)? confirmed,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ mixin _$MealState {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
-    required TResult Function(_Result value) result,
+    required TResult Function(_Success value) success,
     required TResult Function(_Confirmed value) confirmed,
     required TResult Function(_Error value) error,
   }) => throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ mixin _$MealState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
-    TResult? Function(_Result value)? result,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Confirmed value)? confirmed,
     TResult? Function(_Error value)? error,
   }) => throw _privateConstructorUsedError;
@@ -62,7 +62,7 @@ mixin _$MealState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
-    TResult Function(_Result value)? result,
+    TResult Function(_Success value)? success,
     TResult Function(_Confirmed value)? confirmed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -133,9 +133,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(MealResult result) result,
-    required TResult Function() confirmed,
+    required TResult Function(String message) loading,
+    required TResult Function(MealResult result) success,
+    required TResult Function(DailySummary summary) confirmed,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -145,9 +145,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(MealResult result)? result,
-    TResult? Function()? confirmed,
+    TResult? Function(String message)? loading,
+    TResult? Function(MealResult result)? success,
+    TResult? Function(DailySummary summary)? confirmed,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -157,9 +157,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(MealResult result)? result,
-    TResult Function()? confirmed,
+    TResult Function(String message)? loading,
+    TResult Function(MealResult result)? success,
+    TResult Function(DailySummary summary)? confirmed,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -174,7 +174,7 @@ class _$InitialImpl implements _Initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
-    required TResult Function(_Result value) result,
+    required TResult Function(_Success value) success,
     required TResult Function(_Confirmed value) confirmed,
     required TResult Function(_Error value) error,
   }) {
@@ -186,7 +186,7 @@ class _$InitialImpl implements _Initial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
-    TResult? Function(_Result value)? result,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Confirmed value)? confirmed,
     TResult? Function(_Error value)? error,
   }) {
@@ -198,7 +198,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
-    TResult Function(_Result value)? result,
+    TResult Function(_Success value)? success,
     TResult Function(_Confirmed value)? confirmed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -220,6 +220,8 @@ abstract class _$$LoadingImplCopyWith<$Res> {
     _$LoadingImpl value,
     $Res Function(_$LoadingImpl) then,
   ) = __$$LoadingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String message});
 }
 
 /// @nodoc
@@ -233,63 +235,88 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
   /// Create a copy of MealState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null}) {
+    return _then(
+      _$LoadingImpl(
+        null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
 }
 
 /// @nodoc
 
 class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
+  const _$LoadingImpl(this.message);
+
+  @override
+  final String message;
 
   @override
   String toString() {
-    return 'MealState.loading()';
+    return 'MealState.loading(message: $message)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$LoadingImpl &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, message);
+
+  /// Create a copy of MealState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
+      __$$LoadingImplCopyWithImpl<_$LoadingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(MealResult result) result,
-    required TResult Function() confirmed,
+    required TResult Function(String message) loading,
+    required TResult Function(MealResult result) success,
+    required TResult Function(DailySummary summary) confirmed,
     required TResult Function(String message) error,
   }) {
-    return loading();
+    return loading(message);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(MealResult result)? result,
-    TResult? Function()? confirmed,
+    TResult? Function(String message)? loading,
+    TResult? Function(MealResult result)? success,
+    TResult? Function(DailySummary summary)? confirmed,
     TResult? Function(String message)? error,
   }) {
-    return loading?.call();
+    return loading?.call(message);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(MealResult result)? result,
-    TResult Function()? confirmed,
+    TResult Function(String message)? loading,
+    TResult Function(MealResult result)? success,
+    TResult Function(DailySummary summary)? confirmed,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading();
+      return loading(message);
     }
     return orElse();
   }
@@ -299,7 +326,7 @@ class _$LoadingImpl implements _Loading {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
-    required TResult Function(_Result value) result,
+    required TResult Function(_Success value) success,
     required TResult Function(_Confirmed value) confirmed,
     required TResult Function(_Error value) error,
   }) {
@@ -311,7 +338,7 @@ class _$LoadingImpl implements _Loading {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
-    TResult? Function(_Result value)? result,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Confirmed value)? confirmed,
     TResult? Function(_Error value)? error,
   }) {
@@ -323,7 +350,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
-    TResult Function(_Result value)? result,
+    TResult Function(_Success value)? success,
     TResult Function(_Confirmed value)? confirmed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -336,26 +363,34 @@ class _$LoadingImpl implements _Loading {
 }
 
 abstract class _Loading implements MealState {
-  const factory _Loading() = _$LoadingImpl;
+  const factory _Loading(final String message) = _$LoadingImpl;
+
+  String get message;
+
+  /// Create a copy of MealState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ResultImplCopyWith<$Res> {
-  factory _$$ResultImplCopyWith(
-    _$ResultImpl value,
-    $Res Function(_$ResultImpl) then,
-  ) = __$$ResultImplCopyWithImpl<$Res>;
+abstract class _$$SuccessImplCopyWith<$Res> {
+  factory _$$SuccessImplCopyWith(
+    _$SuccessImpl value,
+    $Res Function(_$SuccessImpl) then,
+  ) = __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({MealResult result});
 }
 
 /// @nodoc
-class __$$ResultImplCopyWithImpl<$Res>
-    extends _$MealStateCopyWithImpl<$Res, _$ResultImpl>
-    implements _$$ResultImplCopyWith<$Res> {
-  __$$ResultImplCopyWithImpl(
-    _$ResultImpl _value,
-    $Res Function(_$ResultImpl) _then,
+class __$$SuccessImplCopyWithImpl<$Res>
+    extends _$MealStateCopyWithImpl<$Res, _$SuccessImpl>
+    implements _$$SuccessImplCopyWith<$Res> {
+  __$$SuccessImplCopyWithImpl(
+    _$SuccessImpl _value,
+    $Res Function(_$SuccessImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of MealState
@@ -364,7 +399,7 @@ class __$$ResultImplCopyWithImpl<$Res>
   @override
   $Res call({Object? result = null}) {
     return _then(
-      _$ResultImpl(
+      _$SuccessImpl(
         null == result
             ? _value.result
             : result // ignore: cast_nullable_to_non_nullable
@@ -376,22 +411,22 @@ class __$$ResultImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ResultImpl implements _Result {
-  const _$ResultImpl(this.result);
+class _$SuccessImpl implements _Success {
+  const _$SuccessImpl(this.result);
 
   @override
   final MealResult result;
 
   @override
   String toString() {
-    return 'MealState.result(result: $result)';
+    return 'MealState.success(result: $result)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ResultImpl &&
+            other is _$SuccessImpl &&
             (identical(other.result, result) || other.result == result));
   }
 
@@ -403,45 +438,45 @@ class _$ResultImpl implements _Result {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ResultImplCopyWith<_$ResultImpl> get copyWith =>
-      __$$ResultImplCopyWithImpl<_$ResultImpl>(this, _$identity);
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
+      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(MealResult result) result,
-    required TResult Function() confirmed,
+    required TResult Function(String message) loading,
+    required TResult Function(MealResult result) success,
+    required TResult Function(DailySummary summary) confirmed,
     required TResult Function(String message) error,
   }) {
-    return result(this.result);
+    return success(result);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(MealResult result)? result,
-    TResult? Function()? confirmed,
+    TResult? Function(String message)? loading,
+    TResult? Function(MealResult result)? success,
+    TResult? Function(DailySummary summary)? confirmed,
     TResult? Function(String message)? error,
   }) {
-    return result?.call(this.result);
+    return success?.call(result);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(MealResult result)? result,
-    TResult Function()? confirmed,
+    TResult Function(String message)? loading,
+    TResult Function(MealResult result)? success,
+    TResult Function(DailySummary summary)? confirmed,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
-    if (result != null) {
-      return result(this.result);
+    if (success != null) {
+      return success(result);
     }
     return orElse();
   }
@@ -451,11 +486,11 @@ class _$ResultImpl implements _Result {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
-    required TResult Function(_Result value) result,
+    required TResult Function(_Success value) success,
     required TResult Function(_Confirmed value) confirmed,
     required TResult Function(_Error value) error,
   }) {
-    return result(this);
+    return success(this);
   }
 
   @override
@@ -463,11 +498,11 @@ class _$ResultImpl implements _Result {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
-    TResult? Function(_Result value)? result,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Confirmed value)? confirmed,
     TResult? Function(_Error value)? error,
   }) {
-    return result?.call(this);
+    return success?.call(this);
   }
 
   @override
@@ -475,27 +510,27 @@ class _$ResultImpl implements _Result {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
-    TResult Function(_Result value)? result,
+    TResult Function(_Success value)? success,
     TResult Function(_Confirmed value)? confirmed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
-    if (result != null) {
-      return result(this);
+    if (success != null) {
+      return success(this);
     }
     return orElse();
   }
 }
 
-abstract class _Result implements MealState {
-  const factory _Result(final MealResult result) = _$ResultImpl;
+abstract class _Success implements MealState {
+  const factory _Success(final MealResult result) = _$SuccessImpl;
 
   MealResult get result;
 
   /// Create a copy of MealState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ResultImplCopyWith<_$ResultImpl> get copyWith =>
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -505,6 +540,8 @@ abstract class _$$ConfirmedImplCopyWith<$Res> {
     _$ConfirmedImpl value,
     $Res Function(_$ConfirmedImpl) then,
   ) = __$$ConfirmedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({DailySummary summary});
 }
 
 /// @nodoc
@@ -518,63 +555,88 @@ class __$$ConfirmedImplCopyWithImpl<$Res>
 
   /// Create a copy of MealState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? summary = null}) {
+    return _then(
+      _$ConfirmedImpl(
+        null == summary
+            ? _value.summary
+            : summary // ignore: cast_nullable_to_non_nullable
+                  as DailySummary,
+      ),
+    );
+  }
 }
 
 /// @nodoc
 
 class _$ConfirmedImpl implements _Confirmed {
-  const _$ConfirmedImpl();
+  const _$ConfirmedImpl(this.summary);
+
+  @override
+  final DailySummary summary;
 
   @override
   String toString() {
-    return 'MealState.confirmed()';
+    return 'MealState.confirmed(summary: $summary)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ConfirmedImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$ConfirmedImpl &&
+            (identical(other.summary, summary) || other.summary == summary));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, summary);
+
+  /// Create a copy of MealState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ConfirmedImplCopyWith<_$ConfirmedImpl> get copyWith =>
+      __$$ConfirmedImplCopyWithImpl<_$ConfirmedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(MealResult result) result,
-    required TResult Function() confirmed,
+    required TResult Function(String message) loading,
+    required TResult Function(MealResult result) success,
+    required TResult Function(DailySummary summary) confirmed,
     required TResult Function(String message) error,
   }) {
-    return confirmed();
+    return confirmed(summary);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(MealResult result)? result,
-    TResult? Function()? confirmed,
+    TResult? Function(String message)? loading,
+    TResult? Function(MealResult result)? success,
+    TResult? Function(DailySummary summary)? confirmed,
     TResult? Function(String message)? error,
   }) {
-    return confirmed?.call();
+    return confirmed?.call(summary);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(MealResult result)? result,
-    TResult Function()? confirmed,
+    TResult Function(String message)? loading,
+    TResult Function(MealResult result)? success,
+    TResult Function(DailySummary summary)? confirmed,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (confirmed != null) {
-      return confirmed();
+      return confirmed(summary);
     }
     return orElse();
   }
@@ -584,7 +646,7 @@ class _$ConfirmedImpl implements _Confirmed {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
-    required TResult Function(_Result value) result,
+    required TResult Function(_Success value) success,
     required TResult Function(_Confirmed value) confirmed,
     required TResult Function(_Error value) error,
   }) {
@@ -596,7 +658,7 @@ class _$ConfirmedImpl implements _Confirmed {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
-    TResult? Function(_Result value)? result,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Confirmed value)? confirmed,
     TResult? Function(_Error value)? error,
   }) {
@@ -608,7 +670,7 @@ class _$ConfirmedImpl implements _Confirmed {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
-    TResult Function(_Result value)? result,
+    TResult Function(_Success value)? success,
     TResult Function(_Confirmed value)? confirmed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -621,7 +683,15 @@ class _$ConfirmedImpl implements _Confirmed {
 }
 
 abstract class _Confirmed implements MealState {
-  const factory _Confirmed() = _$ConfirmedImpl;
+  const factory _Confirmed(final DailySummary summary) = _$ConfirmedImpl;
+
+  DailySummary get summary;
+
+  /// Create a copy of MealState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ConfirmedImplCopyWith<_$ConfirmedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -695,9 +765,9 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(MealResult result) result,
-    required TResult Function() confirmed,
+    required TResult Function(String message) loading,
+    required TResult Function(MealResult result) success,
+    required TResult Function(DailySummary summary) confirmed,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -707,9 +777,9 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(MealResult result)? result,
-    TResult? Function()? confirmed,
+    TResult? Function(String message)? loading,
+    TResult? Function(MealResult result)? success,
+    TResult? Function(DailySummary summary)? confirmed,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -719,9 +789,9 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(MealResult result)? result,
-    TResult Function()? confirmed,
+    TResult Function(String message)? loading,
+    TResult Function(MealResult result)? success,
+    TResult Function(DailySummary summary)? confirmed,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -736,7 +806,7 @@ class _$ErrorImpl implements _Error {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
-    required TResult Function(_Result value) result,
+    required TResult Function(_Success value) success,
     required TResult Function(_Confirmed value) confirmed,
     required TResult Function(_Error value) error,
   }) {
@@ -748,7 +818,7 @@ class _$ErrorImpl implements _Error {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
-    TResult? Function(_Result value)? result,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Confirmed value)? confirmed,
     TResult? Function(_Error value)? error,
   }) {
@@ -760,7 +830,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
-    TResult Function(_Result value)? result,
+    TResult Function(_Success value)? success,
     TResult Function(_Confirmed value)? confirmed,
     TResult Function(_Error value)? error,
     required TResult orElse(),

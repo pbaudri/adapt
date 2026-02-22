@@ -6,7 +6,7 @@ part of 'profile_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileHash() => r'18f55a735f69310a7773018d2a0b602deee294f4';
+String _$userProfileHash() => r'f547b23d16302a1017f2757b6e27d2248e5c8b20';
 
 /// Loads and caches the user profile.
 ///
@@ -25,7 +25,7 @@ final userProfileProvider = AutoDisposeFutureProvider<UserProfile>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserProfileRef = AutoDisposeFutureProviderRef<UserProfile>;
-String _$profileNotifierHash() => r'0165e1b17b1ccd5a710ef58d57ab1b22948ea918';
+String _$profileNotifierHash() => r'0b5390a608eb0886d44f9b549429d2ae15848035';
 
 /// See also [ProfileNotifier].
 @ProviderFor(ProfileNotifier)

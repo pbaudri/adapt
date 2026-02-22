@@ -221,7 +221,7 @@ All business logic lives in `lib/src/services/`. Never put logic in endpoints.
 
 ```
 lib/src/services/
-├── ai_service.dart              # All AI calls (GPT-4o) — text and photo analysis
+├── ai_service.dart              # All AI calls (Gemini 2.0 flash) — text and photo analysis
 ├── nutrition_service.dart       # Calorie calculations
 ├── recap_service.dart           # Morning recap generation
 └── daily_summary_service.dart   # Summary aggregation and updates
@@ -281,7 +281,7 @@ final profile = await UserProfile.db.findFirstRow(
 
 ## AI Service
 
-`ai_service.dart` sends prompts to GPT-4o. It must always return a structured object:
+`ai_service.dart` sends prompts to Gemini 2.0 flash. It must always return a structured object:
 
 ```dart
 // Expected AI response structure

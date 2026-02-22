@@ -6,13 +6,13 @@ part of 'meal_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todayMealsHash() => r'12a4bcfd1fd05eb21d9a6e0bfca497b9cd3b46ef';
+String _$todayMealsHash() => r'e746d9f1cb8dddc022d360afe4c87c17b013dd04';
 
 /// Today's meal logs — refreshed after every confirmation.
 ///
 /// Copied from [todayMeals].
 @ProviderFor(todayMeals)
-final todayMealsProvider = AutoDisposeFutureProvider<List<dynamic>>.internal(
+final todayMealsProvider = AutoDisposeFutureProvider<List<MealLog>>.internal(
   todayMeals,
   name: r'todayMealsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -24,8 +24,8 @@ final todayMealsProvider = AutoDisposeFutureProvider<List<dynamic>>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef TodayMealsRef = AutoDisposeFutureProviderRef<List<dynamic>>;
-String _$pendingMealResultHash() => r'aac68dce74068c84000b0377e8932351b6de0287';
+typedef TodayMealsRef = AutoDisposeFutureProviderRef<List<MealLog>>;
+String _$pendingMealResultHash() => r'dc5288eb4fcad3f9a3bdc94cd54b24d9d3c0c6b0';
 
 /// Exposes the currently-pending MealResult for the result and edit screens.
 ///
@@ -44,7 +44,7 @@ final pendingMealResultProvider = AutoDisposeProvider<MealResult?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PendingMealResultRef = AutoDisposeProviderRef<MealResult?>;
-String _$mealNotifierHash() => r'71875b70cba3d5c0af7b7d4588fb06007ef7c2d2';
+String _$mealNotifierHash() => r'5bd38319f1a5887ebaf6928d0b7db45e0cb85a3b';
 
 /// See also [MealNotifier].
 @ProviderFor(MealNotifier)

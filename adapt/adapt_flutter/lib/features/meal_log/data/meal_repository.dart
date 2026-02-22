@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:adapt_client/adapt_client.dart';
@@ -22,8 +23,11 @@ class MealRepository {
     return _client.meal.logMealByText(text);
   }
 
-  Future<MealResult> logMealByPhoto(ByteData imageBytes) {
-    return _client.meal.logMealByPhoto(imageBytes);
+  /// Reads [imageFile] bytes, converts to [ByteData] and sends to the endpoint.
+  Future<MealResult> logMealByPhoto(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+    final byteData = ByteData.view(bytes.buffer);
+    return _client.meal.logMealByPhoto(byteData);
   }
 
   Future<DailySummary> confirmMeal(int mealLogId) {

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
@@ -21,28 +20,30 @@ class PhotoMealScreen extends ConsumerStatefulWidget {
 class _PhotoMealScreenState extends ConsumerState<PhotoMealScreen> {
   File? _imageFile;
   final _picker = ImagePicker();
+  String? _inlineError;
 
-  Future<void> _pickFromCamera() async {
-    final picked = await _picker.pickImage(source: ImageSource.camera);
-    if (picked != null) setState(() => _imageFile = File(picked.path));
-  }
+  Future<void> _pickAndAnalyse(ImageSource source) async {
+    setState(() => _inlineError = null);
 
-  Future<void> _pickFromGallery() async {
-    final picked = await _picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) setState(() => _imageFile = File(picked.path));
-  }
+    XFile? picked;
+    try {
+      picked = await _picker.pickImage(source: source);
+    } catch (e) {
+      setState(() => _inlineError = 'Camera access denied. Check your permissions in Settings.');
+      return;
+    }
 
-  Future<void> _onAnalyse() async {
-    if (_imageFile == null) return;
-    final bytes = await _imageFile!.readAsBytes();
-    final byteData = ByteData.view(bytes.buffer);
-    await ref.read(mealNotifierProvider.notifier).analyseByPhoto(byteData);
+    if (picked == null) return;
+
+    final file = File(picked.path);
+    setState(() => _imageFile = file);
+
+    await ref.read(mealNotifierProvider.notifier).logByPhoto(file);
     if (!mounted) return;
+
     ref.read(mealNotifierProvider).maybeWhen(
-      result: (_) => context.push(AppRoutes.mealResult),
-      error: (message) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      ),
+      success: (_) => context.push(AppRoutes.mealResult),
+      error: (message) => setState(() => _inlineError = message),
       orElse: () {},
     );
   }
@@ -50,7 +51,8 @@ class _PhotoMealScreenState extends ConsumerState<PhotoMealScreen> {
   @override
   Widget build(BuildContext context) {
     final mealState = ref.watch(mealNotifierProvider);
-    final isLoading = mealState.maybeWhen(loading: () => true, orElse: () => false);
+    final isLoading =
+        mealState.maybeWhen(loading: (_) => true, orElse: () => false);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -73,29 +75,47 @@ class _PhotoMealScreenState extends ConsumerState<PhotoMealScreen> {
                 ],
               ),
               const SizedBox(height: AppDimensions.spacing24),
-              AdaptCameraPreview(
-                imageFile: _imageFile,
-                label: 'Tap to take a photo of your meal',
-                onTap: _pickFromCamera,
+              // Camera preview with loading overlay
+              Stack(
+                children: [
+                  AdaptCameraPreview(
+                    imageFile: _imageFile,
+                    label: 'Tap to take a photo of your meal',
+                    onTap: () => _pickAndAnalyse(ImageSource.camera),
+                  ),
+                  if (isLoading)
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.background.withAlpha(180),
+                          borderRadius:
+                              BorderRadius.circular(AppDimensions.radiusMedium),
+                        ),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(height: AppDimensions.spacing24),
               MealActionRow(
-                onPhoto: _pickFromCamera,
+                onPhoto: () => _pickAndAnalyse(ImageSource.camera),
                 onDescribe: () => context.go(AppRoutes.mealDescribe),
-                onGallery: _pickFromGallery,
+                onGallery: () => _pickAndAnalyse(ImageSource.gallery),
               ),
-              const Spacer(),
-              AdaptPrimaryButton(
-                label: 'Analyse meal',
-                onTap: _onAnalyse,
-                isDisabled: _imageFile == null,
-                isLoading: isLoading,
-                trailing: const Icon(
-                  Icons.arrow_forward_rounded,
-                  color: AppColors.textPrimary,
-                  size: 18,
+              if (_inlineError != null) ...[
+                const SizedBox(height: AppDimensions.spacing12),
+                Text(
+                  _inlineError!,
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(color: AppColors.error),
+                  textAlign: TextAlign.center,
                 ),
-              ),
+              ],
+              const Spacer(),
             ],
           ),
         ),

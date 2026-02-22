@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:adapt_client/adapt_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,58 +14,46 @@ class MealNotifier extends _$MealNotifier {
   @override
   MealState build() => const MealState.initial();
 
-  Future<void> analyseByText(String text) async {
-    state = const MealState.loading();
+  Future<void> logByText(String text) async {
+    state = const MealState.loading('Analysing your meal…');
     try {
       final result = await ref.read(mealRepositoryProvider).logMealByText(text);
-      state = MealState.result(result);
+      state = MealState.success(result);
     } catch (e) {
       state = MealState.error(e.toString());
     }
   }
 
-  Future<void> analyseByPhoto(ByteData imageBytes) async {
-    state = const MealState.loading();
+  Future<void> logByPhoto(File imageFile) async {
+    state = const MealState.loading('Analysing your meal…');
     try {
       final result =
-          await ref.read(mealRepositoryProvider).logMealByPhoto(imageBytes);
-      state = MealState.result(result);
+          await ref.read(mealRepositoryProvider).logMealByPhoto(imageFile);
+      state = MealState.success(result);
     } catch (e) {
       state = MealState.error(e.toString());
     }
   }
 
-  Future<void> confirmMeal(int mealLogId) async {
-    state = const MealState.loading();
+  Future<void> confirm(int mealLogId) async {
+    state = const MealState.loading('Adding to your day…');
     try {
-      await ref.read(mealRepositoryProvider).confirmMeal(mealLogId);
-      state = const MealState.confirmed();
+      final summary =
+          await ref.read(mealRepositoryProvider).confirmMeal(mealLogId);
+      state = MealState.confirmed(summary);
     } catch (e) {
       state = MealState.error(e.toString());
     }
   }
 
-  /// Corrects macros then re-confirms. caloriesKcal is excluded and
-  /// recalculated server-side.
-  Future<void> correctAndConfirm({
-    required int mealLogId,
-    required String? name,
-    required double? proteinG,
-    required double? carbsG,
-    required double? fatG,
-  }) async {
-    state = const MealState.loading();
+  /// Corrects macros. caloriesKcal is excluded and recalculated server-side.
+  Future<void> correct(int mealLogId, MealCorrectionInput correction) async {
+    state = const MealState.loading('Saving corrections…');
     try {
-      final corrected = MealCorrectionInput(
-        name: name,
-        proteinG: proteinG,
-        carbsG: carbsG,
-        fatG: fatG,
-      );
       final result = await ref
           .read(mealRepositoryProvider)
-          .correctMeal(mealLogId, corrected);
-      state = MealState.result(result);
+          .correctMeal(mealLogId, correction);
+      state = MealState.success(result);
     } catch (e) {
       state = MealState.error(e.toString());
     }
@@ -76,7 +64,7 @@ class MealNotifier extends _$MealNotifier {
 
 /// Today's meal logs — refreshed after every confirmation.
 @riverpod
-Future<List<dynamic>> todayMeals(Ref ref) {
+Future<List<MealLog>> todayMeals(Ref ref) {
   return ref.watch(mealRepositoryProvider).getTodayMeals();
 }
 
@@ -84,5 +72,5 @@ Future<List<dynamic>> todayMeals(Ref ref) {
 @riverpod
 MealResult? pendingMealResult(Ref ref) {
   final state = ref.watch(mealNotifierProvider);
-  return state.maybeWhen(result: (r) => r, orElse: () => null);
+  return state.maybeWhen(success: (r) => r, orElse: () => null);
 }

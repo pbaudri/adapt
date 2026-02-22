@@ -6,6 +6,15 @@ import 'package:go_router/go_router.dart';
 import '../../../core/router/app_routes.dart';
 import 'providers/meal_provider.dart';
 
+/// Quick-add chip data: emoji + label that gets appended to the text field.
+const _quickAddItems = [
+  (emoji: '🍕', label: 'Pizza slice'),
+  (emoji: '🥗', label: 'Caesar salad'),
+  (emoji: '🍺', label: 'Beer'),
+  (emoji: '🍌', label: 'Banana'),
+  (emoji: '🍝', label: 'Pasta'),
+];
+
 class DescribeMealScreen extends ConsumerStatefulWidget {
   const DescribeMealScreen({super.key});
 
@@ -15,6 +24,7 @@ class DescribeMealScreen extends ConsumerStatefulWidget {
 
 class _DescribeMealScreenState extends ConsumerState<DescribeMealScreen> {
   final _controller = TextEditingController();
+  String? _inlineError;
 
   @override
   void dispose() {
@@ -22,16 +32,26 @@ class _DescribeMealScreenState extends ConsumerState<DescribeMealScreen> {
     super.dispose();
   }
 
+  void _appendChip(String text) {
+    final current = _controller.text.trim();
+    _controller.text = current.isEmpty ? text : '$current, $text';
+    _controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: _controller.text.length),
+    );
+    setState(() => _inlineError = null);
+  }
+
   Future<void> _onAnalyse() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
-    await ref.read(mealNotifierProvider.notifier).analyseByText(text);
+    setState(() => _inlineError = null);
+
+    await ref.read(mealNotifierProvider.notifier).logByText(text);
     if (!mounted) return;
+
     ref.read(mealNotifierProvider).maybeWhen(
-      result: (_) => context.push(AppRoutes.mealResult),
-      error: (message) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      ),
+      success: (_) => context.push(AppRoutes.mealResult),
+      error: (message) => setState(() => _inlineError = message),
       orElse: () {},
     );
   }
@@ -39,7 +59,8 @@ class _DescribeMealScreenState extends ConsumerState<DescribeMealScreen> {
   @override
   Widget build(BuildContext context) {
     final mealState = ref.watch(mealNotifierProvider);
-    final isLoading = mealState.maybeWhen(loading: () => true, orElse: () => false);
+    final isLoading =
+        mealState.maybeWhen(loading: (_) => true, orElse: () => false);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -73,6 +94,38 @@ class _DescribeMealScreenState extends ConsumerState<DescribeMealScreen> {
                     'e.g. Large Big Mac menu with Coke, extra ketchup, medium fries',
                 controller: _controller,
               ),
+              const SizedBox(height: AppDimensions.spacing12),
+              // QUICK ADD chips
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: _quickAddItems
+                      .map(
+                        (item) => Padding(
+                          padding: const EdgeInsets.only(
+                              right: AppDimensions.spacing8),
+                          child: AdaptQuickAddChip(
+                            leading: Text(
+                              item.emoji,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            label: item.label,
+                            isDisabled: isLoading,
+                            onTap: () => _appendChip(item.label),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              if (_inlineError != null) ...[
+                const SizedBox(height: AppDimensions.spacing12),
+                Text(
+                  _inlineError!,
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(color: AppColors.error),
+                ),
+              ],
               const Spacer(),
               ListenableBuilder(
                 listenable: _controller,

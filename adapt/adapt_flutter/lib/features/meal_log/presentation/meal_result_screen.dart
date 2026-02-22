@@ -14,6 +14,22 @@ class MealResultScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final result = ref.watch(pendingMealResultProvider);
+    final mealState = ref.watch(mealNotifierProvider);
+    final isConfirming = mealState.maybeWhen(
+      loading: (_) => true,
+      orElse: () => false,
+    );
+
+    // Navigate to home when confirmed
+    ref.listen(mealNotifierProvider, (_, next) {
+      next.maybeWhen(
+        confirmed: (_) {
+          ref.invalidate(homeDataProvider);
+          context.go(AppRoutes.home);
+        },
+        orElse: () {},
+      );
+    });
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -67,6 +83,14 @@ class MealResultScreen extends ConsumerWidget {
                             style: AppTextStyles.titleLarge,
                             textAlign: TextAlign.center,
                           ),
+                          const SizedBox(height: AppDimensions.spacing8),
+                          Text(
+                            result.source.name == 'userCorrected'
+                                ? 'User corrected'
+                                : 'AI estimated',
+                            style: AppTextStyles.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
                           const SizedBox(height: AppDimensions.spacing24),
                           MealNutrientSummary(
                             calories: result.caloriesKcal,
@@ -75,9 +99,31 @@ class MealResultScreen extends ConsumerWidget {
                             fatG: result.fatG,
                           ),
                           const SizedBox(height: AppDimensions.spacing24),
-                          AdaptInsightCard(
-                            title: result.aiTip ?? 'Looks good',
-                            subtitle: result.aiMessage,
+                          AdaptInfoCard(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  result.aiMessage,
+                                  style: AppTextStyles.bodyLarge,
+                                ),
+                                if (result.aiTip != null) ...[
+                                  const SizedBox(
+                                    height: AppDimensions.spacing12,
+                                  ),
+                                  const Divider(),
+                                  const SizedBox(
+                                    height: AppDimensions.spacing12,
+                                  ),
+                                  Text(
+                                    result.aiTip!,
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -89,25 +135,27 @@ class MealResultScreen extends ConsumerWidget {
                 bottom: AppDimensions.spacing32,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AdaptPrimaryButton(
-                    label: 'Confirm & log',
+                    label: 'Add to my day',
                     isDisabled: result == null,
-                    onTap: () async {
+                    isLoading: isConfirming,
+                    onTap: () {
                       if (result == null) return;
-                      await ref
+                      ref
                           .read(mealNotifierProvider.notifier)
-                          .confirmMeal(result.mealLogId);
-                      if (context.mounted) {
-                        ref.invalidate(homeDataProvider);
-                        context.go(AppRoutes.home);
-                      }
+                          .confirm(result.mealLogId);
                     },
+                    trailing: const Icon(
+                      Icons.check_rounded,
+                      color: AppColors.textPrimary,
+                      size: 18,
+                    ),
                   ),
                   const SizedBox(height: AppDimensions.spacing12),
-                  AdaptSecondaryButton(
-                    label: 'Edit values',
+                  AdaptTextLink(
+                    label: 'Not right? Correct it ✏',
                     onTap: () => context.push(AppRoutes.mealEdit),
                   ),
                 ],
