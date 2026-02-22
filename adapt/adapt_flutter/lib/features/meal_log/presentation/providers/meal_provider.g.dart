@@ -44,7 +44,7 @@ final pendingMealResultProvider = AutoDisposeProvider<MealResult?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PendingMealResultRef = AutoDisposeProviderRef<MealResult?>;
-String _$mealNotifierHash() => r'5bd38319f1a5887ebaf6928d0b7db45e0cb85a3b';
+String _$mealNotifierHash() => r'fb589a946d93983fb7e0958ae6e5dee709dee2db';
 
 /// See also [MealNotifier].
 @ProviderFor(MealNotifier)

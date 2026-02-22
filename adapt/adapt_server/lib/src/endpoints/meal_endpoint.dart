@@ -67,6 +67,20 @@ class MealEndpoint extends Endpoint {
       throw Exception('Meal log not found.');
     }
 
+    // Already confirmed — return the current summary without double-counting.
+    if (!mealLog.estimated) {
+      final dayStart = DateTime.utc(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      );
+      return DailySummaryService.getOrCreate(
+        session,
+        userId: userId,
+        date: dayStart,
+      );
+    }
+
     await MealLog.db.updateRow(session, mealLog.copyWith(estimated: false));
 
     final result = await MealResult.db.findFirstRow(

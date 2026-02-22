@@ -32,6 +32,16 @@ class HomeEndpoint extends Endpoint {
       where: (t) => t.userId.equals(userId) & t.date.equals(dayStart),
     );
 
+    // Fetch MealResult for each meal log so the client can show the
+    // AI-generated name and per-meal calorie count.
+    final mealLogIds = meals.map((m) => m.id!).toSet();
+    final mealResults = mealLogIds.isEmpty
+        ? <MealResult>[]
+        : await MealResult.db.find(
+            session,
+            where: (t) => t.mealLogId.inSet(mealLogIds),
+          );
+
     final dailyKcal = summary?.totalKcal ?? 0;
     final targetKcal = _computeTarget(profile);
 
@@ -41,6 +51,10 @@ class HomeEndpoint extends Endpoint {
       targetKcal: targetKcal,
       adaptiveMessage: _buildAdaptiveMessage(dailyKcal, targetKcal),
       meals: meals,
+      mealResults: mealResults,
+      totalProteinG: summary?.totalProteinG ?? 0.0,
+      totalCarbsG: summary?.totalCarbsG ?? 0.0,
+      totalFatG: summary?.totalFatG ?? 0.0,
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:adapt_client/adapt_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -129,7 +130,8 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.mealResult,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (_, _) => const MealResultScreen(),
+        builder: (_, state) =>
+            MealResultScreen(preloadedResult: state.extra as MealResult?),
       ),
       GoRoute(
         path: AppRoutes.mealEdit,

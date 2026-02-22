@@ -7,5 +7,7 @@ fields:
   summary: DailySummary
   ### All meal logs for this day.
   meals: List<MealLog>
+  ### Meal results keyed to each meal log.
+  mealResults: List<MealResult>
   ### All drink logs for this day.
   drinks: List<DrinkLog>

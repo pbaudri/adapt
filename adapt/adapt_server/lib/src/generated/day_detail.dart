@@ -13,8 +13,9 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'daily_summary.dart' as _i2;
 import 'meal_log.dart' as _i3;
-import 'drink_log.dart' as _i4;
-import 'package:adapt_server/src/generated/protocol.dart' as _i5;
+import 'meal_result.dart' as _i4;
+import 'drink_log.dart' as _i5;
+import 'package:adapt_server/src/generated/protocol.dart' as _i6;
 
 /// Detailed breakdown for a single day in the history screen.
 /// Combines the daily summary with its constituent meal and drink logs.
@@ -23,24 +24,29 @@ abstract class DayDetail
   DayDetail._({
     required this.summary,
     required this.meals,
+    required this.mealResults,
     required this.drinks,
   });
 
   factory DayDetail({
     required _i2.DailySummary summary,
     required List<_i3.MealLog> meals,
-    required List<_i4.DrinkLog> drinks,
+    required List<_i4.MealResult> mealResults,
+    required List<_i5.DrinkLog> drinks,
   }) = _DayDetailImpl;
 
   factory DayDetail.fromJson(Map<String, dynamic> jsonSerialization) {
     return DayDetail(
-      summary: _i5.Protocol().deserialize<_i2.DailySummary>(
+      summary: _i6.Protocol().deserialize<_i2.DailySummary>(
         jsonSerialization['summary'],
       ),
-      meals: _i5.Protocol().deserialize<List<_i3.MealLog>>(
+      meals: _i6.Protocol().deserialize<List<_i3.MealLog>>(
         jsonSerialization['meals'],
       ),
-      drinks: _i5.Protocol().deserialize<List<_i4.DrinkLog>>(
+      mealResults: _i6.Protocol().deserialize<List<_i4.MealResult>>(
+        jsonSerialization['mealResults'],
+      ),
+      drinks: _i6.Protocol().deserialize<List<_i5.DrinkLog>>(
         jsonSerialization['drinks'],
       ),
     );
@@ -52,8 +58,11 @@ abstract class DayDetail
   /// All meal logs for this day.
   List<_i3.MealLog> meals;
 
+  /// Meal results keyed to each meal log.
+  List<_i4.MealResult> mealResults;
+
   /// All drink logs for this day.
-  List<_i4.DrinkLog> drinks;
+  List<_i5.DrinkLog> drinks;
 
   /// Returns a shallow copy of this [DayDetail]
   /// with some or all fields replaced by the given arguments.
@@ -61,7 +70,8 @@ abstract class DayDetail
   DayDetail copyWith({
     _i2.DailySummary? summary,
     List<_i3.MealLog>? meals,
-    List<_i4.DrinkLog>? drinks,
+    List<_i4.MealResult>? mealResults,
+    List<_i5.DrinkLog>? drinks,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -69,6 +79,7 @@ abstract class DayDetail
       '__className__': 'DayDetail',
       'summary': summary.toJson(),
       'meals': meals.toJson(valueToJson: (v) => v.toJson()),
+      'mealResults': mealResults.toJson(valueToJson: (v) => v.toJson()),
       'drinks': drinks.toJson(valueToJson: (v) => v.toJson()),
     };
   }
@@ -79,6 +90,9 @@ abstract class DayDetail
       '__className__': 'DayDetail',
       'summary': summary.toJsonForProtocol(),
       'meals': meals.toJson(valueToJson: (v) => v.toJsonForProtocol()),
+      'mealResults': mealResults.toJson(
+        valueToJson: (v) => v.toJsonForProtocol(),
+      ),
       'drinks': drinks.toJson(valueToJson: (v) => v.toJsonForProtocol()),
     };
   }
@@ -93,10 +107,12 @@ class _DayDetailImpl extends DayDetail {
   _DayDetailImpl({
     required _i2.DailySummary summary,
     required List<_i3.MealLog> meals,
-    required List<_i4.DrinkLog> drinks,
+    required List<_i4.MealResult> mealResults,
+    required List<_i5.DrinkLog> drinks,
   }) : super._(
          summary: summary,
          meals: meals,
+         mealResults: mealResults,
          drinks: drinks,
        );
 
@@ -107,11 +123,14 @@ class _DayDetailImpl extends DayDetail {
   DayDetail copyWith({
     _i2.DailySummary? summary,
     List<_i3.MealLog>? meals,
-    List<_i4.DrinkLog>? drinks,
+    List<_i4.MealResult>? mealResults,
+    List<_i5.DrinkLog>? drinks,
   }) {
     return DayDetail(
       summary: summary ?? this.summary.copyWith(),
       meals: meals ?? this.meals.map((e0) => e0.copyWith()).toList(),
+      mealResults:
+          mealResults ?? this.mealResults.map((e0) => e0.copyWith()).toList(),
       drinks: drinks ?? this.drinks.map((e0) => e0.copyWith()).toList(),
     );
   }

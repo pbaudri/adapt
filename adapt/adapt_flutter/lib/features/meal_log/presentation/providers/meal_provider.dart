@@ -59,6 +59,10 @@ class MealNotifier extends _$MealNotifier {
     }
   }
 
+  /// Loads an existing [MealResult] into the provider so the result screen
+  /// can display a previously confirmed meal (from home or history lists).
+  void loadResult(MealResult result) => state = MealState.success(result);
+
   void reset() => state = const MealState.initial();
 }
 

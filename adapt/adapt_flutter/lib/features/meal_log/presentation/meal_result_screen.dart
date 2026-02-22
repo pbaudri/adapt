@@ -1,3 +1,4 @@
+import 'package:adapt_client/adapt_client.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,18 +10,26 @@ import 'providers/meal_provider.dart';
 import 'widgets/meal_nutrient_summary.dart';
 
 class MealResultScreen extends ConsumerWidget {
-  const MealResultScreen({super.key});
+  const MealResultScreen({super.key, this.preloadedResult});
+
+  /// Set when navigating from home/history to view an already-confirmed meal.
+  /// When non-null, action buttons are hidden (meal is already logged).
+  final MealResult? preloadedResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final result = ref.watch(pendingMealResultProvider);
+    final pendingResult = ref.watch(pendingMealResultProvider);
+    // preloadedResult takes priority (viewing an already-confirmed meal).
+    final result = preloadedResult ?? pendingResult;
+    final isViewing = preloadedResult != null;
+
     final mealState = ref.watch(mealNotifierProvider);
     final isConfirming = mealState.maybeWhen(
       loading: (_) => true,
       orElse: () => false,
     );
 
-    // Navigate to home when confirmed
+    // Navigate to home when confirmed (only relevant during active meal logging)
     ref.listen(mealNotifierProvider, (_, next) {
       next.maybeWhen(
         confirmed: (_) {
@@ -129,38 +138,39 @@ class MealResultScreen extends ConsumerWidget {
                       ),
               ),
             ),
-            Padding(
-              padding: AppDimensions.screenPadding.copyWith(
-                top: AppDimensions.spacing12,
-                bottom: AppDimensions.spacing32,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  AdaptPrimaryButton(
-                    label: 'Add to my day',
-                    isDisabled: result == null,
-                    isLoading: isConfirming,
-                    onTap: () {
-                      if (result == null) return;
-                      ref
-                          .read(mealNotifierProvider.notifier)
-                          .confirm(result.mealLogId);
-                    },
-                    trailing: const Icon(
-                      Icons.check_rounded,
-                      color: AppColors.textPrimary,
-                      size: 18,
+            if (!isViewing)
+              Padding(
+                padding: AppDimensions.screenPadding.copyWith(
+                  top: AppDimensions.spacing12,
+                  bottom: AppDimensions.spacing32,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AdaptPrimaryButton(
+                      label: 'Add to my day',
+                      isDisabled: result == null,
+                      isLoading: isConfirming,
+                      onTap: () {
+                        if (result == null) return;
+                        ref
+                            .read(mealNotifierProvider.notifier)
+                            .confirm(result.mealLogId);
+                      },
+                      trailing: const Icon(
+                        Icons.check_rounded,
+                        color: AppColors.textPrimary,
+                        size: 18,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: AppDimensions.spacing12),
-                  AdaptTextLink(
-                    label: 'Not right? Correct it ✏',
-                    onTap: () => context.push(AppRoutes.mealEdit),
-                  ),
-                ],
+                    const SizedBox(height: AppDimensions.spacing12),
+                    AdaptTextLink(
+                      label: 'Not right? Correct it ✏',
+                      onTap: () => context.push(AppRoutes.mealEdit),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

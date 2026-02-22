@@ -22,6 +22,10 @@ Future<HomeData> homeData(Ref ref) {
       targetKcal: 2000,
       adaptiveMessage: 'Sign in to start tracking your nutrition.',
       meals: [],
+      mealResults: [],
+      totalProteinG: 0.0,
+      totalCarbsG: 0.0,
+      totalFatG: 0.0,
     ));
   }
   return ref.watch(homeRepositoryProvider).getHomeData();

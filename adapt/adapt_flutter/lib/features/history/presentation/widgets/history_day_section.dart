@@ -41,28 +41,48 @@ class HistoryDaySection extends ConsumerWidget {
                 ),
               );
             }
+
+            // Build a map for O(1) lookup of MealResult by mealLogId.
+            final resultByLogId = {
+              for (final r in detail.mealResults) r.mealLogId: r,
+            };
+
             return AdaptInfoCard(
               child: Column(
                 children: [
                   for (var i = 0; i < detail.meals.length; i++) ...[
                     if (i > 0) const Divider(),
-                    MealListItem(
-                      leading: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: AppColors.surfaceElevated,
-                          borderRadius: BorderRadius.circular(
-                            AppDimensions.radiusSmall,
+                    Builder(
+                      builder: (context) {
+                        final meal = detail.meals[i];
+                        final result = resultByLogId[meal.id];
+                        return MealListItem(
+                          leading: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceElevated,
+                              borderRadius: BorderRadius.circular(
+                                AppDimensions.radiusSmall,
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                '🍽',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
                           ),
-                        ),
-                        child: const Center(
-                          child: Text('🍽', style: TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                      name: detail.meals[i].rawInput ?? 'Meal',
-                      calories: 0,
-                      onTap: () => context.push(AppRoutes.mealResult),
+                          name: result?.name ?? meal.rawInput ?? 'Meal',
+                          calories: result?.caloriesKcal ?? 0,
+                          onTap: result == null
+                              ? () {}
+                              : () => context.push(
+                                    AppRoutes.mealResult,
+                                    extra: result,
+                                  ),
+                        );
+                      },
                     ),
                   ],
                   for (var drink in detail.drinks) ...[

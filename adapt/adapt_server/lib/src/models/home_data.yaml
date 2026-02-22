@@ -13,3 +13,11 @@ fields:
   adaptiveMessage: String
   ### Today's meal logs (most recent first).
   meals: List<MealLog>
+  ### Today's meal results keyed to each meal log.
+  mealResults: List<MealResult>
+  ### Today's total protein in grams (from DailySummary).
+  totalProteinG: double
+  ### Today's total carbs in grams (from DailySummary).
+  totalCarbsG: double
+  ### Today's total fat in grams (from DailySummary).
+  totalFatG: double

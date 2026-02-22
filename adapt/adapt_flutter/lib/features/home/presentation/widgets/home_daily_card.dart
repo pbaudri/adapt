@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/home_provider.dart';
 
-/// Daily calorie summary card with insight and quick drink log shortcut.
+/// Daily calorie summary card with macro chips.
 class HomeDailyCard extends ConsumerWidget {
   const HomeDailyCard({super.key});
 
@@ -31,7 +31,7 @@ class HomeDailyCard extends ConsumerWidget {
               Expanded(
                 child: NutrientChip(
                   label: 'Protein',
-                  value: '${data.meals.fold<double>(0, (s, m) => s).round()}g',
+                  value: '${data.totalProteinG.round()}g',
                   color: AppColors.protein,
                 ),
               ),
@@ -39,7 +39,7 @@ class HomeDailyCard extends ConsumerWidget {
               Expanded(
                 child: NutrientChip(
                   label: 'Carbs',
-                  value: '—',
+                  value: '${data.totalCarbsG.round()}g',
                   color: AppColors.carbs,
                 ),
               ),
@@ -47,7 +47,7 @@ class HomeDailyCard extends ConsumerWidget {
               Expanded(
                 child: NutrientChip(
                   label: 'Fat',
-                  value: '—',
+                  value: '${data.totalFatG.round()}g',
                   color: AppColors.fat,
                 ),
               ),

@@ -26,18 +26,17 @@ class HistoryChartSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Build bar data from real summaries (7 days Mon–Sun).
-    // Fill missing days with 0 kcal.
+    // Match each summary to its correct weekday slot (0=Mon…6=Sun) so that
+    // a partial week (e.g. only Sunday logged) renders in the right position.
+    final summaryBySlot = <int, DailySummary>{
+      for (final s in summaries)
+        (s.date.weekday - 1): s, // weekday: Mon=1…Sun=7 → slot: Mon=0…Sun=6
+    };
     final barData = List.generate(7, (i) {
-      if (i < summaries.length) {
-        final s = summaries[i];
-        return DayBarData(
-          label: DateFormatter.dayShort(s.date),
-          value: s.totalKcal.toDouble(),
-        );
-      }
+      final s = summaryBySlot[i];
       return DayBarData(
-        label: _weekdayLabel(i),
-        value: 0,
+        label: s != null ? DateFormatter.dayShort(s.date) : _weekdayLabel(i),
+        value: s != null ? s.totalKcal.toDouble() : 0,
       );
     });
 

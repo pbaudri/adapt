@@ -27,12 +27,26 @@ class HomeMealList extends ConsumerWidget {
             ),
           );
         }
+
+        // Build a map for O(1) lookup of MealResult by mealLogId.
+        final resultByLogId = {
+          for (final r in data.mealResults) r.mealLogId: r,
+        };
+
         return AdaptInfoCard(
           child: Column(
             children: [
               for (var i = 0; i < data.meals.length; i++) ...[
                 if (i > 0) const Divider(),
-                _MealItem(meal: data.meals[i]),
+                _MealItem(
+                  meal: data.meals[i],
+                  result: resultByLogId[data.meals[i].id],
+                  onTap: () {
+                    final result = resultByLogId[data.meals[i].id];
+                    if (result == null) return;
+                    context.push(AppRoutes.mealResult, extra: result);
+                  },
+                ),
               ],
             ],
           ),
@@ -43,9 +57,15 @@ class HomeMealList extends ConsumerWidget {
 }
 
 class _MealItem extends StatelessWidget {
-  const _MealItem({required this.meal});
+  const _MealItem({
+    required this.meal,
+    required this.result,
+    required this.onTap,
+  });
 
   final MealLog meal;
+  final MealResult? result;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +81,9 @@ class _MealItem extends StatelessWidget {
           child: Text('🍽', style: TextStyle(fontSize: 20)),
         ),
       ),
-      name: meal.rawInput ?? 'Meal',
-      calories: 0,
-      onTap: () => context.push(AppRoutes.mealResult),
+      name: result?.name ?? meal.rawInput ?? 'Meal',
+      calories: result?.caloriesKcal ?? 0,
+      onTap: onTap,
     );
   }
 }

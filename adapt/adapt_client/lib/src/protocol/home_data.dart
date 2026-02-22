@@ -12,7 +12,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'meal_log.dart' as _i2;
-import 'package:adapt_client/src/protocol/protocol.dart' as _i3;
+import 'meal_result.dart' as _i3;
+import 'package:adapt_client/src/protocol/protocol.dart' as _i4;
 
 /// Aggregated response for the home screen.
 /// Combines greeting, daily summary, and recent meals.
@@ -23,6 +24,10 @@ abstract class HomeData implements _i1.SerializableModel {
     required this.targetKcal,
     required this.adaptiveMessage,
     required this.meals,
+    required this.mealResults,
+    required this.totalProteinG,
+    required this.totalCarbsG,
+    required this.totalFatG,
   });
 
   factory HomeData({
@@ -31,6 +36,10 @@ abstract class HomeData implements _i1.SerializableModel {
     required int targetKcal,
     required String adaptiveMessage,
     required List<_i2.MealLog> meals,
+    required List<_i3.MealResult> mealResults,
+    required double totalProteinG,
+    required double totalCarbsG,
+    required double totalFatG,
   }) = _HomeDataImpl;
 
   factory HomeData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -39,9 +48,15 @@ abstract class HomeData implements _i1.SerializableModel {
       dailyKcal: jsonSerialization['dailyKcal'] as int,
       targetKcal: jsonSerialization['targetKcal'] as int,
       adaptiveMessage: jsonSerialization['adaptiveMessage'] as String,
-      meals: _i3.Protocol().deserialize<List<_i2.MealLog>>(
+      meals: _i4.Protocol().deserialize<List<_i2.MealLog>>(
         jsonSerialization['meals'],
       ),
+      mealResults: _i4.Protocol().deserialize<List<_i3.MealResult>>(
+        jsonSerialization['mealResults'],
+      ),
+      totalProteinG: (jsonSerialization['totalProteinG'] as num).toDouble(),
+      totalCarbsG: (jsonSerialization['totalCarbsG'] as num).toDouble(),
+      totalFatG: (jsonSerialization['totalFatG'] as num).toDouble(),
     );
   }
 
@@ -60,6 +75,18 @@ abstract class HomeData implements _i1.SerializableModel {
   /// Today's meal logs (most recent first).
   List<_i2.MealLog> meals;
 
+  /// Today's meal results keyed to each meal log.
+  List<_i3.MealResult> mealResults;
+
+  /// Today's total protein in grams (from DailySummary).
+  double totalProteinG;
+
+  /// Today's total carbs in grams (from DailySummary).
+  double totalCarbsG;
+
+  /// Today's total fat in grams (from DailySummary).
+  double totalFatG;
+
   /// Returns a shallow copy of this [HomeData]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -69,6 +96,10 @@ abstract class HomeData implements _i1.SerializableModel {
     int? targetKcal,
     String? adaptiveMessage,
     List<_i2.MealLog>? meals,
+    List<_i3.MealResult>? mealResults,
+    double? totalProteinG,
+    double? totalCarbsG,
+    double? totalFatG,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -79,6 +110,10 @@ abstract class HomeData implements _i1.SerializableModel {
       'targetKcal': targetKcal,
       'adaptiveMessage': adaptiveMessage,
       'meals': meals.toJson(valueToJson: (v) => v.toJson()),
+      'mealResults': mealResults.toJson(valueToJson: (v) => v.toJson()),
+      'totalProteinG': totalProteinG,
+      'totalCarbsG': totalCarbsG,
+      'totalFatG': totalFatG,
     };
   }
 
@@ -95,12 +130,20 @@ class _HomeDataImpl extends HomeData {
     required int targetKcal,
     required String adaptiveMessage,
     required List<_i2.MealLog> meals,
+    required List<_i3.MealResult> mealResults,
+    required double totalProteinG,
+    required double totalCarbsG,
+    required double totalFatG,
   }) : super._(
          greeting: greeting,
          dailyKcal: dailyKcal,
          targetKcal: targetKcal,
          adaptiveMessage: adaptiveMessage,
          meals: meals,
+         mealResults: mealResults,
+         totalProteinG: totalProteinG,
+         totalCarbsG: totalCarbsG,
+         totalFatG: totalFatG,
        );
 
   /// Returns a shallow copy of this [HomeData]
@@ -113,6 +156,10 @@ class _HomeDataImpl extends HomeData {
     int? targetKcal,
     String? adaptiveMessage,
     List<_i2.MealLog>? meals,
+    List<_i3.MealResult>? mealResults,
+    double? totalProteinG,
+    double? totalCarbsG,
+    double? totalFatG,
   }) {
     return HomeData(
       greeting: greeting ?? this.greeting,
@@ -120,6 +167,11 @@ class _HomeDataImpl extends HomeData {
       targetKcal: targetKcal ?? this.targetKcal,
       adaptiveMessage: adaptiveMessage ?? this.adaptiveMessage,
       meals: meals ?? this.meals.map((e0) => e0.copyWith()).toList(),
+      mealResults:
+          mealResults ?? this.mealResults.map((e0) => e0.copyWith()).toList(),
+      totalProteinG: totalProteinG ?? this.totalProteinG,
+      totalCarbsG: totalCarbsG ?? this.totalCarbsG,
+      totalFatG: totalFatG ?? this.totalFatG,
     );
   }
 }

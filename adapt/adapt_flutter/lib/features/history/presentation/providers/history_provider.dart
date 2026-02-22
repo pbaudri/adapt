@@ -43,6 +43,7 @@ Future<DayDetail> dayDetail(Ref ref, DateTime date) {
         morningRecapSent: false,
       ),
       meals: [],
+      mealResults: [],
       drinks: [],
     ));
   }

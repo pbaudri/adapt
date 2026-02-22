@@ -15,7 +15,7 @@ class HistoryScreen extends ConsumerStatefulWidget {
 }
 
 class _HistoryScreenState extends ConsumerState<HistoryScreen> {
-  int _selectedBarIndex = 6;
+  late int _selectedBarIndex;
   late DateTime _weekStart;
 
   @override
@@ -24,6 +24,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final now = DateTime.now();
     // Monday of the current week.
     _weekStart = now.subtract(Duration(days: now.weekday - 1));
+    // Default to today's slot: Mon=0 … Sun=6.
+    _selectedBarIndex = now.weekday - 1;
   }
 
   DateTime get _selectedDate =>

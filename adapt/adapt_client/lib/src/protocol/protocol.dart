@@ -236,6 +236,10 @@ class Protocol extends _i1.SerializationManager {
       return (data as List).map((e) => deserialize<_i20.MealLog>(e)).toList()
           as T;
     }
+    if (t == List<_i21.MealResult>) {
+      return (data as List).map((e) => deserialize<_i21.MealResult>(e)).toList()
+          as T;
+    }
     if (t == List<_i5.DrinkLog>) {
       return (data as List).map((e) => deserialize<_i5.DrinkLog>(e)).toList()
           as T;

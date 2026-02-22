@@ -40,6 +40,14 @@ class HistoryEndpoint extends Endpoint {
       orderBy: (t) => t.loggedAt,
     );
 
+    final mealLogIds = meals.map((m) => m.id!).toSet();
+    final mealResults = mealLogIds.isEmpty
+        ? <MealResult>[]
+        : await MealResult.db.find(
+            session,
+            where: (t) => t.mealLogId.inSet(mealLogIds),
+          );
+
     final drinks = await DrinkLog.db.find(
       session,
       where: (t) =>
@@ -50,6 +58,7 @@ class HistoryEndpoint extends Endpoint {
     return DayDetail(
       summary: summary,
       meals: meals,
+      mealResults: mealResults,
       drinks: drinks,
     );
   }
