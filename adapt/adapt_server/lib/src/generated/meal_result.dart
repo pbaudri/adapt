@@ -28,6 +28,7 @@ abstract class MealResult
     required this.aiMessage,
     this.aiTip,
     required this.source,
+    this.emojis,
   });
 
   factory MealResult({
@@ -41,6 +42,7 @@ abstract class MealResult
     required String aiMessage,
     String? aiTip,
     required _i2.MealSource source,
+    String? emojis,
   }) = _MealResultImpl;
 
   factory MealResult.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -55,6 +57,7 @@ abstract class MealResult
       aiMessage: jsonSerialization['aiMessage'] as String,
       aiTip: jsonSerialization['aiTip'] as String?,
       source: _i2.MealSource.fromJson((jsonSerialization['source'] as String)),
+      emojis: jsonSerialization['emojis'] as String?,
     );
   }
 
@@ -92,6 +95,10 @@ abstract class MealResult
   /// How this result was produced.
   _i2.MealSource source;
 
+  /// JSON array of 1–3 emojis representing meal components, e.g. '["🍝","🥗"]'.
+  /// Null for legacy rows — fall back to '["🍽"]' in display code.
+  String? emojis;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -109,6 +116,7 @@ abstract class MealResult
     String? aiMessage,
     String? aiTip,
     _i2.MealSource? source,
+    String? emojis,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -124,6 +132,7 @@ abstract class MealResult
       'aiMessage': aiMessage,
       if (aiTip != null) 'aiTip': aiTip,
       'source': source.toJson(),
+      if (emojis != null) 'emojis': emojis,
     };
   }
 
@@ -141,6 +150,7 @@ abstract class MealResult
       'aiMessage': aiMessage,
       if (aiTip != null) 'aiTip': aiTip,
       'source': source.toJson(),
+      if (emojis != null) 'emojis': emojis,
     };
   }
 
@@ -188,6 +198,7 @@ class _MealResultImpl extends MealResult {
     required String aiMessage,
     String? aiTip,
     required _i2.MealSource source,
+    String? emojis,
   }) : super._(
          id: id,
          mealLogId: mealLogId,
@@ -199,6 +210,7 @@ class _MealResultImpl extends MealResult {
          aiMessage: aiMessage,
          aiTip: aiTip,
          source: source,
+         emojis: emojis,
        );
 
   /// Returns a shallow copy of this [MealResult]
@@ -216,6 +228,7 @@ class _MealResultImpl extends MealResult {
     String? aiMessage,
     Object? aiTip = _Undefined,
     _i2.MealSource? source,
+    Object? emojis = _Undefined,
   }) {
     return MealResult(
       id: id is int? ? id : this.id,
@@ -228,6 +241,7 @@ class _MealResultImpl extends MealResult {
       aiMessage: aiMessage ?? this.aiMessage,
       aiTip: aiTip is String? ? aiTip : this.aiTip,
       source: source ?? this.source,
+      emojis: emojis is String? ? emojis : this.emojis,
     );
   }
 }
@@ -281,6 +295,11 @@ class MealResultUpdateTable extends _i1.UpdateTable<MealResultTable> {
     table.source,
     value,
   );
+
+  _i1.ColumnValue<String, String> emojis(String? value) => _i1.ColumnValue(
+    table.emojis,
+    value,
+  );
 }
 
 class MealResultTable extends _i1.Table<int?> {
@@ -323,6 +342,10 @@ class MealResultTable extends _i1.Table<int?> {
       this,
       _i1.EnumSerialization.byName,
     );
+    emojis = _i1.ColumnString(
+      'emojis',
+      this,
+    );
   }
 
   late final MealResultUpdateTable updateTable;
@@ -354,6 +377,10 @@ class MealResultTable extends _i1.Table<int?> {
   /// How this result was produced.
   late final _i1.ColumnEnum<_i2.MealSource> source;
 
+  /// JSON array of 1–3 emojis representing meal components, e.g. '["🍝","🥗"]'.
+  /// Null for legacy rows — fall back to '["🍽"]' in display code.
+  late final _i1.ColumnString emojis;
+
   @override
   List<_i1.Column> get columns => [
     id,
@@ -366,6 +393,7 @@ class MealResultTable extends _i1.Table<int?> {
     aiMessage,
     aiTip,
     source,
+    emojis,
   ];
 }
 

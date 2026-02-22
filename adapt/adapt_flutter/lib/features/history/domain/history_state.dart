@@ -4,8 +4,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'history_state.freezed.dart';
 
 @freezed
-sealed class WeekState with _$WeekState {
-  const factory WeekState.loading() = _WeekLoading;
-  const factory WeekState.success(List<DailySummary> summaries) = _WeekSuccess;
-  const factory WeekState.error(String message) = _WeekError;
+sealed class HistoryState with _$HistoryState {
+  const factory HistoryState.initial() = _Initial;
+  const factory HistoryState.loading() = _Loading;
+  const factory HistoryState.success(
+    List<DailySummary> week,
+    DayDetail? selectedDay,
+    DateTime weekStartDate,
+  ) = _Success;
+  const factory HistoryState.error(String message) = _Error;
 }

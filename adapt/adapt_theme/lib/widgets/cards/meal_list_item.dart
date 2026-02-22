@@ -9,6 +9,7 @@ import '../../theme/app_text_styles.dart';
 /// - [leading] — widget shown on the left (emoji in a container, image, etc.).
 /// - [name] — meal name (e.g. "Big Mac Menu").
 /// - [calories] — calorie count as an integer.
+/// - [calorieLabelColor] — optional color for the calorie text. Defaults to `AppColors.textPrimary`.
 /// - [onTap] — called when the row is tapped.
 class MealListItem extends StatelessWidget {
   const MealListItem({
@@ -17,11 +18,13 @@ class MealListItem extends StatelessWidget {
     required this.name,
     required this.calories,
     required this.onTap,
+    this.calorieLabelColor,
   });
 
   final Widget leading;
   final String name;
   final int calories;
+  final Color? calorieLabelColor;
   final VoidCallback onTap;
 
   @override
@@ -53,9 +56,16 @@ class MealListItem extends StatelessWidget {
               children: [
                 Text(
                   '$calories',
-                  style: AppTextStyles.bodyLarge,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: calorieLabelColor,
+                  ),
                 ),
-                Text('kcal', style: AppTextStyles.bodyMedium),
+                Text(
+                  'kcal',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: calorieLabelColor,
+                  ),
+                ),
               ],
             ),
             const SizedBox(width: AppDimensions.spacing8),

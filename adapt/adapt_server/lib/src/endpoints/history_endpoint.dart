@@ -8,17 +8,45 @@ class HistoryEndpoint extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  /// Returns the seven DailySummary rows starting at [weekStartDate].
+  /// Returns exactly 7 DailySummary rows starting at [weekStartDate] (Mon–Sun).
+  /// Days with no data are filled with zero-value synthetic rows so the
+  /// bar chart always has 7 data points.
   Future<List<DailySummary>> getWeekSummary(
     Session session,
     DateTime weekStartDate,
   ) async {
     final userId = session.authenticated!.userIdentifier;
-    return DailySummaryService.getWeekSummaries(
+    final weekStart = DateTime.utc(
+      weekStartDate.year,
+      weekStartDate.month,
+      weekStartDate.day,
+    );
+
+    final rows = await DailySummaryService.getWeekSummaries(
       session,
       userId: userId,
-      weekStart: weekStartDate,
+      weekStart: weekStart,
     );
+
+    // Index existing rows by date for O(1) lookup.
+    final byDate = {for (final r in rows) r.date: r};
+
+    // Generate all 7 days, substituting zeros where there is no data.
+    return List.generate(7, (i) {
+      final day = weekStart.add(Duration(days: i));
+      return byDate[day] ??
+          DailySummary(
+            userId: userId,
+            date: day,
+            totalKcal: 0,
+            totalProteinG: 0,
+            totalCarbsG: 0,
+            totalFatG: 0,
+            hadAlcohol: false,
+            mealEmojis: '[]',
+            morningRecapSent: false,
+          );
+    });
   }
 
   /// Returns the full detail for a single day: summary + meals + drinks.

@@ -12,6 +12,7 @@ import 'nutrition_service.dart';
 class AiMealAnalysis {
   const AiMealAnalysis({
     required this.name,
+    required this.emojis,
     required this.proteinG,
     required this.carbsG,
     required this.fatG,
@@ -20,6 +21,8 @@ class AiMealAnalysis {
   });
 
   final String name;
+  /// Validated list of 1–3 emoji characters representing meal components.
+  final List<String> emojis;
   final double proteinG;
   final double carbsG;
   final double fatG;
@@ -44,12 +47,28 @@ No markdown, no explanation, no preamble, no code block — raw JSON only.
 Required format:
 {
   "name": "normalized meal name in English",
+  "emojis": ["emoji1", "emoji2"],
   "protein_g": <number>,
   "carbs_g": <number>,
   "fat_g": <number>,
   "ai_message": "short encouraging message, mention the estimated kcal (protein_g*4 + carbs_g*4 + fat_g*9), zero-judgment tone",
   "ai_tip": "one optional practical suggestion for the rest of the day, or null"
 }
+
+Rules for the emojis field:
+- Return an array of 1 to 3 emojis maximum
+- Each emoji represents a distinct component of the meal
+- Most important/largest component first
+- Examples:
+  · "pasta, salad, egg" → ["🍝", "🥗", "🍳"]
+  · "Big Mac menu with fries and Coke" → ["🍔", "🍟", "🥤"]
+  · "Greek salad" → ["🥗"]
+  · "oat latte" → ["☕"]
+  · "sushi platter" → ["🍣", "🍱"]
+  · "steak with mashed potatoes and wine" → ["🥩", "🥔", "🍷"]
+- Always single emoji characters — never text, never flags, never faces
+- Never exceed 3 emojis
+- Fallback to ["🍽"] if unsure
 
 Absolute rules:
 - Never use: bad, excess, unhealthy, too much, cheat, guilt, wrong, sinful
@@ -233,12 +252,31 @@ Had alcohol: $hadAlcohol
 
     return AiMealAnalysis(
       name: data['name'] as String,
+      emojis: _parseEmojis(data['emojis']),
       proteinG: (data['protein_g'] as num).toDouble(),
       carbsG: (data['carbs_g'] as num).toDouble(),
       fatG: (data['fat_g'] as num).toDouble(),
       aiMessage: data['ai_message'] as String,
       aiTip: data['ai_tip'] as String?,
     );
+  }
+
+  /// Parses and validates the emojis field from the AI response.
+  /// Returns a non-empty list of 1–3 single emoji characters.
+  /// Falls back to ['🍽'] if validation fails.
+  static List<String> _parseEmojis(dynamic raw) {
+    try {
+      final list = (raw as List).cast<String>();
+      // Keep only non-empty single-character (grapheme) entries, max 3.
+      final valid = list
+          .where((e) => e.isNotEmpty)
+          .take(3)
+          .toList();
+      if (valid.isEmpty) return ['🍽'];
+      return valid;
+    } catch (_) {
+      return ['🍽'];
+    }
   }
 
   static String _extractText(String responseBody) {
@@ -263,6 +301,7 @@ Had alcohol: $hadAlcohol
 
   static bool _hasRequiredFields(Map<String, dynamic> data) {
     return data.containsKey('name') &&
+        data.containsKey('emojis') &&
         data.containsKey('protein_g') &&
         data.containsKey('carbs_g') &&
         data.containsKey('fat_g') &&
@@ -280,6 +319,7 @@ MealResult buildMealResult({
   return MealResult(
     mealLogId: mealLogId,
     name: analysis.name,
+    emojis: jsonEncode(analysis.emojis),
     caloriesKcal: NutritionService.calculateCalories(
       proteinG: analysis.proteinG,
       carbsG: analysis.carbsG,

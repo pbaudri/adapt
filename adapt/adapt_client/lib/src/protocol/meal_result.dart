@@ -27,6 +27,7 @@ abstract class MealResult implements _i1.SerializableModel {
     required this.aiMessage,
     this.aiTip,
     required this.source,
+    this.emojis,
   });
 
   factory MealResult({
@@ -40,6 +41,7 @@ abstract class MealResult implements _i1.SerializableModel {
     required String aiMessage,
     String? aiTip,
     required _i2.MealSource source,
+    String? emojis,
   }) = _MealResultImpl;
 
   factory MealResult.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -54,6 +56,7 @@ abstract class MealResult implements _i1.SerializableModel {
       aiMessage: jsonSerialization['aiMessage'] as String,
       aiTip: jsonSerialization['aiTip'] as String?,
       source: _i2.MealSource.fromJson((jsonSerialization['source'] as String)),
+      emojis: jsonSerialization['emojis'] as String?,
     );
   }
 
@@ -89,6 +92,10 @@ abstract class MealResult implements _i1.SerializableModel {
   /// How this result was produced.
   _i2.MealSource source;
 
+  /// JSON array of 1–3 emojis representing meal components, e.g. '["🍝","🥗"]'.
+  /// Null for legacy rows — fall back to '["🍽"]' in display code.
+  String? emojis;
+
   /// Returns a shallow copy of this [MealResult]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -103,6 +110,7 @@ abstract class MealResult implements _i1.SerializableModel {
     String? aiMessage,
     String? aiTip,
     _i2.MealSource? source,
+    String? emojis,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -118,6 +126,7 @@ abstract class MealResult implements _i1.SerializableModel {
       'aiMessage': aiMessage,
       if (aiTip != null) 'aiTip': aiTip,
       'source': source.toJson(),
+      if (emojis != null) 'emojis': emojis,
     };
   }
 
@@ -141,6 +150,7 @@ class _MealResultImpl extends MealResult {
     required String aiMessage,
     String? aiTip,
     required _i2.MealSource source,
+    String? emojis,
   }) : super._(
          id: id,
          mealLogId: mealLogId,
@@ -152,6 +162,7 @@ class _MealResultImpl extends MealResult {
          aiMessage: aiMessage,
          aiTip: aiTip,
          source: source,
+         emojis: emojis,
        );
 
   /// Returns a shallow copy of this [MealResult]
@@ -169,6 +180,7 @@ class _MealResultImpl extends MealResult {
     String? aiMessage,
     Object? aiTip = _Undefined,
     _i2.MealSource? source,
+    Object? emojis = _Undefined,
   }) {
     return MealResult(
       id: id is int? ? id : this.id,
@@ -181,6 +193,7 @@ class _MealResultImpl extends MealResult {
       aiMessage: aiMessage ?? this.aiMessage,
       aiTip: aiTip is String? ? aiTip : this.aiTip,
       source: source ?? this.source,
+      emojis: emojis is String? ? emojis : this.emojis,
     );
   }
 }

@@ -365,7 +365,9 @@ class EndpointHistory extends _i2.EndpointRef {
   @override
   String get name => 'history';
 
-  /// Returns the seven DailySummary rows starting at [weekStartDate].
+  /// Returns exactly 7 DailySummary rows starting at [weekStartDate] (Mon–Sun).
+  /// Days with no data are filled with zero-value synthetic rows so the
+  /// bar chart always has 7 data points.
   _i3.Future<List<_i7.DailySummary>> getWeekSummary(DateTime weekStartDate) =>
       caller.callServerEndpoint<List<_i7.DailySummary>>(
         'history',

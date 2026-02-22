@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:adapt_client/adapt_client.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ class HistoryChartSection extends StatelessWidget {
     required this.weekLabel,
     required this.selectedIndex,
     required this.summaries,
+    required this.canGoNext,
     required this.onPrevious,
     required this.onNext,
     required this.onBarTap,
@@ -19,24 +22,27 @@ class HistoryChartSection extends StatelessWidget {
   final String weekLabel;
   final int selectedIndex;
   final List<DailySummary> summaries;
+  final bool canGoNext;
   final VoidCallback onPrevious;
   final VoidCallback onNext;
   final ValueChanged<int> onBarTap;
 
   @override
   Widget build(BuildContext context) {
-    // Build bar data from real summaries (7 days Mon–Sun).
-    // Match each summary to its correct weekday slot (0=Mon…6=Sun) so that
-    // a partial week (e.g. only Sunday logged) renders in the right position.
-    final summaryBySlot = <int, DailySummary>{
-      for (final s in summaries)
-        (s.date.weekday - 1): s, // weekday: Mon=1…Sun=7 → slot: Mon=0…Sun=6
-    };
-    final barData = List.generate(7, (i) {
-      final s = summaryBySlot[i];
+    // summaries already has exactly 7 rows (server fills zeros for missing days).
+    // Use a minimum reference of 2000 kcal so bars are proportional on low-data weeks.
+    final maxKcal = summaries.fold(0, (acc, s) => max(acc, s.totalKcal));
+    final weekMaxKcal = max(maxKcal, 2000);
+
+    final barData = List.generate(summaries.length, (i) {
+      final s = summaries[i];
+      final heightFactor =
+          s.totalKcal == 0 ? 0.05 : s.totalKcal / weekMaxKcal;
       return DayBarData(
-        label: s != null ? DateFormatter.dayShort(s.date) : _weekdayLabel(i),
-        value: s != null ? s.totalKcal.toDouble() : 0,
+        label: DateFormatter.dayShort(s.date),
+        heightFactor: heightFactor,
+        value: s.totalKcal.toDouble(),
+        hadAlcohol: s.hadAlcohol,
       );
     });
 
@@ -46,6 +52,7 @@ class HistoryChartSection extends StatelessWidget {
         children: [
           AdaptWeekNavigator(
             label: weekLabel,
+            canGoNext: canGoNext,
             onPrevious: onPrevious,
             onNext: onNext,
           ),
@@ -58,10 +65,5 @@ class HistoryChartSection extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  static String _weekdayLabel(int index) {
-    const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return labels[index % 7];
   }
 }

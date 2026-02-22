@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
@@ -8,13 +6,26 @@ import '../../theme/app_text_styles.dart';
 
 /// Data model for a single bar in [AdaptBarChart].
 class DayBarData {
-  const DayBarData({required this.label, required this.value});
+  const DayBarData({
+    required this.label,
+    required this.heightFactor,
+    this.value = 0,
+    this.hadAlcohol = false,
+  });
 
   /// Short day label (e.g. "Mon").
   final String label;
 
-  /// Value for this day (e.g. total kcal).
+  /// Pre-normalised height factor in [0.0, 1.0].
+  /// The bar will be rendered at [heightFactor] × [AdaptBarChart.maxBarHeight].
+  final double heightFactor;
+
+  /// Raw value shown as a label when the bar is selected (e.g. total kcal).
+  /// Pass 0 to suppress the label.
   final double value;
+
+  /// When true, a 🍷 badge is shown below the day label.
+  final bool hadAlcohol;
 }
 
 /// A horizontal bar chart showing one bar per day, used in the history screen.
@@ -41,16 +52,14 @@ class AdaptBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     if (data.isEmpty) return const SizedBox.shrink();
 
-    final maxValue = data.map((d) => d.value).reduce(max);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: List.generate(data.length, (index) {
         final item = data[index];
         final isSelected = index == selectedIndex;
-        final ratio = maxValue > 0 ? item.value / maxValue : 0.0;
-        final barHeight = (ratio * maxBarHeight).clamp(4.0, maxBarHeight);
+        final barHeight =
+            (item.heightFactor * maxBarHeight).clamp(0.0, maxBarHeight);
 
         return Expanded(
           child: GestureDetector(
@@ -91,6 +100,8 @@ class AdaptBarChart extends StatelessWidget {
                   ),
                   const SizedBox(height: AppDimensions.spacing8),
                   Text(item.label, style: AppTextStyles.labelCaps),
+                  if (item.hadAlcohol)
+                    const Text('🍷', style: TextStyle(fontSize: 10)),
                 ],
               ),
             ),

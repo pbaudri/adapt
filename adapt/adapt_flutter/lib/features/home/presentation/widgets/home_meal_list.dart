@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../../history/presentation/widgets/emoji_list_widget.dart';
 import '../providers/home_provider.dart';
 
 /// Interleaved list of today's meals and drinks, ordered most-recent first.
@@ -34,8 +35,9 @@ class HomeMealList extends ConsumerWidget {
           return Center(
             child: Text(
               'Nothing logged yet today.',
-              style: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.textMuted),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textMuted,
+              ),
             ),
           );
         }
@@ -50,8 +52,8 @@ class HomeMealList extends ConsumerWidget {
                     meal: meal,
                     result: result,
                     onTap: result != null
-                        ? () => context.push(AppRoutes.mealResult,
-                            extra: result)
+                        ? () =>
+                              context.push(AppRoutes.mealResult, extra: result)
                         : null,
                   ),
                   drink: (drink) => _DrinkRow(drink: drink),
@@ -70,8 +72,7 @@ class HomeMealList extends ConsumerWidget {
 sealed class _FeedItem {
   const _FeedItem();
 
-  factory _FeedItem.meal(MealLog meal, MealResult? result) =
-      _MealFeedItem;
+  factory _FeedItem.meal(MealLog meal, MealResult? result) = _MealFeedItem;
 
   factory _FeedItem.drink(DrinkLog drink) = _DrinkFeedItem;
 
@@ -95,8 +96,7 @@ final class _MealFeedItem extends _FeedItem {
   T when<T>({
     required T Function(MealLog meal, MealResult? result) meal,
     required T Function(DrinkLog drink) drink,
-  }) =>
-      meal(this.meal, result);
+  }) => meal(this.meal, result);
 }
 
 final class _DrinkFeedItem extends _FeedItem {
@@ -110,8 +110,7 @@ final class _DrinkFeedItem extends _FeedItem {
   T when<T>({
     required T Function(MealLog meal, MealResult? result) meal,
     required T Function(DrinkLog drink) drink,
-  }) =>
-      drink(this.drink);
+  }) => drink(this.drink);
 }
 
 // ── Row widgets ────────────────────────────────────────────────────────────
@@ -127,28 +126,6 @@ class _MealRow extends StatelessWidget {
   final MealResult? result;
   final VoidCallback? onTap;
 
-  static String _emojiFor(String? name) {
-    final lower = name?.toLowerCase() ?? '';
-    if (lower.contains('pasta') ||
-        lower.contains('spaghetti') ||
-        lower.contains('penne') ||
-        lower.contains('lasagna')) {
-      return '🍝';
-    }
-    if (lower.contains('salad')) return '🥗';
-    if (lower.contains('burger') || lower.contains('hamburger')) return '🍔';
-    if (lower.contains('pizza')) return '🍕';
-    if (lower.contains('sushi') || lower.contains('sashimi')) return '🍱';
-    if (lower.contains('soup') || lower.contains('ramen')) return '🍲';
-    if (lower.contains('rice')) return '🍚';
-    if (lower.contains('sandwich') || lower.contains('wrap')) return '🥪';
-    if (lower.contains('chicken') || lower.contains('poulet')) return '🍗';
-    if (lower.contains('steak') || lower.contains('beef')) return '🥩';
-    if (lower.contains('fish') || lower.contains('salmon')) return '🐟';
-    if (lower.contains('taco') || lower.contains('burrito')) return '🌮';
-    return '🍽';
-  }
-
   @override
   Widget build(BuildContext context) {
     return MealListItem(
@@ -160,9 +137,10 @@ class _MealRow extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
         ),
         child: Center(
-          child: Text(
-            _emojiFor(result?.name ?? meal.rawInput),
-            style: const TextStyle(fontSize: 20),
+          child: EmojiListWidget(
+            emojisJson: result?.emojis,
+            nbEmojis: 1,
+            fontSize: 16,
           ),
         ),
       ),
@@ -179,30 +157,30 @@ class _DrinkRow extends StatelessWidget {
   final DrinkLog drink;
 
   static String _emojiFor(DrinkType type) => switch (type) {
-        DrinkType.beer => '🍺',
-        DrinkType.wine => '🍷',
-        DrinkType.champagne => '🥂',
-        DrinkType.cocktail => '🍹',
-        DrinkType.spirit => '🥃',
-        DrinkType.shooter => '🥃',
-        DrinkType.liqueur => '🍶',
-        DrinkType.longDrink => '🧃',
-        DrinkType.hardSeltzer => '💧',
-        DrinkType.other => '➕',
-      };
+    DrinkType.beer => '🍺',
+    DrinkType.wine => '🍷',
+    DrinkType.champagne => '🥂',
+    DrinkType.cocktail => '🍹',
+    DrinkType.spirit => '🥃',
+    DrinkType.shooter => '🥃',
+    DrinkType.liqueur => '🍶',
+    DrinkType.longDrink => '🧃',
+    DrinkType.hardSeltzer => '💧',
+    DrinkType.other => '➕',
+  };
 
   static String _labelFor(DrinkType type) => switch (type) {
-        DrinkType.beer => 'Beer',
-        DrinkType.wine => 'Wine',
-        DrinkType.champagne => 'Champagne',
-        DrinkType.cocktail => 'Cocktail',
-        DrinkType.spirit => 'Spirit',
-        DrinkType.shooter => 'Shooter',
-        DrinkType.liqueur => 'Liqueur',
-        DrinkType.longDrink => 'Long drink',
-        DrinkType.hardSeltzer => 'Hard seltzer',
-        DrinkType.other => 'Other',
-      };
+    DrinkType.beer => 'Beer',
+    DrinkType.wine => 'Wine',
+    DrinkType.champagne => 'Champagne',
+    DrinkType.cocktail => 'Cocktail',
+    DrinkType.spirit => 'Spirit',
+    DrinkType.shooter => 'Shooter',
+    DrinkType.liqueur => 'Liqueur',
+    DrinkType.longDrink => 'Long drink',
+    DrinkType.hardSeltzer => 'Hard seltzer',
+    DrinkType.other => 'Other',
+  };
 
   @override
   Widget build(BuildContext context) {

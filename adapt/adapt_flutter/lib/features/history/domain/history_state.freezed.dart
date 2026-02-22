@@ -16,102 +16,125 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$WeekState {
+mixin _$HistoryState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<DailySummary> summaries) success,
+    required TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )
+    success,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<DailySummary> summaries)? success,
+    TResult? Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<DailySummary> summaries)? success,
+    TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WeekLoading value) loading,
-    required TResult Function(_WeekSuccess value) success,
-    required TResult Function(_WeekError value) error,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_WeekLoading value)? loading,
-    TResult? Function(_WeekSuccess value)? success,
-    TResult? Function(_WeekError value)? error,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WeekLoading value)? loading,
-    TResult Function(_WeekSuccess value)? success,
-    TResult Function(_WeekError value)? error,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $WeekStateCopyWith<$Res> {
-  factory $WeekStateCopyWith(WeekState value, $Res Function(WeekState) then) =
-      _$WeekStateCopyWithImpl<$Res, WeekState>;
+abstract class $HistoryStateCopyWith<$Res> {
+  factory $HistoryStateCopyWith(
+    HistoryState value,
+    $Res Function(HistoryState) then,
+  ) = _$HistoryStateCopyWithImpl<$Res, HistoryState>;
 }
 
 /// @nodoc
-class _$WeekStateCopyWithImpl<$Res, $Val extends WeekState>
-    implements $WeekStateCopyWith<$Res> {
-  _$WeekStateCopyWithImpl(this._value, this._then);
+class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
+    implements $HistoryStateCopyWith<$Res> {
+  _$HistoryStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$WeekLoadingImplCopyWith<$Res> {
-  factory _$$WeekLoadingImplCopyWith(
-    _$WeekLoadingImpl value,
-    $Res Function(_$WeekLoadingImpl) then,
-  ) = __$$WeekLoadingImplCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+    _$InitialImpl value,
+    $Res Function(_$InitialImpl) then,
+  ) = __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$WeekLoadingImplCopyWithImpl<$Res>
-    extends _$WeekStateCopyWithImpl<$Res, _$WeekLoadingImpl>
-    implements _$$WeekLoadingImplCopyWith<$Res> {
-  __$$WeekLoadingImplCopyWithImpl(
-    _$WeekLoadingImpl _value,
-    $Res Function(_$WeekLoadingImpl) _then,
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$HistoryStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+    _$InitialImpl _value,
+    $Res Function(_$InitialImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$WeekLoadingImpl implements _WeekLoading {
-  const _$WeekLoadingImpl();
+class _$InitialImpl implements _Initial {
+  const _$InitialImpl();
 
   @override
   String toString() {
-    return 'WeekState.loading()';
+    return 'HistoryState.initial()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$WeekLoadingImpl);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -120,8 +143,148 @@ class _$WeekLoadingImpl implements _WeekLoading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<DailySummary> summaries) success,
+    required TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )
+    success,
+    required TResult Function(String message) error,
+  }) {
+    return initial();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
+    TResult? Function(String message)? error,
+  }) {
+    return initial?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (initial != null) {
+      return initial();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
+  }) {
+    return initial(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
+  }) {
+    return initial?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (initial != null) {
+      return initial(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Initial implements HistoryState {
+  const factory _Initial() = _$InitialImpl;
+}
+
+/// @nodoc
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+    _$LoadingImpl value,
+    $Res Function(_$LoadingImpl) then,
+  ) = __$$LoadingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$HistoryStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+    _$LoadingImpl _value,
+    $Res Function(_$LoadingImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of HistoryState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$LoadingImpl implements _Loading {
+  const _$LoadingImpl();
+
+  @override
+  String toString() {
+    return 'HistoryState.loading()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )
+    success,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -130,8 +293,14 @@ class _$WeekLoadingImpl implements _WeekLoading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<DailySummary> summaries)? success,
+    TResult? Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -140,8 +309,14 @@ class _$WeekLoadingImpl implements _WeekLoading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<DailySummary> summaries)? success,
+    TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -154,9 +329,10 @@ class _$WeekLoadingImpl implements _WeekLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WeekLoading value) loading,
-    required TResult Function(_WeekSuccess value) success,
-    required TResult Function(_WeekError value) error,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
   }) {
     return loading(this);
   }
@@ -164,9 +340,10 @@ class _$WeekLoadingImpl implements _WeekLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_WeekLoading value)? loading,
-    TResult? Function(_WeekSuccess value)? success,
-    TResult? Function(_WeekError value)? error,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
   }
@@ -174,9 +351,10 @@ class _$WeekLoadingImpl implements _WeekLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WeekLoading value)? loading,
-    TResult Function(_WeekSuccess value)? success,
-    TResult Function(_WeekError value)? error,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -186,40 +364,56 @@ class _$WeekLoadingImpl implements _WeekLoading {
   }
 }
 
-abstract class _WeekLoading implements WeekState {
-  const factory _WeekLoading() = _$WeekLoadingImpl;
+abstract class _Loading implements HistoryState {
+  const factory _Loading() = _$LoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$WeekSuccessImplCopyWith<$Res> {
-  factory _$$WeekSuccessImplCopyWith(
-    _$WeekSuccessImpl value,
-    $Res Function(_$WeekSuccessImpl) then,
-  ) = __$$WeekSuccessImplCopyWithImpl<$Res>;
+abstract class _$$SuccessImplCopyWith<$Res> {
+  factory _$$SuccessImplCopyWith(
+    _$SuccessImpl value,
+    $Res Function(_$SuccessImpl) then,
+  ) = __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<DailySummary> summaries});
+  $Res call({
+    List<DailySummary> week,
+    DayDetail? selectedDay,
+    DateTime weekStartDate,
+  });
 }
 
 /// @nodoc
-class __$$WeekSuccessImplCopyWithImpl<$Res>
-    extends _$WeekStateCopyWithImpl<$Res, _$WeekSuccessImpl>
-    implements _$$WeekSuccessImplCopyWith<$Res> {
-  __$$WeekSuccessImplCopyWithImpl(
-    _$WeekSuccessImpl _value,
-    $Res Function(_$WeekSuccessImpl) _then,
+class __$$SuccessImplCopyWithImpl<$Res>
+    extends _$HistoryStateCopyWithImpl<$Res, _$SuccessImpl>
+    implements _$$SuccessImplCopyWith<$Res> {
+  __$$SuccessImplCopyWithImpl(
+    _$SuccessImpl _value,
+    $Res Function(_$SuccessImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? summaries = null}) {
+  $Res call({
+    Object? week = null,
+    Object? selectedDay = freezed,
+    Object? weekStartDate = null,
+  }) {
     return _then(
-      _$WeekSuccessImpl(
-        null == summaries
-            ? _value._summaries
-            : summaries // ignore: cast_nullable_to_non_nullable
+      _$SuccessImpl(
+        null == week
+            ? _value._week
+            : week // ignore: cast_nullable_to_non_nullable
                   as List<DailySummary>,
+        freezed == selectedDay
+            ? _value.selectedDay
+            : selectedDay // ignore: cast_nullable_to_non_nullable
+                  as DayDetail?,
+        null == weekStartDate
+            ? _value.weekStartDate
+            : weekStartDate // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
       ),
     );
   }
@@ -227,76 +421,107 @@ class __$$WeekSuccessImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WeekSuccessImpl implements _WeekSuccess {
-  const _$WeekSuccessImpl(final List<DailySummary> summaries)
-    : _summaries = summaries;
+class _$SuccessImpl implements _Success {
+  const _$SuccessImpl(
+    final List<DailySummary> week,
+    this.selectedDay,
+    this.weekStartDate,
+  ) : _week = week;
 
-  final List<DailySummary> _summaries;
+  final List<DailySummary> _week;
   @override
-  List<DailySummary> get summaries {
-    if (_summaries is EqualUnmodifiableListView) return _summaries;
+  List<DailySummary> get week {
+    if (_week is EqualUnmodifiableListView) return _week;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_summaries);
+    return EqualUnmodifiableListView(_week);
   }
 
   @override
+  final DayDetail? selectedDay;
+  @override
+  final DateTime weekStartDate;
+
+  @override
   String toString() {
-    return 'WeekState.success(summaries: $summaries)';
+    return 'HistoryState.success(week: $week, selectedDay: $selectedDay, weekStartDate: $weekStartDate)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WeekSuccessImpl &&
-            const DeepCollectionEquality().equals(
-              other._summaries,
-              _summaries,
-            ));
+            other is _$SuccessImpl &&
+            const DeepCollectionEquality().equals(other._week, _week) &&
+            (identical(other.selectedDay, selectedDay) ||
+                other.selectedDay == selectedDay) &&
+            (identical(other.weekStartDate, weekStartDate) ||
+                other.weekStartDate == weekStartDate));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_summaries));
+  int get hashCode => Object.hash(
+    runtimeType,
+    const DeepCollectionEquality().hash(_week),
+    selectedDay,
+    weekStartDate,
+  );
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$WeekSuccessImplCopyWith<_$WeekSuccessImpl> get copyWith =>
-      __$$WeekSuccessImplCopyWithImpl<_$WeekSuccessImpl>(this, _$identity);
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
+      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<DailySummary> summaries) success,
+    required TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )
+    success,
     required TResult Function(String message) error,
   }) {
-    return success(summaries);
+    return success(week, selectedDay, weekStartDate);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<DailySummary> summaries)? success,
+    TResult? Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult? Function(String message)? error,
   }) {
-    return success?.call(summaries);
+    return success?.call(week, selectedDay, weekStartDate);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<DailySummary> summaries)? success,
+    TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(summaries);
+      return success(week, selectedDay, weekStartDate);
     }
     return orElse();
   }
@@ -304,9 +529,10 @@ class _$WeekSuccessImpl implements _WeekSuccess {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WeekLoading value) loading,
-    required TResult Function(_WeekSuccess value) success,
-    required TResult Function(_WeekError value) error,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
   }) {
     return success(this);
   }
@@ -314,9 +540,10 @@ class _$WeekSuccessImpl implements _WeekSuccess {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_WeekLoading value)? loading,
-    TResult? Function(_WeekSuccess value)? success,
-    TResult? Function(_WeekError value)? error,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
   }) {
     return success?.call(this);
   }
@@ -324,9 +551,10 @@ class _$WeekSuccessImpl implements _WeekSuccess {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WeekLoading value)? loading,
-    TResult Function(_WeekSuccess value)? success,
-    TResult Function(_WeekError value)? error,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -336,45 +564,50 @@ class _$WeekSuccessImpl implements _WeekSuccess {
   }
 }
 
-abstract class _WeekSuccess implements WeekState {
-  const factory _WeekSuccess(final List<DailySummary> summaries) =
-      _$WeekSuccessImpl;
+abstract class _Success implements HistoryState {
+  const factory _Success(
+    final List<DailySummary> week,
+    final DayDetail? selectedDay,
+    final DateTime weekStartDate,
+  ) = _$SuccessImpl;
 
-  List<DailySummary> get summaries;
+  List<DailySummary> get week;
+  DayDetail? get selectedDay;
+  DateTime get weekStartDate;
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$WeekSuccessImplCopyWith<_$WeekSuccessImpl> get copyWith =>
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$WeekErrorImplCopyWith<$Res> {
-  factory _$$WeekErrorImplCopyWith(
-    _$WeekErrorImpl value,
-    $Res Function(_$WeekErrorImpl) then,
-  ) = __$$WeekErrorImplCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+    _$ErrorImpl value,
+    $Res Function(_$ErrorImpl) then,
+  ) = __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$WeekErrorImplCopyWithImpl<$Res>
-    extends _$WeekStateCopyWithImpl<$Res, _$WeekErrorImpl>
-    implements _$$WeekErrorImplCopyWith<$Res> {
-  __$$WeekErrorImplCopyWithImpl(
-    _$WeekErrorImpl _value,
-    $Res Function(_$WeekErrorImpl) _then,
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$HistoryStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+    _$ErrorImpl _value,
+    $Res Function(_$ErrorImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? message = null}) {
     return _then(
-      _$WeekErrorImpl(
+      _$ErrorImpl(
         null == message
             ? _value.message
             : message // ignore: cast_nullable_to_non_nullable
@@ -386,41 +619,47 @@ class __$$WeekErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WeekErrorImpl implements _WeekError {
-  const _$WeekErrorImpl(this.message);
+class _$ErrorImpl implements _Error {
+  const _$ErrorImpl(this.message);
 
   @override
   final String message;
 
   @override
   String toString() {
-    return 'WeekState.error(message: $message)';
+    return 'HistoryState.error(message: $message)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WeekErrorImpl &&
+            other is _$ErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$WeekErrorImplCopyWith<_$WeekErrorImpl> get copyWith =>
-      __$$WeekErrorImplCopyWithImpl<_$WeekErrorImpl>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<DailySummary> summaries) success,
+    required TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )
+    success,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -429,8 +668,14 @@ class _$WeekErrorImpl implements _WeekError {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<DailySummary> summaries)? success,
+    TResult? Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -439,8 +684,14 @@ class _$WeekErrorImpl implements _WeekError {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<DailySummary> summaries)? success,
+    TResult Function(
+      List<DailySummary> week,
+      DayDetail? selectedDay,
+      DateTime weekStartDate,
+    )?
+    success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -453,9 +704,10 @@ class _$WeekErrorImpl implements _WeekError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_WeekLoading value) loading,
-    required TResult Function(_WeekSuccess value) success,
-    required TResult Function(_WeekError value) error,
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
   }) {
     return error(this);
   }
@@ -463,9 +715,10 @@ class _$WeekErrorImpl implements _WeekError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_WeekLoading value)? loading,
-    TResult? Function(_WeekSuccess value)? success,
-    TResult? Function(_WeekError value)? error,
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
   }
@@ -473,9 +726,10 @@ class _$WeekErrorImpl implements _WeekError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_WeekLoading value)? loading,
-    TResult Function(_WeekSuccess value)? success,
-    TResult Function(_WeekError value)? error,
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -485,14 +739,14 @@ class _$WeekErrorImpl implements _WeekError {
   }
 }
 
-abstract class _WeekError implements WeekState {
-  const factory _WeekError(final String message) = _$WeekErrorImpl;
+abstract class _Error implements HistoryState {
+  const factory _Error(final String message) = _$ErrorImpl;
 
   String get message;
 
-  /// Create a copy of WeekState
+  /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$WeekErrorImplCopyWith<_$WeekErrorImpl> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

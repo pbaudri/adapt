@@ -22,6 +22,9 @@ fields:
   aiTip: String?
   ### How this result was produced.
   source: MealSource
+  ### JSON array of 1–3 emojis representing meal components, e.g. '["🍝","🥗"]'.
+  ### Null for legacy rows — fall back to '["🍽"]' in display code.
+  emojis: String?
 
 indexes:
   meal_results_meal_log_id_unique_idx:

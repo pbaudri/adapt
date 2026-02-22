@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
@@ -47,10 +49,17 @@ abstract final class DailySummaryService {
     required String userId,
     required MealResult result,
   }) async {
+    final dayStart = _startOfDay(DateTime.now());
     final summary = await getOrCreate(
       session,
       userId: userId,
-      date: DateTime.now(),
+      date: dayStart,
+    );
+
+    final newEmojis = await _rebuildMealEmojis(
+      session,
+      userId: userId,
+      dayStart: dayStart,
     );
 
     final updated = summary.copyWith(
@@ -58,6 +67,7 @@ abstract final class DailySummaryService {
       totalProteinG: summary.totalProteinG + result.proteinG,
       totalCarbsG: summary.totalCarbsG + result.carbsG,
       totalFatG: summary.totalFatG + result.fatG,
+      mealEmojis: newEmojis,
     );
 
     return DailySummary.db.updateRow(session, updated);
@@ -71,10 +81,18 @@ abstract final class DailySummaryService {
     required String userId,
     required MealResult result,
   }) async {
+    final dayStart = _startOfDay(DateTime.now());
     final summary = await getOrCreate(
       session,
       userId: userId,
-      date: DateTime.now(),
+      date: dayStart,
+    );
+
+    // Rebuild emojis after removal (full recompute needed).
+    final newEmojis = await _rebuildMealEmojis(
+      session,
+      userId: userId,
+      dayStart: dayStart,
     );
 
     final updated = summary.copyWith(
@@ -82,6 +100,7 @@ abstract final class DailySummaryService {
       totalProteinG: (summary.totalProteinG - result.proteinG).clamp(0, 9999),
       totalCarbsG: (summary.totalCarbsG - result.carbsG).clamp(0, 9999),
       totalFatG: (summary.totalFatG - result.fatG).clamp(0, 9999),
+      mealEmojis: newEmojis,
     );
 
     return DailySummary.db.updateRow(session, updated);
@@ -93,15 +112,23 @@ abstract final class DailySummaryService {
     required String userId,
     required DrinkLog drinkLog,
   }) async {
+    final dayStart = _startOfDay(drinkLog.loggedAt);
     final summary = await getOrCreate(
       session,
       userId: userId,
-      date: drinkLog.loggedAt,
+      date: dayStart,
+    );
+
+    final newEmojis = await _rebuildMealEmojis(
+      session,
+      userId: userId,
+      dayStart: dayStart,
     );
 
     final updated = summary.copyWith(
       totalKcal: summary.totalKcal + drinkLog.caloriesKcal,
       hadAlcohol: true,
+      mealEmojis: newEmojis,
     );
 
     return DailySummary.db.updateRow(session, updated);
@@ -146,4 +173,81 @@ abstract final class DailySummaryService {
 
   static DateTime _startOfDay(DateTime dt) =>
       DateTime.utc(dt.year, dt.month, dt.day);
+
+  /// Rebuilds the mealEmojis JSON array from all confirmed meals and drinks
+  /// for [dayStart]. Deduplicates and caps at 6 emojis.
+  static Future<String> _rebuildMealEmojis(
+    Session session, {
+    required String userId,
+    required DateTime dayStart,
+  }) async {
+    final dayEnd = dayStart.add(const Duration(hours: 24));
+
+    // All confirmed meal logs for the day.
+    final mealLogs = await MealLog.db.find(
+      session,
+      where: (t) =>
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd) &
+          t.estimated.equals(false),
+    );
+
+    final mealLogIds = mealLogs.map((m) => m.id!).toSet();
+    final mealResults = mealLogIds.isEmpty
+        ? <MealResult>[]
+        : await MealResult.db.find(
+            session,
+            where: (t) => t.mealLogId.inSet(mealLogIds),
+          );
+
+    // All drink logs for the day.
+    final drinkLogs = await DrinkLog.db.find(
+      session,
+      where: (t) =>
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd),
+    );
+
+    final emojis = <String>[];
+
+    // Add meal emojis (flatten from each result's emojis JSON).
+    for (final result in mealResults) {
+      List<String> parsed;
+      try {
+        parsed = (jsonDecode(result.emojis ?? '["🍽"]') as List).cast<String>();
+      } catch (_) {
+        parsed = ['🍽'];
+      }
+      for (final emoji in parsed) {
+        if (!emojis.contains(emoji) && emojis.length < 6) {
+          emojis.add(emoji);
+        }
+      }
+    }
+
+    // Add drink emojis (one per distinct drink type).
+    for (final drink in drinkLogs) {
+      final emoji = _drinkEmojiFor(drink.drinkType);
+      if (!emojis.contains(emoji) && emojis.length < 6) {
+        emojis.add(emoji);
+      }
+    }
+
+    return jsonEncode(emojis);
+  }
+
+  static String _drinkEmojiFor(DrinkType type) => switch (type) {
+        DrinkType.beer => '🍺',
+        DrinkType.wine => '🍷',
+        DrinkType.champagne => '🥂',
+        DrinkType.cocktail => '🍹',
+        DrinkType.spirit => '🥃',
+        DrinkType.shooter => '🥃',
+        DrinkType.liqueur => '🍶',
+        DrinkType.longDrink => '🧃',
+        DrinkType.hardSeltzer => '💧',
+        DrinkType.other => '➕',
+      };
 }
