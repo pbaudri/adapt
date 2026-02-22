@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/router/app_routes.dart';
 import 'providers/morning_recap_provider.dart';
 import 'widgets/recap_tips_section.dart';
 
@@ -70,18 +69,13 @@ class MorningRecapScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const AdaptSectionTitle(label: 'Adapt noticed'),
-                        const SizedBox(height: AppDimensions.spacing16),
-                        Text(
-                          recap.headline,
-                          style: AppTextStyles.displayLarge,
-                        ),
-                        const SizedBox(height: AppDimensions.spacing8),
-                        Text(
-                          recap.subMessage,
-                          style: AppTextStyles.bodyMedium,
+                        AdaptPageHeader(
+                          title: recap.headline,
+                          subtitle: recap.subMessage,
                         ),
                         const SizedBox(height: AppDimensions.spacing32),
+                        const AdaptSectionTitle(label: "Today's vibe"),
+                        const SizedBox(height: AppDimensions.spacing16),
                         RecapTipsSection(tipsJson: recap.tips),
                       ],
                     ),
@@ -94,16 +88,17 @@ class MorningRecapScreen extends ConsumerWidget {
                 top: AppDimensions.spacing12,
                 bottom: AppDimensions.spacing32,
               ),
-              child: AdaptPrimaryButton(
-                label: 'Start my day',
+              child: AdaptSecondaryButton(
+                label: 'Got it ✓',
                 onTap: () async {
                   final recap = recapAsync.valueOrNull;
-                  if (recap?.id != null) {
+                  // Only mark seen if not already seen — avoids redundant server calls.
+                  if (recap?.id != null && recap!.seenAt == null) {
                     await ref
                         .read(morningRecapNotifierProvider.notifier)
-                        .markSeen(recap!.id!);
+                        .markSeen(recap.id!);
                   }
-                  if (context.mounted) context.go(AppRoutes.home);
+                  if (context.mounted) context.pop();
                 },
               ),
             ),

@@ -23,7 +23,8 @@ abstract final class RecapService {
     final today = DateTime.now();
     final todayStart = DateTime.utc(today.year, today.month, today.day);
 
-    // Return existing recap if already generated today
+    // Return existing recap if already generated today — always, regardless of seenAt.
+    // seenAt only controls the auto-show trigger on the client; it never hides the recap.
     final existing = await MorningRecap.db.findFirstRow(
       session,
       where: (t) =>
@@ -31,7 +32,7 @@ abstract final class RecapService {
     );
     if (existing != null) return existing;
 
-    // Get yesterday's summary
+    // Get yesterday's summary (may be null for new users / first day).
     final yesterday = todayStart.subtract(const Duration(days: 1));
     final summary = await DailySummary.db.findFirstRow(
       session,
@@ -39,19 +40,19 @@ abstract final class RecapService {
           t.userId.equals(userId) & t.date.equals(yesterday),
     );
 
-    // No data yet — skip recap
-    if (summary == null || summary.totalKcal == 0) return null;
-
-    // Generate AI recap content
+    // Generate AI recap content.
+    // When there is no summary (new user / no data), pass zeros so the AI
+    // generates a warm "fresh start" message instead of being skipped.
     final aiContent = await AiService.generateRecap(
       session,
       userName: userName,
-      totalKcal: summary.totalKcal,
-      proteinG: summary.totalProteinG,
-      carbsG: summary.totalCarbsG,
-      fatG: summary.totalFatG,
-      hadAlcohol: summary.hadAlcohol,
+      totalKcal: summary?.totalKcal ?? 0,
+      proteinG: summary?.totalProteinG ?? 0,
+      carbsG: summary?.totalCarbsG ?? 0,
+      fatG: summary?.totalFatG ?? 0,
+      hadAlcohol: summary?.hadAlcohol ?? false,
       targetKcal: targetKcal,
+      noDataYet: summary == null || summary.totalKcal == 0,
     );
 
     final tipsJson = jsonEncode(aiContent['tips'] ?? []);
@@ -67,12 +68,14 @@ abstract final class RecapService {
 
     final saved = await MorningRecap.db.insertRow(session, recap);
 
-    // Mark yesterday's summary as recap-sent
-    await DailySummaryService.markRecapSent(
-      session,
-      userId: userId,
-      date: yesterday,
-    );
+    // Mark yesterday's summary as recap-sent (only if a summary exists).
+    if (summary != null) {
+      await DailySummaryService.markRecapSent(
+        session,
+        userId: userId,
+        date: yesterday,
+      );
+    }
 
     return saved;
   }

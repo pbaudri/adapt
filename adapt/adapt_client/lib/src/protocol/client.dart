@@ -608,11 +608,23 @@ class EndpointRecap extends _i2.EndpointRef {
 
   /// Returns today's morning recap, generating one if needed.
   ///
-  /// Returns `null` if there is no data for yesterday (first day of use).
+  /// Returns `null` if no data exists yet (first day of use).
+  /// Call this only from the home screen morning trigger — it runs AI generation.
   _i3.Future<_i23.MorningRecap?> getMorningRecap() =>
       caller.callServerEndpoint<_i23.MorningRecap?>(
         'recap',
         'getMorningRecap',
+        {},
+      );
+
+  /// Returns today's existing recap without generating a new one.
+  ///
+  /// Returns `null` if no recap has been generated yet today.
+  /// Use this for display purposes — never triggers AI generation.
+  _i3.Future<_i23.MorningRecap?> getExistingRecap() =>
+      caller.callServerEndpoint<_i23.MorningRecap?>(
+        'recap',
+        'getExistingRecap',
         {},
       );
 

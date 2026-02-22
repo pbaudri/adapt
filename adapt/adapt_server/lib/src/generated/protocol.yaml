@@ -47,6 +47,7 @@ profile:
   - deleteAllData:
 recap:
   - getMorningRecap:
+  - getExistingRecap:
   - markRecapSeen:
 greeting:
   - hello:

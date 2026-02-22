@@ -6,27 +6,8 @@ part of 'morning_recap_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$morningRecapHash() => r'7605d44c094ce63ac55719d601a66f80333540a4';
-
-/// Fetches today's morning recap.
-///
-/// Copied from [morningRecap].
-@ProviderFor(morningRecap)
-final morningRecapProvider = AutoDisposeFutureProvider<MorningRecap?>.internal(
-  morningRecap,
-  name: r'morningRecapProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$morningRecapHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef MorningRecapRef = AutoDisposeFutureProviderRef<MorningRecap?>;
 String _$morningRecapNotifierHash() =>
-    r'6a482f39e3288f1b9305192dd7214698654e2035';
+    r'f3a587090465eeb53d9613bbb9c30105263fbcd9';
 
 /// See also [MorningRecapNotifier].
 @ProviderFor(MorningRecapNotifier)

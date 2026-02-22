@@ -110,23 +110,56 @@ Absolute rules:
     required double fatG,
     required bool hadAlcohol,
     required int targetKcal,
+    bool noDataYet = false,
   }) async {
     final apiKey = GeminiConfig.getApiKey(session);
     final remaining = targetKcal - totalKcal;
 
-    final prompt = '''
-You are a compassionate morning coach. Generate a morning recap JSON with:
-- headline: string — a warm personalised greeting using the user name
-- sub_message: string — 1-2 sentence positive summary of yesterday
-- tips: array of 3 objects, each with: icon (emoji), title (short), subtitle (one sentence)
-
-Tips must be actionable and positive. Never use judgmental language.
-Return only valid JSON. No markdown fences.
-
-User: $userName
-Yesterday's intake: $totalKcal kcal (target: $targetKcal, remaining: $remaining)
+    final contextBlock = noDataYet
+        ? 'No data logged yesterday — this is a fresh start day.'
+        : '''Yesterday's intake: $totalKcal kcal (target: $targetKcal, remaining: $remaining)
 Protein: ${proteinG.round()}g | Carbs: ${carbsG.round()}g | Fat: ${fatG.round()}g
-Had alcohol: $hadAlcohol
+Had alcohol: $hadAlcohol''';
+
+    final tipGuidance = StringBuffer();
+    if (noDataYet) {
+      tipGuidance.writeln(
+        '- Since there is no data, focus tips on gentle encouragement to start tracking today.',
+      );
+    } else {
+      if (hadAlcohol) {
+        tipGuidance.writeln(
+          '- First tip must be about hydration (drinking water after alcohol).',
+        );
+      }
+      if (totalKcal < 800) {
+        tipGuidance.writeln(
+          '- Intake was light. Mention listening to hunger cues gently.',
+        );
+      }
+      if (totalKcal > 2500) {
+        tipGuidance.writeln(
+          '- Day was satisfying. Frame it as balance — never "too much" or "excess".',
+        );
+      }
+    }
+
+    final prompt = '''
+You are a compassionate morning coach integrated in a zero-judgment nutrition app.
+Generate a morning recap JSON object with exactly these fields:
+- headline: string — a warm personalised greeting using the user name
+- sub_message: string — 1-2 sentences positive summary of yesterday (or fresh start if no data)
+- tips: array of exactly 3 objects, each with: icon (single emoji char), title (≤5 words), subtitle (one sentence)
+
+Rules:
+- Never use: bad, excess, unhealthy, too much, cheat, guilt, wrong, sinful, overindulge
+- All tips must be actionable and encouraging
+- If the user name looks French (e.g. Pierre, Marie, Jean, Sophie), respond in French
+- Return ONLY valid JSON — no markdown fences, no explanation
+
+$tipGuidance
+User: $userName
+$contextBlock
 ''';
 
     final body = _buildTextRequest(prompt, temperature: 0.5);

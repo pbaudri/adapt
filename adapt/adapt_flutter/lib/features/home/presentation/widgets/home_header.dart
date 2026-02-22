@@ -1,3 +1,4 @@
+import 'package:adapt_flutter/features/morning_recap/presentation/providers/morning_recap_provider.dart';
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,14 +14,20 @@ class HomeHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeAsync = ref.watch(homeDataProvider);
+    final recapAsync = ref.watch(morningRecapNotifierProvider);
+    final recap = recapAsync.valueOrNull;
 
-    final greeting = homeAsync.whenOrNull(
-      data: (data) => data.greeting,
-    ) ?? 'Good morning.';
+    final greeting =
+        homeAsync.whenOrNull(
+          data: (data) => data.greeting,
+        ) ??
+        'Good morning.';
 
-    final subtitle = homeAsync.whenOrNull(
-      data: (data) => data.adaptiveMessage,
-    ) ?? 'Here is how your day looks.';
+    final subtitle =
+        homeAsync.whenOrNull(
+          data: (data) => data.adaptiveMessage,
+        ) ??
+        'Here is how your day looks.';
 
     return Row(
       children: [
@@ -34,23 +41,24 @@ class HomeHeader extends ConsumerWidget {
             ],
           ),
         ),
-        GestureDetector(
-          onTap: () => context.push(AppRoutes.morningRecap),
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: AppColors.surfaceElevated,
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.primary, width: 1.5),
-            ),
-            child: const Icon(
-              Icons.wb_sunny_rounded,
-              color: AppColors.primary,
-              size: 20,
+        if (recap != null)
+          GestureDetector(
+            onTap: () => context.push(AppRoutes.morningRecap),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.surfaceElevated,
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.primary, width: 1.5),
+              ),
+              child: const Icon(
+                Icons.wb_sunny_rounded,
+                color: AppColors.primary,
+                size: 20,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

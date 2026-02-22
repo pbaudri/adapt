@@ -11,7 +11,8 @@ class RecapEndpoint extends Endpoint {
 
   /// Returns today's morning recap, generating one if needed.
   ///
-  /// Returns `null` if there is no data for yesterday (first day of use).
+  /// Returns `null` if no data exists yet (first day of use).
+  /// Call this only from the home screen morning trigger — it runs AI generation.
   Future<MorningRecap?> getMorningRecap(Session session) async {
     final userId = session.authenticated!.userIdentifier;
 
@@ -28,6 +29,21 @@ class RecapEndpoint extends Endpoint {
       userId: userId,
       userName: userName,
       targetKcal: targetKcal,
+    );
+  }
+
+  /// Returns today's existing recap without generating a new one.
+  ///
+  /// Returns `null` if no recap has been generated yet today.
+  /// Use this for display purposes — never triggers AI generation.
+  Future<MorningRecap?> getExistingRecap(Session session) async {
+    final userId = session.authenticated!.userIdentifier;
+    final today = DateTime.now();
+    final todayStart = DateTime.utc(today.year, today.month, today.day);
+
+    return MorningRecap.db.findFirstRow(
+      session,
+      where: (t) => t.userId.equals(userId) & t.date.equals(todayStart),
     );
   }
 
