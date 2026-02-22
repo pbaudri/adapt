@@ -50,12 +50,10 @@ class HistoryChartSection extends StatelessWidget {
             onNext: onNext,
           ),
           const SizedBox(height: AppDimensions.spacing16),
-          GestureDetector(
-            onTapDown: (details) {},
-            child: AdaptBarChart(
-              data: barData,
-              selectedIndex: selectedIndex,
-            ),
+          AdaptBarChart(
+            data: barData,
+            selectedIndex: selectedIndex,
+            onBarTap: onBarTap,
           ),
         ],
       ),
