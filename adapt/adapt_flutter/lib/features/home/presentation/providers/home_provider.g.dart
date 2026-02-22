@@ -6,7 +6,7 @@ part of 'home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeDataHash() => r'3f4e0141cec6218719473aa8faaac87c6b4eebd9';
+String _$homeDataHash() => r'e8f86aeed10745b34237c14248c42c80f3a0b0f1';
 
 /// Fetches and caches home screen data.
 /// Call [ref.invalidate(homeDataProvider)] to force a refresh.

@@ -22,6 +22,7 @@ abstract class DrinkReference
     required this.drinkType,
     required this.caloriesPerUnit,
     this.servingDescription,
+    required this.sortOrder,
   });
 
   factory DrinkReference({
@@ -29,6 +30,7 @@ abstract class DrinkReference
     required _i2.DrinkType drinkType,
     required int caloriesPerUnit,
     String? servingDescription,
+    required int sortOrder,
   }) = _DrinkReferenceImpl;
 
   factory DrinkReference.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -39,6 +41,7 @@ abstract class DrinkReference
       ),
       caloriesPerUnit: jsonSerialization['caloriesPerUnit'] as int,
       servingDescription: jsonSerialization['servingDescription'] as String?,
+      sortOrder: jsonSerialization['sortOrder'] as int,
     );
   }
 
@@ -58,6 +61,9 @@ abstract class DrinkReference
   /// Human-readable serving size, e.g. "33cl". Null for generic "other".
   String? servingDescription;
 
+  /// Display order (ascending = first shown).
+  int sortOrder;
+
   @override
   _i1.Table<int?> get table => t;
 
@@ -69,6 +75,7 @@ abstract class DrinkReference
     _i2.DrinkType? drinkType,
     int? caloriesPerUnit,
     String? servingDescription,
+    int? sortOrder,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -78,6 +85,7 @@ abstract class DrinkReference
       'drinkType': drinkType.toJson(),
       'caloriesPerUnit': caloriesPerUnit,
       if (servingDescription != null) 'servingDescription': servingDescription,
+      'sortOrder': sortOrder,
     };
   }
 
@@ -89,6 +97,7 @@ abstract class DrinkReference
       'drinkType': drinkType.toJson(),
       'caloriesPerUnit': caloriesPerUnit,
       if (servingDescription != null) 'servingDescription': servingDescription,
+      'sortOrder': sortOrder,
     };
   }
 
@@ -130,11 +139,13 @@ class _DrinkReferenceImpl extends DrinkReference {
     required _i2.DrinkType drinkType,
     required int caloriesPerUnit,
     String? servingDescription,
+    required int sortOrder,
   }) : super._(
          id: id,
          drinkType: drinkType,
          caloriesPerUnit: caloriesPerUnit,
          servingDescription: servingDescription,
+         sortOrder: sortOrder,
        );
 
   /// Returns a shallow copy of this [DrinkReference]
@@ -146,6 +157,7 @@ class _DrinkReferenceImpl extends DrinkReference {
     _i2.DrinkType? drinkType,
     int? caloriesPerUnit,
     Object? servingDescription = _Undefined,
+    int? sortOrder,
   }) {
     return DrinkReference(
       id: id is int? ? id : this.id,
@@ -154,6 +166,7 @@ class _DrinkReferenceImpl extends DrinkReference {
       servingDescription: servingDescription is String?
           ? servingDescription
           : this.servingDescription,
+      sortOrder: sortOrder ?? this.sortOrder,
     );
   }
 }
@@ -178,6 +191,11 @@ class DrinkReferenceUpdateTable extends _i1.UpdateTable<DrinkReferenceTable> {
         table.servingDescription,
         value,
       );
+
+  _i1.ColumnValue<int, int> sortOrder(int value) => _i1.ColumnValue(
+    table.sortOrder,
+    value,
+  );
 }
 
 class DrinkReferenceTable extends _i1.Table<int?> {
@@ -197,6 +215,10 @@ class DrinkReferenceTable extends _i1.Table<int?> {
       'servingDescription',
       this,
     );
+    sortOrder = _i1.ColumnInt(
+      'sortOrder',
+      this,
+    );
   }
 
   late final DrinkReferenceUpdateTable updateTable;
@@ -210,12 +232,16 @@ class DrinkReferenceTable extends _i1.Table<int?> {
   /// Human-readable serving size, e.g. "33cl". Null for generic "other".
   late final _i1.ColumnString servingDescription;
 
+  /// Display order (ascending = first shown).
+  late final _i1.ColumnInt sortOrder;
+
   @override
   List<_i1.Column> get columns => [
     id,
     drinkType,
     caloriesPerUnit,
     servingDescription,
+    sortOrder,
   ];
 }
 

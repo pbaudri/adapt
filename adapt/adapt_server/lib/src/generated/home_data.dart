@@ -13,7 +13,8 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'meal_log.dart' as _i2;
 import 'meal_result.dart' as _i3;
-import 'package:adapt_server/src/generated/protocol.dart' as _i4;
+import 'drink_log.dart' as _i4;
+import 'package:adapt_server/src/generated/protocol.dart' as _i5;
 
 /// Aggregated response for the home screen.
 /// Combines greeting, daily summary, and recent meals.
@@ -30,6 +31,7 @@ abstract class HomeData
     required this.totalCarbsG,
     required this.totalFatG,
     required this.hadAlcohol,
+    required this.todayDrinks,
   });
 
   factory HomeData({
@@ -43,6 +45,7 @@ abstract class HomeData
     required double totalCarbsG,
     required double totalFatG,
     required bool hadAlcohol,
+    required List<_i4.DrinkLog> todayDrinks,
   }) = _HomeDataImpl;
 
   factory HomeData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -51,16 +54,19 @@ abstract class HomeData
       dailyKcal: jsonSerialization['dailyKcal'] as int,
       targetKcal: jsonSerialization['targetKcal'] as int,
       adaptiveMessage: jsonSerialization['adaptiveMessage'] as String,
-      meals: _i4.Protocol().deserialize<List<_i2.MealLog>>(
+      meals: _i5.Protocol().deserialize<List<_i2.MealLog>>(
         jsonSerialization['meals'],
       ),
-      mealResults: _i4.Protocol().deserialize<List<_i3.MealResult>>(
+      mealResults: _i5.Protocol().deserialize<List<_i3.MealResult>>(
         jsonSerialization['mealResults'],
       ),
       totalProteinG: (jsonSerialization['totalProteinG'] as num).toDouble(),
       totalCarbsG: (jsonSerialization['totalCarbsG'] as num).toDouble(),
       totalFatG: (jsonSerialization['totalFatG'] as num).toDouble(),
       hadAlcohol: jsonSerialization['hadAlcohol'] as bool,
+      todayDrinks: _i5.Protocol().deserialize<List<_i4.DrinkLog>>(
+        jsonSerialization['todayDrinks'],
+      ),
     );
   }
 
@@ -94,6 +100,9 @@ abstract class HomeData
   /// True if the user logged any drinks today.
   bool hadAlcohol;
 
+  /// Today's drink logs (all, most recent first).
+  List<_i4.DrinkLog> todayDrinks;
+
   /// Returns a shallow copy of this [HomeData]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -108,6 +117,7 @@ abstract class HomeData
     double? totalCarbsG,
     double? totalFatG,
     bool? hadAlcohol,
+    List<_i4.DrinkLog>? todayDrinks,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -123,6 +133,7 @@ abstract class HomeData
       'totalCarbsG': totalCarbsG,
       'totalFatG': totalFatG,
       'hadAlcohol': hadAlcohol,
+      'todayDrinks': todayDrinks.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -142,6 +153,9 @@ abstract class HomeData
       'totalCarbsG': totalCarbsG,
       'totalFatG': totalFatG,
       'hadAlcohol': hadAlcohol,
+      'todayDrinks': todayDrinks.toJson(
+        valueToJson: (v) => v.toJsonForProtocol(),
+      ),
     };
   }
 
@@ -163,6 +177,7 @@ class _HomeDataImpl extends HomeData {
     required double totalCarbsG,
     required double totalFatG,
     required bool hadAlcohol,
+    required List<_i4.DrinkLog> todayDrinks,
   }) : super._(
          greeting: greeting,
          dailyKcal: dailyKcal,
@@ -174,6 +189,7 @@ class _HomeDataImpl extends HomeData {
          totalCarbsG: totalCarbsG,
          totalFatG: totalFatG,
          hadAlcohol: hadAlcohol,
+         todayDrinks: todayDrinks,
        );
 
   /// Returns a shallow copy of this [HomeData]
@@ -191,6 +207,7 @@ class _HomeDataImpl extends HomeData {
     double? totalCarbsG,
     double? totalFatG,
     bool? hadAlcohol,
+    List<_i4.DrinkLog>? todayDrinks,
   }) {
     return HomeData(
       greeting: greeting ?? this.greeting,
@@ -204,6 +221,8 @@ class _HomeDataImpl extends HomeData {
       totalCarbsG: totalCarbsG ?? this.totalCarbsG,
       totalFatG: totalFatG ?? this.totalFatG,
       hadAlcohol: hadAlcohol ?? this.hadAlcohol,
+      todayDrinks:
+          todayDrinks ?? this.todayDrinks.map((e0) => e0.copyWith()).toList(),
     );
   }
 }

@@ -27,6 +27,7 @@ Future<HomeData> homeData(Ref ref) {
       totalCarbsG: 0.0,
       totalFatG: 0.0,
       hadAlcohol: false,
+      todayDrinks: [],
     ));
   }
   return ref.watch(homeRepositoryProvider).getHomeData();

@@ -23,3 +23,5 @@ fields:
   totalFatG: double
   ### True if the user logged any drinks today.
   hadAlcohol: bool
+  ### Today's drink logs (all, most recent first).
+  todayDrinks: List<DrinkLog>

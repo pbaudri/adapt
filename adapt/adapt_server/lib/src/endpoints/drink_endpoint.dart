@@ -12,7 +12,7 @@ class DrinkEndpoint extends Endpoint {
   Future<List<DrinkReference>> getDrinkReference(Session session) async {
     return DrinkReference.db.find(
       session,
-      orderBy: (t) => t.caloriesPerUnit,
+      orderBy: (t) => t.sortOrder,
     );
   }
 

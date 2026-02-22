@@ -51,7 +51,7 @@ class DrinkTypeList extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: AppDimensions.spacing8,
         mainAxisSpacing: AppDimensions.spacing8,
-        childAspectRatio: 2,
+        childAspectRatio: 1.5,
         children: references
             .map(
               (ref) => AdaptOptionRow(

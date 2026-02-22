@@ -45,6 +45,16 @@ class HomeEndpoint extends Endpoint {
             where: (t) => t.mealLogId.inSet(mealLogIds),
           );
 
+    final todayDrinks = await DrinkLog.db.find(
+      session,
+      where: (t) =>
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd),
+      orderBy: (t) => t.loggedAt,
+      orderDescending: true,
+    );
+
     final dailyKcal = summary?.totalKcal ?? 0;
     final targetKcal = _computeTarget(profile);
 
@@ -59,6 +69,7 @@ class HomeEndpoint extends Endpoint {
       totalCarbsG: summary?.totalCarbsG ?? 0.0,
       totalFatG: summary?.totalFatG ?? 0.0,
       hadAlcohol: summary?.hadAlcohol ?? false,
+      todayDrinks: todayDrinks,
     );
   }
 
