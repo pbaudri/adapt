@@ -109,7 +109,7 @@ Fields with predefined values use **Serverpod enums** — never raw Strings. Eac
 | `MealType` | `breakfast`, `lunch`, `dinner`, `snack` |
 | `InputMethod` | `photo`, `text`, `location` |
 | `MealSource` | `aiEstimated`, `database`, `userCorrected` |
-| `DrinkType` | `beer`, `wine`, `champagne`, `cocktail`, `whisky`, `longDrink`, `hardSeltzer`, `other` |
+| `DrinkType` | `beer`, `wine`, `champagne`, `cocktail`, `spirit`, `shooter`, `liqueur`, `longDrink`, `hardSeltzer`, `other` |
 
 ---
 
@@ -184,17 +184,18 @@ Fields with predefined values use **Serverpod enums** — never raw Strings. Eac
 
 ### drink_reference
 
-Static seed table — never modified at runtime.
-
-| `drink_type` | `calories_per_unit` |
-|---|---|
-| `beer` | 150 kcal |
-| `wine` | 120 kcal |
-| `champagne` | 90 kcal |
-| `cocktail` | 180 kcal |
-| `whisky` | 70 kcal |
-| `longDrink` | 200 kcal |
-| `hardSeltzer` | 100 kcal |
+| `drink_type` | `calories_per_unit` | `serving_description` |
+|---|---|---|
+| `beer` | 150 kcal | 33cl |
+| `wine` | 120 kcal | 15cl |
+| `champagne` | 90 kcal | 12cl |
+| `cocktail` | 180 kcal | 20cl |
+| `spirit` | 65 kcal | 4cl |
+| `shooter` | 50 kcal | 3cl |
+| `liqueur` | 100 kcal | 4cl |
+| `long_drink` | 150 kcal | 25cl |
+| `hard_seltzer` | 90 kcal | 33cl |
+| `other` | 120 kcal | — |
 
 ### daily_summaries
 
