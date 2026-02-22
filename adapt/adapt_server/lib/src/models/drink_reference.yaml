@@ -8,6 +8,8 @@ fields:
   drinkType: DrinkType
   ### Calories per standard glass/unit.
   caloriesPerUnit: int
+  ### Human-readable serving size, e.g. "33cl". Null for generic "other".
+  servingDescription: String?
 
 indexes:
   drink_reference_drink_type_unique_idx:

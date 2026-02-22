@@ -18,6 +18,10 @@ class HomeHeader extends ConsumerWidget {
       data: (data) => data.greeting,
     ) ?? 'Good morning.';
 
+    final subtitle = homeAsync.whenOrNull(
+      data: (data) => data.adaptiveMessage,
+    ) ?? 'Here is how your day looks.';
+
     return Row(
       children: [
         Expanded(
@@ -26,10 +30,7 @@ class HomeHeader extends ConsumerWidget {
             children: [
               Text(greeting, style: AppTextStyles.titleLarge),
               const SizedBox(height: AppDimensions.spacing4),
-              Text(
-                'Here is how your day looks.',
-                style: AppTextStyles.bodyMedium,
-              ),
+              Text(subtitle, style: AppTextStyles.bodyMedium),
             ],
           ),
         ),

@@ -11,9 +11,9 @@ fields:
   targetKcal: int
   ### Zero-judgment adaptive message based on today's intake.
   adaptiveMessage: String
-  ### Today's meal logs (most recent first).
+  ### Last 3 confirmed meal logs for today (most recent first).
   meals: List<MealLog>
-  ### Today's meal results keyed to each meal log.
+  ### Meal results keyed to each meal log.
   mealResults: List<MealResult>
   ### Today's total protein in grams (from DailySummary).
   totalProteinG: double
@@ -21,3 +21,5 @@ fields:
   totalCarbsG: double
   ### Today's total fat in grams (from DailySummary).
   totalFatG: double
+  ### True if the user logged any drinks today.
+  hadAlcohol: bool

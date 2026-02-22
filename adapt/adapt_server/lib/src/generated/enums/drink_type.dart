@@ -17,7 +17,9 @@ enum DrinkType implements _i1.SerializableModel {
   wine,
   champagne,
   cocktail,
-  whisky,
+  spirit,
+  shooter,
+  liqueur,
   longDrink,
   hardSeltzer,
   other;
@@ -32,8 +34,12 @@ enum DrinkType implements _i1.SerializableModel {
         return DrinkType.champagne;
       case 'cocktail':
         return DrinkType.cocktail;
-      case 'whisky':
-        return DrinkType.whisky;
+      case 'spirit':
+        return DrinkType.spirit;
+      case 'shooter':
+        return DrinkType.shooter;
+      case 'liqueur':
+        return DrinkType.liqueur;
       case 'longDrink':
         return DrinkType.longDrink;
       case 'hardSeltzer':

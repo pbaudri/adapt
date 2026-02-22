@@ -25,7 +25,7 @@ final drinkReferenceProvider = FutureProvider<List<DrinkReference>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef DrinkReferenceRef = FutureProviderRef<List<DrinkReference>>;
-String _$drinksNotifierHash() => r'08a88e8f07ce0a414999f08527eb56553fab1680';
+String _$drinksNotifierHash() => r'8d2f9be8732c16d230b8333ab31464207b30ad3d';
 
 /// See also [DrinksNotifier].
 @ProviderFor(DrinksNotifier)

@@ -21,6 +21,12 @@ mixin _$DrinksState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )
+    success,
     required TResult Function(DailySummary summary) logged,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
@@ -28,6 +34,12 @@ mixin _$DrinksState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult? Function(DailySummary summary)? logged,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
@@ -35,6 +47,12 @@ mixin _$DrinksState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult Function(DailySummary summary)? logged,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -43,6 +61,7 @@ mixin _$DrinksState {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
     required TResult Function(_Logged value) logged,
     required TResult Function(_Error value) error,
   }) => throw _privateConstructorUsedError;
@@ -50,6 +69,7 @@ mixin _$DrinksState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Logged value)? logged,
     TResult? Function(_Error value)? error,
   }) => throw _privateConstructorUsedError;
@@ -57,6 +77,7 @@ mixin _$DrinksState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
     TResult Function(_Logged value)? logged,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -130,6 +151,12 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )
+    success,
     required TResult Function(DailySummary summary) logged,
     required TResult Function(String message) error,
   }) {
@@ -141,6 +168,12 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult? Function(DailySummary summary)? logged,
     TResult? Function(String message)? error,
   }) {
@@ -152,6 +185,12 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult Function(DailySummary summary)? logged,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -167,6 +206,7 @@ class _$InitialImpl implements _Initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
     required TResult Function(_Logged value) logged,
     required TResult Function(_Error value) error,
   }) {
@@ -178,6 +218,7 @@ class _$InitialImpl implements _Initial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Logged value)? logged,
     TResult? Function(_Error value)? error,
   }) {
@@ -189,6 +230,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
     TResult Function(_Logged value)? logged,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -249,6 +291,12 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )
+    success,
     required TResult Function(DailySummary summary) logged,
     required TResult Function(String message) error,
   }) {
@@ -260,6 +308,12 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult? Function(DailySummary summary)? logged,
     TResult? Function(String message)? error,
   }) {
@@ -271,6 +325,12 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult Function(DailySummary summary)? logged,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -286,6 +346,7 @@ class _$LoadingImpl implements _Loading {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
     required TResult Function(_Logged value) logged,
     required TResult Function(_Error value) error,
   }) {
@@ -297,6 +358,7 @@ class _$LoadingImpl implements _Loading {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Logged value)? logged,
     TResult? Function(_Error value)? error,
   }) {
@@ -308,6 +370,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
     TResult Function(_Logged value)? logged,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -321,6 +384,229 @@ class _$LoadingImpl implements _Loading {
 
 abstract class _Loading implements DrinksState {
   const factory _Loading() = _$LoadingImpl;
+}
+
+/// @nodoc
+abstract class _$$SuccessImplCopyWith<$Res> {
+  factory _$$SuccessImplCopyWith(
+    _$SuccessImpl value,
+    $Res Function(_$SuccessImpl) then,
+  ) = __$$SuccessImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({
+    List<DrinkReference> references,
+    DrinkType? selectedType,
+    int quantity,
+  });
+}
+
+/// @nodoc
+class __$$SuccessImplCopyWithImpl<$Res>
+    extends _$DrinksStateCopyWithImpl<$Res, _$SuccessImpl>
+    implements _$$SuccessImplCopyWith<$Res> {
+  __$$SuccessImplCopyWithImpl(
+    _$SuccessImpl _value,
+    $Res Function(_$SuccessImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of DrinksState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? references = null,
+    Object? selectedType = freezed,
+    Object? quantity = null,
+  }) {
+    return _then(
+      _$SuccessImpl(
+        null == references
+            ? _value._references
+            : references // ignore: cast_nullable_to_non_nullable
+                  as List<DrinkReference>,
+        freezed == selectedType
+            ? _value.selectedType
+            : selectedType // ignore: cast_nullable_to_non_nullable
+                  as DrinkType?,
+        null == quantity
+            ? _value.quantity
+            : quantity // ignore: cast_nullable_to_non_nullable
+                  as int,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$SuccessImpl implements _Success {
+  const _$SuccessImpl(
+    final List<DrinkReference> references,
+    this.selectedType,
+    this.quantity,
+  ) : _references = references;
+
+  final List<DrinkReference> _references;
+  @override
+  List<DrinkReference> get references {
+    if (_references is EqualUnmodifiableListView) return _references;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_references);
+  }
+
+  @override
+  final DrinkType? selectedType;
+  @override
+  final int quantity;
+
+  @override
+  String toString() {
+    return 'DrinksState.success(references: $references, selectedType: $selectedType, quantity: $quantity)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SuccessImpl &&
+            const DeepCollectionEquality().equals(
+              other._references,
+              _references,
+            ) &&
+            (identical(other.selectedType, selectedType) ||
+                other.selectedType == selectedType) &&
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    const DeepCollectionEquality().hash(_references),
+    selectedType,
+    quantity,
+  );
+
+  /// Create a copy of DrinksState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
+      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )
+    success,
+    required TResult Function(DailySummary summary) logged,
+    required TResult Function(String message) error,
+  }) {
+    return success(references, selectedType, quantity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
+    TResult? Function(DailySummary summary)? logged,
+    TResult? Function(String message)? error,
+  }) {
+    return success?.call(references, selectedType, quantity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
+    TResult Function(DailySummary summary)? logged,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (success != null) {
+      return success(references, selectedType, quantity);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Logged value) logged,
+    required TResult Function(_Error value) error,
+  }) {
+    return success(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Logged value)? logged,
+    TResult? Function(_Error value)? error,
+  }) {
+    return success?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Logged value)? logged,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (success != null) {
+      return success(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Success implements DrinksState {
+  const factory _Success(
+    final List<DrinkReference> references,
+    final DrinkType? selectedType,
+    final int quantity,
+  ) = _$SuccessImpl;
+
+  List<DrinkReference> get references;
+  DrinkType? get selectedType;
+  int get quantity;
+
+  /// Create a copy of DrinksState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -395,6 +681,12 @@ class _$LoggedImpl implements _Logged {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )
+    success,
     required TResult Function(DailySummary summary) logged,
     required TResult Function(String message) error,
   }) {
@@ -406,6 +698,12 @@ class _$LoggedImpl implements _Logged {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult? Function(DailySummary summary)? logged,
     TResult? Function(String message)? error,
   }) {
@@ -417,6 +715,12 @@ class _$LoggedImpl implements _Logged {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult Function(DailySummary summary)? logged,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -432,6 +736,7 @@ class _$LoggedImpl implements _Logged {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
     required TResult Function(_Logged value) logged,
     required TResult Function(_Error value) error,
   }) {
@@ -443,6 +748,7 @@ class _$LoggedImpl implements _Logged {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Logged value)? logged,
     TResult? Function(_Error value)? error,
   }) {
@@ -454,6 +760,7 @@ class _$LoggedImpl implements _Logged {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
     TResult Function(_Logged value)? logged,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -549,6 +856,12 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )
+    success,
     required TResult Function(DailySummary summary) logged,
     required TResult Function(String message) error,
   }) {
@@ -560,6 +873,12 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult? Function(DailySummary summary)? logged,
     TResult? Function(String message)? error,
   }) {
@@ -571,6 +890,12 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function(
+      List<DrinkReference> references,
+      DrinkType? selectedType,
+      int quantity,
+    )?
+    success,
     TResult Function(DailySummary summary)? logged,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -586,6 +911,7 @@ class _$ErrorImpl implements _Error {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
     required TResult Function(_Logged value) logged,
     required TResult Function(_Error value) error,
   }) {
@@ -597,6 +923,7 @@ class _$ErrorImpl implements _Error {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
     TResult? Function(_Logged value)? logged,
     TResult? Function(_Error value)? error,
   }) {
@@ -608,6 +935,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
     TResult Function(_Logged value)? logged,
     TResult Function(_Error value)? error,
     required TResult orElse(),

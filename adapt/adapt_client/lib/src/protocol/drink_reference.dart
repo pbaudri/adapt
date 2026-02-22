@@ -20,12 +20,14 @@ abstract class DrinkReference implements _i1.SerializableModel {
     this.id,
     required this.drinkType,
     required this.caloriesPerUnit,
+    this.servingDescription,
   });
 
   factory DrinkReference({
     int? id,
     required _i2.DrinkType drinkType,
     required int caloriesPerUnit,
+    String? servingDescription,
   }) = _DrinkReferenceImpl;
 
   factory DrinkReference.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -35,6 +37,7 @@ abstract class DrinkReference implements _i1.SerializableModel {
         (jsonSerialization['drinkType'] as String),
       ),
       caloriesPerUnit: jsonSerialization['caloriesPerUnit'] as int,
+      servingDescription: jsonSerialization['servingDescription'] as String?,
     );
   }
 
@@ -49,6 +52,9 @@ abstract class DrinkReference implements _i1.SerializableModel {
   /// Calories per standard glass/unit.
   int caloriesPerUnit;
 
+  /// Human-readable serving size, e.g. "33cl". Null for generic "other".
+  String? servingDescription;
+
   /// Returns a shallow copy of this [DrinkReference]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
@@ -56,6 +62,7 @@ abstract class DrinkReference implements _i1.SerializableModel {
     int? id,
     _i2.DrinkType? drinkType,
     int? caloriesPerUnit,
+    String? servingDescription,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -64,6 +71,7 @@ abstract class DrinkReference implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'drinkType': drinkType.toJson(),
       'caloriesPerUnit': caloriesPerUnit,
+      if (servingDescription != null) 'servingDescription': servingDescription,
     };
   }
 
@@ -80,10 +88,12 @@ class _DrinkReferenceImpl extends DrinkReference {
     int? id,
     required _i2.DrinkType drinkType,
     required int caloriesPerUnit,
+    String? servingDescription,
   }) : super._(
          id: id,
          drinkType: drinkType,
          caloriesPerUnit: caloriesPerUnit,
+         servingDescription: servingDescription,
        );
 
   /// Returns a shallow copy of this [DrinkReference]
@@ -94,11 +104,15 @@ class _DrinkReferenceImpl extends DrinkReference {
     Object? id = _Undefined,
     _i2.DrinkType? drinkType,
     int? caloriesPerUnit,
+    Object? servingDescription = _Undefined,
   }) {
     return DrinkReference(
       id: id is int? ? id : this.id,
       drinkType: drinkType ?? this.drinkType,
       caloriesPerUnit: caloriesPerUnit ?? this.caloriesPerUnit,
+      servingDescription: servingDescription is String?
+          ? servingDescription
+          : this.servingDescription,
     );
   }
 }

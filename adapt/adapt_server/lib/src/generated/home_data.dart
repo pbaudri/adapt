@@ -29,6 +29,7 @@ abstract class HomeData
     required this.totalProteinG,
     required this.totalCarbsG,
     required this.totalFatG,
+    required this.hadAlcohol,
   });
 
   factory HomeData({
@@ -41,6 +42,7 @@ abstract class HomeData
     required double totalProteinG,
     required double totalCarbsG,
     required double totalFatG,
+    required bool hadAlcohol,
   }) = _HomeDataImpl;
 
   factory HomeData.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -58,6 +60,7 @@ abstract class HomeData
       totalProteinG: (jsonSerialization['totalProteinG'] as num).toDouble(),
       totalCarbsG: (jsonSerialization['totalCarbsG'] as num).toDouble(),
       totalFatG: (jsonSerialization['totalFatG'] as num).toDouble(),
+      hadAlcohol: jsonSerialization['hadAlcohol'] as bool,
     );
   }
 
@@ -73,10 +76,10 @@ abstract class HomeData
   /// Zero-judgment adaptive message based on today's intake.
   String adaptiveMessage;
 
-  /// Today's meal logs (most recent first).
+  /// Last 3 confirmed meal logs for today (most recent first).
   List<_i2.MealLog> meals;
 
-  /// Today's meal results keyed to each meal log.
+  /// Meal results keyed to each meal log.
   List<_i3.MealResult> mealResults;
 
   /// Today's total protein in grams (from DailySummary).
@@ -87,6 +90,9 @@ abstract class HomeData
 
   /// Today's total fat in grams (from DailySummary).
   double totalFatG;
+
+  /// True if the user logged any drinks today.
+  bool hadAlcohol;
 
   /// Returns a shallow copy of this [HomeData]
   /// with some or all fields replaced by the given arguments.
@@ -101,6 +107,7 @@ abstract class HomeData
     double? totalProteinG,
     double? totalCarbsG,
     double? totalFatG,
+    bool? hadAlcohol,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -115,6 +122,7 @@ abstract class HomeData
       'totalProteinG': totalProteinG,
       'totalCarbsG': totalCarbsG,
       'totalFatG': totalFatG,
+      'hadAlcohol': hadAlcohol,
     };
   }
 
@@ -133,6 +141,7 @@ abstract class HomeData
       'totalProteinG': totalProteinG,
       'totalCarbsG': totalCarbsG,
       'totalFatG': totalFatG,
+      'hadAlcohol': hadAlcohol,
     };
   }
 
@@ -153,6 +162,7 @@ class _HomeDataImpl extends HomeData {
     required double totalProteinG,
     required double totalCarbsG,
     required double totalFatG,
+    required bool hadAlcohol,
   }) : super._(
          greeting: greeting,
          dailyKcal: dailyKcal,
@@ -163,6 +173,7 @@ class _HomeDataImpl extends HomeData {
          totalProteinG: totalProteinG,
          totalCarbsG: totalCarbsG,
          totalFatG: totalFatG,
+         hadAlcohol: hadAlcohol,
        );
 
   /// Returns a shallow copy of this [HomeData]
@@ -179,6 +190,7 @@ class _HomeDataImpl extends HomeData {
     double? totalProteinG,
     double? totalCarbsG,
     double? totalFatG,
+    bool? hadAlcohol,
   }) {
     return HomeData(
       greeting: greeting ?? this.greeting,
@@ -191,6 +203,7 @@ class _HomeDataImpl extends HomeData {
       totalProteinG: totalProteinG ?? this.totalProteinG,
       totalCarbsG: totalCarbsG ?? this.totalCarbsG,
       totalFatG: totalFatG ?? this.totalFatG,
+      hadAlcohol: hadAlcohol ?? this.hadAlcohol,
     );
   }
 }

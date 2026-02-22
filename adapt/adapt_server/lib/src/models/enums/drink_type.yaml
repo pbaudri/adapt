@@ -5,7 +5,9 @@ values:
   - wine
   - champagne
   - cocktail
-  - whisky
+  - spirit
+  - shooter
+  - liqueur
   - longDrink
   - hardSeltzer
   - other

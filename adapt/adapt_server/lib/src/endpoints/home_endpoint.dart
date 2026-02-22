@@ -12,19 +12,24 @@ class HomeEndpoint extends Endpoint {
     final userId = session.authenticated!.userIdentifier;
     final now = DateTime.now();
     final dayStart = DateTime.utc(now.year, now.month, now.day);
-    final dayEnd = dayStart.add(const Duration(days: 1));
+    final dayEnd = dayStart.add(const Duration(hours: 24));
 
     final profile = await UserProfile.db.findFirstRow(
       session,
       where: (t) => t.userId.equals(userId),
     );
 
-    final meals = await MealLog.db.find(
+    // Last 3 confirmed meals for today (estimated = false), most recent first.
+    final allMeals = await MealLog.db.find(
       session,
       where: (t) =>
-          t.userId.equals(userId) & t.loggedAt.between(dayStart, dayEnd),
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd) &
+          t.estimated.equals(false),
       orderBy: (t) => t.loggedAt,
       orderDescending: true,
+      limit: 3,
     );
 
     final summary = await DailySummary.db.findFirstRow(
@@ -32,9 +37,7 @@ class HomeEndpoint extends Endpoint {
       where: (t) => t.userId.equals(userId) & t.date.equals(dayStart),
     );
 
-    // Fetch MealResult for each meal log so the client can show the
-    // AI-generated name and per-meal calorie count.
-    final mealLogIds = meals.map((m) => m.id!).toSet();
+    final mealLogIds = allMeals.map((m) => m.id!).toSet();
     final mealResults = mealLogIds.isEmpty
         ? <MealResult>[]
         : await MealResult.db.find(
@@ -49,12 +52,13 @@ class HomeEndpoint extends Endpoint {
       greeting: _buildGreeting(profile?.name),
       dailyKcal: dailyKcal,
       targetKcal: targetKcal,
-      adaptiveMessage: _buildAdaptiveMessage(dailyKcal, targetKcal),
-      meals: meals,
+      adaptiveMessage: _buildAdaptiveMessage(dailyKcal),
+      meals: allMeals,
       mealResults: mealResults,
       totalProteinG: summary?.totalProteinG ?? 0.0,
       totalCarbsG: summary?.totalCarbsG ?? 0.0,
       totalFatG: summary?.totalFatG ?? 0.0,
+      hadAlcohol: summary?.hadAlcohol ?? false,
     );
   }
 
@@ -88,16 +92,10 @@ class HomeEndpoint extends Endpoint {
     );
   }
 
-  String _buildAdaptiveMessage(int consumed, int target) {
-    final remaining = target - consumed;
-    if (remaining > 600) {
-      return 'Plenty of room ahead. Enjoy your meals today.';
-    } else if (remaining > 300) {
-      return 'A balanced lunch and light dinner keeps you right on track.';
-    } else if (remaining > 0) {
-      return 'A light snack or small dinner fits well here.';
-    } else {
-      return "You've reached your target. Listen to your body — that's what matters.";
-    }
+  String _buildAdaptiveMessage(int consumed) {
+    if (consumed == 0) return 'Nothing logged yet — start whenever you\'re ready.';
+    if (consumed < 800) return 'Light day so far. No rush.';
+    if (consumed <= 1500) return 'Good balance so far.';
+    return 'Solid day. Keep listening to your body.';
   }
 }

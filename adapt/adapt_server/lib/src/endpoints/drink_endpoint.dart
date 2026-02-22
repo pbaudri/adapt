@@ -12,7 +12,7 @@ class DrinkEndpoint extends Endpoint {
   Future<List<DrinkReference>> getDrinkReference(Session session) async {
     return DrinkReference.db.find(
       session,
-      orderBy: (t) => t.drinkType,
+      orderBy: (t) => t.caloriesPerUnit,
     );
   }
 
@@ -55,12 +55,14 @@ class DrinkEndpoint extends Endpoint {
     final userId = session.authenticated!.userIdentifier;
     final now = DateTime.now();
     final dayStart = DateTime.utc(now.year, now.month, now.day);
-    final dayEnd = dayStart.add(const Duration(days: 1));
+    final dayEnd = dayStart.add(const Duration(hours: 24));
 
     return DrinkLog.db.find(
       session,
       where: (t) =>
-          t.userId.equals(userId) & t.loggedAt.between(dayStart, dayEnd),
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd),
       orderBy: (t) => t.loggedAt,
       orderDescending: true,
     );

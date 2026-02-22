@@ -165,7 +165,7 @@ class _WeekSummaryProviderElement
   DateTime get weekStartDate => (origin as WeekSummaryProvider).weekStartDate;
 }
 
-String _$dayDetailHash() => r'2740d14bdfa21c141fa4feb0782daa4b5466fc38';
+String _$dayDetailHash() => r'd2cdb7a3a945a4c402ce36cf71fa14d6bdfca69d';
 
 /// Returns full day detail for [date].
 ///

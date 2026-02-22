@@ -7,6 +7,11 @@ part 'drinks_state.freezed.dart';
 sealed class DrinksState with _$DrinksState {
   const factory DrinksState.initial() = _Initial;
   const factory DrinksState.loading() = _Loading;
+  const factory DrinksState.success(
+    List<DrinkReference> references,
+    DrinkType? selectedType,
+    int quantity,
+  ) = _Success;
   const factory DrinksState.logged(DailySummary summary) = _Logged;
   const factory DrinksState.error(String message) = _Error;
 }
