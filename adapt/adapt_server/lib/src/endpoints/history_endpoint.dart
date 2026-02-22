@@ -57,11 +57,24 @@ class HistoryEndpoint extends Endpoint {
     final dayStart = DateTime.utc(date.year, date.month, date.day);
     final dayEnd = dayStart.add(const Duration(hours: 24));
 
-    final summary = await DailySummaryService.getOrCreate(
-      session,
-      userId: userId,
-      date: dayStart,
-    );
+    // Read the existing summary if any.  Never create a row proactively —
+    // if no data was logged for this day we return a synthetic zero stub.
+    final summary = await DailySummaryService.findDay(
+          session,
+          userId: userId,
+          date: dayStart,
+        ) ??
+        DailySummary(
+          userId: userId,
+          date: dayStart,
+          totalKcal: 0,
+          totalProteinG: 0,
+          totalCarbsG: 0,
+          totalFatG: 0,
+          hadAlcohol: false,
+          mealEmojis: '[]',
+          morningRecapSent: false,
+        );
 
     final meals = await MealLog.db.find(
       session,

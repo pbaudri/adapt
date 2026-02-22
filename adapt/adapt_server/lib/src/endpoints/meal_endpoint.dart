@@ -67,17 +67,12 @@ class MealEndpoint extends Endpoint {
       throw Exception('Meal log not found.');
     }
 
-    // Already confirmed — return the current summary without double-counting.
+    // Already confirmed — just recompute (idempotent) and return.
     if (!mealLog.estimated) {
-      final dayStart = DateTime.utc(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-      );
-      return DailySummaryService.getOrCreate(
+      return DailySummaryService.updateSummary(
         session,
         userId: userId,
-        date: dayStart,
+        loggedAt: mealLog.loggedAt,
       );
     }
 
@@ -89,10 +84,12 @@ class MealEndpoint extends Endpoint {
     );
     if (result == null) throw Exception('Meal result not found.');
 
-    return DailySummaryService.addMealResult(
+    session.log('confirmMeal: storing emojis=${result.emojis} for mealLogId=$mealLogId');
+
+    return DailySummaryService.updateSummary(
       session,
       userId: userId,
-      result: result,
+      loggedAt: mealLog.loggedAt,
     );
   }
 
@@ -124,14 +121,6 @@ class MealEndpoint extends Endpoint {
       fatG: newFat,
     );
 
-    if (!mealLog.estimated) {
-      await DailySummaryService.removeMealResult(
-        session,
-        userId: userId,
-        result: existing,
-      );
-    }
-
     final updated = await MealResult.db.updateRow(
       session,
       existing.copyWith(
@@ -144,12 +133,13 @@ class MealEndpoint extends Endpoint {
       ),
     );
 
+    // Ensure the meal log is confirmed and recompute the day summary.
     await MealLog.db.updateRow(session, mealLog.copyWith(estimated: false));
 
-    await DailySummaryService.addMealResult(
+    await DailySummaryService.updateSummary(
       session,
       userId: userId,
-      result: updated,
+      loggedAt: mealLog.loggedAt,
     );
 
     return updated;
@@ -160,12 +150,14 @@ class MealEndpoint extends Endpoint {
     final userId = session.authenticated!.userIdentifier;
     final now = DateTime.now();
     final dayStart = DateTime.utc(now.year, now.month, now.day);
-    final dayEnd = dayStart.add(const Duration(days: 1));
+    final dayEnd = dayStart.add(const Duration(hours: 24));
 
     return MealLog.db.find(
       session,
       where: (t) =>
-          t.userId.equals(userId) & t.loggedAt.between(dayStart, dayEnd),
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd),
       orderBy: (t) => t.loggedAt,
       orderDescending: true,
     );

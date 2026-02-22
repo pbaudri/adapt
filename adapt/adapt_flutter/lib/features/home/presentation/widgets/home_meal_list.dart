@@ -130,7 +130,7 @@ class _MealRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return MealListItem(
       leading: Container(
-        width: 40,
+        width: 56,
         height: 40,
         decoration: BoxDecoration(
           color: AppColors.surfaceElevated,
@@ -190,7 +190,7 @@ class _DrinkRow extends StatelessWidget {
 
     return MealListItem(
       leading: Container(
-        width: 40,
+        width: 56,
         height: 40,
         decoration: BoxDecoration(
           color: AppColors.surfaceElevated,

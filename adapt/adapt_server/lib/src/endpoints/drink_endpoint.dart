@@ -43,10 +43,10 @@ class DrinkEndpoint extends Endpoint {
       ),
     );
 
-    return DailySummaryService.addDrinkLog(
+    return DailySummaryService.updateSummary(
       session,
       userId: userId,
-      drinkLog: drinkLog,
+      loggedAt: drinkLog.loggedAt,
     );
   }
 
