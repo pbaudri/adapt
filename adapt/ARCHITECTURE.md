@@ -170,6 +170,7 @@ Fields with predefined values use **Serverpod enums** — never raw Strings. Eac
 | `ai_message` | String — zero-judgment message |
 | `ai_tip` | String? — optional suggestion |
 | `source` | `MealSource` |
+| `emojis` | String — JSON array e.g. `["🍝","🥗"]` — AI generated, 1 to 3 emojis |
 
 ### drink_logs
 
@@ -196,6 +197,7 @@ Fields with predefined values use **Serverpod enums** — never raw Strings. Eac
 | `long_drink` | 150 kcal | 25cl |
 | `hard_seltzer` | 90 kcal | 33cl |
 | `other` | 120 kcal | — |
+| `sort_order` | int — display order |
 
 ### daily_summaries
 
@@ -209,7 +211,7 @@ Fields with predefined values use **Serverpod enums** — never raw Strings. Eac
 | `total_carbs_g` | double |
 | `total_fat_g` | double |
 | `had_alcohol` | bool |
-| `meal_emojis` | String — JSON array e.g. `["pizza","salad"]` |
+| `meal_emojis` | String — JSON array, max 6 emojis, deduplicated, includes meal + drink emojis |
 | `morning_recap_sent` | bool — default false |
 
 ### morning_recaps
@@ -273,7 +275,7 @@ All endpoints are defined in `adapt_server` and consumed via the generated `adap
 
 | Method | Returns |
 |---|---|
-| `getDrinkReference()` | `List<DrinkReference>` |
+| `getDrinkReference()` | `List<DrinkReference>` — ordered by sort_order ASC |
 | `logDrinks(drinkType, quantity)` | `DailySummary` |
 | `getTodayDrinks()` | `List<DrinkLog>` |
 
