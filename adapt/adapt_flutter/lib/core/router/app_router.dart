@@ -22,13 +22,21 @@ import '../../features/onboarding/presentation/personal_info_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/providers/profile_provider.dart';
 import 'app_routes.dart';
+import 'app_shell.dart';
 
 part 'app_router.g.dart';
+
+// Navigator keys must be module-level so they survive provider rebuilds.
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
+final _historyNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'history');
+final _profileNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'profile');
 
 @Riverpod(keepAlive: true)
 GoRouter appRouter(Ref ref) {
   final notifier = _RouterNotifier(ref);
   return GoRouter(
+    navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.signIn,
     refreshListenable: notifier,
     redirect: notifier.redirect,
@@ -36,93 +44,111 @@ GoRouter appRouter(Ref ref) {
       // ── Auth ──────────────────────────────────────────────────────────────
       GoRoute(
         path: AppRoutes.signIn,
-        builder: (BuildContext context, GoRouterState state) =>
-            const SignInScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const SignInScreen(),
       ),
       GoRoute(
         path: AppRoutes.signUp,
-        builder: (BuildContext context, GoRouterState state) =>
-            const SignUpScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const SignUpScreen(),
       ),
 
       // ── Onboarding ────────────────────────────────────────────────────────
       GoRoute(
         path: AppRoutes.onboardingName,
-        builder: (BuildContext context, GoRouterState state) =>
-            const NameScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const NameScreen(),
       ),
       GoRoute(
         path: AppRoutes.onboardingEatingStyle,
-        builder: (BuildContext context, GoRouterState state) =>
-            const EatingStyleScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const EatingStyleScreen(),
       ),
       GoRoute(
         path: AppRoutes.onboardingGoal,
-        builder: (BuildContext context, GoRouterState state) =>
-            const GoalScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const GoalScreen(),
       ),
       GoRoute(
         path: AppRoutes.onboardingAlcohol,
-        builder: (BuildContext context, GoRouterState state) =>
-            const AlcoholScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const AlcoholScreen(),
       ),
       GoRoute(
         path: AppRoutes.onboardingPersonalInfo,
-        builder: (BuildContext context, GoRouterState state) =>
-            const PersonalInfoScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const PersonalInfoScreen(),
       ),
 
-      // ── Main tabs ──────────────────────────────────────────────────────────
-      GoRoute(
-        path: AppRoutes.home,
-        builder: (BuildContext context, GoRouterState state) =>
-            const HomeScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.history,
-        builder: (BuildContext context, GoRouterState state) =>
-            const HistoryScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.profile,
-        builder: (BuildContext context, GoRouterState state) =>
-            const ProfileScreen(),
+      // ── Shell (persistent bottom nav + FAB) ───────────────────────────────
+      StatefulShellRoute.indexedStack(
+        builder: (_, _, navigationShell) =>
+            AppShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            navigatorKey: _homeNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.home,
+                builder: (_, _) => const HomeScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _historyNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.history,
+                builder: (_, _) => const HistoryScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _profileNavigatorKey,
+            routes: [
+              GoRoute(
+                path: AppRoutes.profile,
+                builder: (_, _) => const ProfileScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
 
       // ── Meal log ───────────────────────────────────────────────────────────
       GoRoute(
         path: AppRoutes.mealPhoto,
-        builder: (BuildContext context, GoRouterState state) =>
-            const PhotoMealScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const PhotoMealScreen(),
       ),
       GoRoute(
         path: AppRoutes.mealDescribe,
-        builder: (BuildContext context, GoRouterState state) =>
-            const DescribeMealScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const DescribeMealScreen(),
       ),
       GoRoute(
         path: AppRoutes.mealResult,
-        builder: (BuildContext context, GoRouterState state) =>
-            const MealResultScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const MealResultScreen(),
       ),
       GoRoute(
         path: AppRoutes.mealEdit,
-        builder: (BuildContext context, GoRouterState state) =>
-            const EditMealScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const EditMealScreen(),
       ),
 
       // ── Drinks ─────────────────────────────────────────────────────────────
       GoRoute(
         path: AppRoutes.drinks,
-        builder: (BuildContext context, GoRouterState state) =>
-            const DrinksScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const DrinksScreen(),
       ),
 
       // ── Morning recap ──────────────────────────────────────────────────────
       GoRoute(
         path: AppRoutes.morningRecap,
-        builder: (BuildContext context, GoRouterState state) =>
-            const MorningRecapScreen(),
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (_, _) => const MorningRecapScreen(),
       ),
     ],
   );

@@ -1,9 +1,7 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../core/router/app_routes.dart';
 import '../../../core/utils/date_formatter.dart';
 import 'providers/history_provider.dart';
 import 'widgets/history_chart_section.dart';
@@ -100,21 +98,6 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: AdaptBottomNavBar(
-        currentIndex: 1,
-        onTap: (index) => _onNavTap(context, index),
-      ),
     );
-  }
-
-  void _onNavTap(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        context.go(AppRoutes.home);
-      case 1:
-        context.go(AppRoutes.history);
-      case 2:
-        context.go(AppRoutes.profile);
-    }
   }
 }

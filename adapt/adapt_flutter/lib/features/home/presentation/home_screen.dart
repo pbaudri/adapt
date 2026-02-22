@@ -1,8 +1,6 @@
 import 'package:adapt_theme/adapt_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../core/router/app_routes.dart';
 import 'widgets/home_daily_card.dart';
 import 'widgets/home_header.dart';
 import 'widgets/home_meal_list.dart';
@@ -59,43 +57,6 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: AdaptFabMenu(
-        items: [
-          AdaptFabMenuItem(
-            leading: const Icon(
-              Icons.restaurant_rounded,
-              color: AppColors.textPrimary,
-              size: 20,
-            ),
-            label: 'Log a meal',
-            onTap: () => context.push(AppRoutes.mealDescribe),
-          ),
-          AdaptFabMenuItem(
-            leading: const Icon(
-              Icons.local_bar_rounded,
-              color: AppColors.textPrimary,
-              size: 20,
-            ),
-            label: 'Log a drink',
-            onTap: () => context.push(AppRoutes.drinks),
-          ),
-        ],
-      ),
-      bottomNavigationBar: AdaptBottomNavBar(
-        currentIndex: 0,
-        onTap: (index) => _onNavTap(context, index),
-      ),
     );
-  }
-
-  void _onNavTap(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        context.go(AppRoutes.home);
-      case 1:
-        context.go(AppRoutes.history);
-      case 2:
-        context.go(AppRoutes.profile);
-    }
   }
 }
