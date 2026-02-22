@@ -24,8 +24,10 @@ class HistoryEndpoint extends Endpoint {
   /// Returns the full detail for a single day: summary + meals + drinks.
   Future<DayDetail> getDayDetail(Session session, DateTime date) async {
     final userId = session.authenticated!.userIdentifier;
+    // Build a [dayStart, dayEnd) half-open interval covering exactly 24 hours
+    // starting at UTC midnight on the requested calendar day.
     final dayStart = DateTime.utc(date.year, date.month, date.day);
-    final dayEnd = dayStart.add(const Duration(days: 1));
+    final dayEnd = dayStart.add(const Duration(hours: 24));
 
     final summary = await DailySummaryService.getOrCreate(
       session,
@@ -36,7 +38,9 @@ class HistoryEndpoint extends Endpoint {
     final meals = await MealLog.db.find(
       session,
       where: (t) =>
-          t.userId.equals(userId) & t.loggedAt.between(dayStart, dayEnd),
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd),
       orderBy: (t) => t.loggedAt,
     );
 
@@ -51,7 +55,9 @@ class HistoryEndpoint extends Endpoint {
     final drinks = await DrinkLog.db.find(
       session,
       where: (t) =>
-          t.userId.equals(userId) & t.loggedAt.between(dayStart, dayEnd),
+          t.userId.equals(userId) &
+          (t.loggedAt >= dayStart) &
+          (t.loggedAt < dayEnd),
       orderBy: (t) => t.loggedAt,
     );
 

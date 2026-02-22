@@ -42,6 +42,11 @@ class HistoryDaySection extends ConsumerWidget {
               );
             }
 
+            // Sort meals by date
+            detail.meals.sort(
+              (a, b) => b.loggedAt.compareTo(a.loggedAt),
+            );
+
             // Build a map for O(1) lookup of MealResult by mealLogId.
             final resultByLogId = {
               for (final r in detail.mealResults) r.mealLogId: r,
@@ -78,9 +83,9 @@ class HistoryDaySection extends ConsumerWidget {
                           onTap: result == null
                               ? () {}
                               : () => context.push(
-                                    AppRoutes.mealResult,
-                                    extra: result,
-                                  ),
+                                  AppRoutes.mealResult,
+                                  extra: result,
+                                ),
                         );
                       },
                     ),
